@@ -23,10 +23,14 @@ impl Operation {
     /// * **concat_result** (heterogeneous) - `T`: Concatenated tensor
     pub(super) fn execute_concat(&self, inputs: Vec<&Tensor>) -> OperationResult {
         // Attributi
-        let axis = match self.attributes.get("axis") {
-            Some(Attribute::Int(val)) => *val,
-            None => return Err(onnx_error!("Value attribute not specified.")),
-            _ => return Err(onnx_error!("Value has an invalid attribute type."))
+        let axis: usize = match self.attributes.get("axis") {
+            Some(Attribute::Int(val)) if *val >= 0 => (*val).try_into().unwrap(),
+            Some(Attribute::Int(val)) if *val < 0 => {
+                (inputs[0].shape().len() as isize - *val)
+                    .try_into().map_err(|_| onnx_error!("Result axis is a negative number."))?
+            },
+            None => return Err(onnx_error!("axis attribute not specified.")),
+            _ => return Err(onnx_error!("axis has an invalid attribute type."))
         };
 
         let result = 

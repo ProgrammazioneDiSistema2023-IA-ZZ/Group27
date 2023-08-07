@@ -58,8 +58,8 @@ impl Operation {
             _ => return Err(onnx_error!("bias attribute has an invalid value type"))
         };
 
-        let size = match self.attributes.get("size") {
-            Some(Attribute::Int(val)) => *val,
+        let size: usize = match self.attributes.get("size") {
+            Some(Attribute::Int(val)) => (*val).try_into().map_err(|_| onnx_error!("Size attribute is a negative value."))?,
             None => return Err(onnx_error!("size attribute is required")),
             _ => return Err(onnx_error!("size attribute has an invalid value type"))
         };

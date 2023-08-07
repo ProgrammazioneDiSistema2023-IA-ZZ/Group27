@@ -91,13 +91,13 @@ impl TryFrom<&str> for OpType {
 pub enum Attribute {
     Undefined,
     Float(f32),
-    Int(usize),
+    Int(isize),
     String(String),
     Tensor(Tensor),
     /// Non gestito
     Graph(()),
     Floats(Vec<f32>),
-    Ints(Vec<usize>),
+    Ints(Vec<isize>),
     Strings(Vec<String>),
     Tensors(Vec<Tensor>),
     /// Non gestito
@@ -196,10 +196,16 @@ impl Operation {
                 // Padding manuale
                 "NOTSET" => match self.attributes.get("pads") {
                     Some(Attribute::Ints(val)) => Ok(
-                        val.as_slice().try_into().map_err(|_| onnx_error!("Padding should contain four values, {} found.", val.len()))?
+                        // Converti Vec<&isize> a [usize; 4]
+                        val.into_iter()
+                           .map(|v| usize::try_from(*v))
+                           .collect::<Result<Vec<_>, _>>()
+                           .map_err(|_| onnx_error!("pads attribute contains a negative number."))?
+                           .as_slice()
+                           .try_into().map_err(|_| onnx_error!("Padding should contain four values, {} found.", val.len()))?
                     ),
                     None => Ok([0,0,0,0]),
-                    _ => return Err(onnx_error!("kernel_shape attribute has an invalid value type"))
+                    _ => return Err(onnx_error!("pads attribute has an invalid value type"))
                 },
 
                 // Dimensioni valide, senza padding.

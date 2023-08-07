@@ -80,7 +80,15 @@ impl Operation {
         
         // Dimensioni del kernel
         let [ kernel_h, kernel_w ] = match self.attributes.get("kernel_shape") {
-            Some(Attribute::Ints(val)) => val.as_slice().try_into().map_err(|_| onnx_error!("Kernel size should contain two dimensions."))?,
+            // Converti Vec<&isize> a [usize; 2]
+            Some(Attribute::Ints(val)) => {
+                val.into_iter()
+                   .map(|v| usize::try_from(*v))
+                   .collect::<Result<Vec<_>, _>>()
+                   .map_err(|_| onnx_error!("kernel_shape attribute contains a negative number"))?
+                   .as_slice()
+                   .try_into().map_err(|_| onnx_error!("Kernel size should contain two dimensions."))?
+            },
             None => [kernel_h, kernel_w],
             _ => return Err(onnx_error!("kernel_shape attribute has an invalid value type"))
         };
@@ -95,7 +103,15 @@ impl Operation {
 
         // Strides: finestre saltate in lunghezza/altezza
         let [strides_h, strides_w] = match self.attributes.get("strides") {
-            Some(Attribute::Ints(val)) => val.as_slice().try_into().map_err(|_| onnx_error!("Strides should contain two dimensions."))?,
+            Some(Attribute::Ints(val)) => {
+                // Converti Vec<&isize> a [usize; 2]
+                val.into_iter()
+                   .map(|v| usize::try_from(*v))
+                   .collect::<Result<Vec<_>, _>>()
+                   .map_err(|_| onnx_error!("Strides attribute contains a negative number"))?
+                   .as_slice()
+                   .try_into().map_err(|_| onnx_error!("Kernel size should contain two dimensions."))?
+            },
             None => [1, 1],
             _ => return Err(onnx_error!("groups attribute has an invalid value type"))
         };

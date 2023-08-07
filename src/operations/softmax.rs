@@ -29,10 +29,14 @@ impl Operation {
         let input = *inputs.get(0).ok_or(onnx_error!("Softmax must have 1 input."))?;
 
         // Attributi
-        let axis = match self.attributes.get("axis") {
-            Some(Attribute::Int(val)) => *val,
-            None => input.shape().len()-1,
-            _ => return Err(onnx_error!("Value has an invalid attribute type."))
+        let axis: usize = match self.attributes.get("axis") {
+            Some(Attribute::Int(val)) if *val >= 0 => (*val).try_into().unwrap(),
+            Some(Attribute::Int(val)) if *val < 0 => {
+                (inputs[0].shape().len() as isize - *val)
+                    .try_into().map_err(|_| onnx_error!("Result axis is a negative number."))?
+            },
+            None => inputs[0].shape().len()-1,
+            _ => return Err(onnx_error!("axis has an invalid attribute type."))
         };
 
         // input_exp = e^input
