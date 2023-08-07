@@ -16,6 +16,7 @@ mod matmul;
 mod maxpool;
 mod relu;
 mod reshape;
+mod softmax;
 
 /// Generico array multidimensionale contenente dei float ([`f32`]).
 pub type Tensor = ArrayD<f32>;
@@ -57,7 +58,10 @@ pub enum OpType {
     Relu,
 
     /// Cambio forma.
-    Reshape
+    Reshape,
+
+    /// Softmax(input, axis) = Exp(input) / ReduceSum(Exp(input), axis=axis, keepdims=1)
+    Softmax
 }
 
 impl TryFrom<&str> for OpType {
@@ -76,6 +80,7 @@ impl TryFrom<&str> for OpType {
             "MaxPool" => Ok(Self::MaxPool),
             "Relu" => Ok(Self::Relu),
             "Reshape" => Ok(Self::Reshape),
+            "Softmax" => Ok(Self::Softmax),
             _ => Err(onnx_error!("Invalid operation name."))
         }
     }
@@ -157,7 +162,8 @@ impl Operation {
             OpType::MatMul => self.execute_matmul(inputs_pointers),
             OpType::MaxPool => self.execute_max_pool(inputs_pointers),
             OpType::Relu => self.execute_relu(inputs_pointers),
-            OpType::Reshape => self.execute_reshape(inputs_pointers)
+            OpType::Reshape => self.execute_reshape(inputs_pointers),
+            OpType::Softmax => self.execute_softmax(inputs_pointers)
         };
 
         // Controllo forma del risultato

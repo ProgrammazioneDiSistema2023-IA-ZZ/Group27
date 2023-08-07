@@ -1,0 +1,134 @@
+use std::{sync::Arc, f32::consts::E};
+use ndarray::Axis;
+
+use super::{Operation, OnnxError, onnx_error, Tensor, OperationResult, Attribute};
+
+impl Operation {
+    
+    /// *(From <https://onnx.ai/onnx/operators/onnx__Softmax.html>)*
+    /// 
+    /// The operator computes the normalized exponential values for the given input:
+    /// ```plain
+    /// Softmax(input, axis) = Exp(input) / ReduceSum(Exp(input), axis=axis, keepdims=1)
+    /// ```
+    /// 
+    /// The “axis” attribute indicates the dimension along which Softmax will be performed. The output tensor has the same shape
+    /// and contains the Softmax values of the corresponding input.
+    /// 
+    /// # Attributes
+    /// * **axis** - `INT` (default is `'-1'`): Describes the dimension Softmax will be performed on. Negative value means
+    ///   counting dimensions from the back. Accepted range is `[-r, r-1]` where `r = rank(input)`.
+    /// 
+    /// # Inputs
+    /// * **input** (heterogeneous) - `T`: The input tensor of `rank >= axis`.
+    /// 
+    /// # Outputs
+    /// * **output** (heterogeneous) - `T`: The output values with the same shape as the input tensor.
+    pub(super) fn execute_softmax(&self, inputs: Vec<&Tensor>) -> OperationResult {
+        // Input
+        let input = *inputs.get(0).ok_or(onnx_error!("Softmax must have 1 input."))?;
+
+        // Attributi
+        let axis = match self.attributes.get("axis") {
+            Some(Attribute::Int(val)) => *val,
+            None => input.shape().len()-1,
+            _ => return Err(onnx_error!("Value has an invalid attribute type."))
+        };
+
+        // input_exp = e^input
+        let input_exp = input.mapv(|v| E.powf(v));
+        
+        // Somma i valori di input_exp lungo l'asse (questo genera un array con una dimensione minore rispetto all'input)
+        let mut axis_sums = input_exp.sum_axis(Axis(axis));
+
+        // Ripeti i valori delle somme lungo l'asse, in modo da mantenere la stessa forma dell'input
+        axis_sums.insert_axis_inplace(Axis(axis));
+        let axis_values = axis_sums.index_axis(Axis(axis), 0).to_owned();
+        let axis_size = input_exp.shape()[axis];
+        (0..axis_size-1).for_each(|_| axis_sums.push(Axis(axis), axis_values.view()).unwrap());
+
+        let result = &input_exp / &axis_sums;
+        Ok(Arc::new(result))
+    }
+
+}
+
+#[cfg(test)]
+mod tests {
+    use std::{sync::Arc, collections::HashMap};
+    use ndarray::array;
+    use crate::operations::{Operation, OpType, Attribute};
+
+    #[test]
+    fn one_dimension() {
+        let op = Operation::new(OpType::Softmax);
+
+        let input =
+            array![[-1., 0., 1.]].into_dyn();
+
+        let expected_result =
+            array![[0.09003058, 0.24472848, 0.66524094]].into_dyn();
+
+        let result = op.execute(vec![Arc::new(input)]);
+        assert!(result.is_ok(), "{:?}", result.unwrap_err());
+        assert_eq!(result.unwrap(), Arc::new(expected_result))
+    }
+
+    #[test]
+    fn two_dimensions() {
+        let op = Operation::new(OpType::Softmax);
+
+        let input =
+            array![
+                [-1., 0., 1.],
+                [2.,  3., 4.]
+            ].into_dyn();
+
+        let expected_result =
+            array![
+                [0.09003058, 0.24472848, 0.66524094],
+                [0.09003057, 0.24472846, 0.66524094]
+            ].into_dyn();
+
+        let result = op.execute(vec![Arc::new(input)]);
+        assert!(result.is_ok(), "{:?}", result.unwrap_err());
+        assert_eq!(result.unwrap(), Arc::new(expected_result))
+    }
+
+    #[test]
+    fn three_dimensions_axis() {
+        let attributes = HashMap::from([
+            ("axis".to_string(), Attribute::Int(1))
+        ]);
+        let op = Operation::with_attributes(OpType::Softmax, attributes);
+
+        let input =
+            array![
+                [
+                    [1.,2.],
+                    [3.,4.]
+                ],
+                [
+                    [5.,6.],
+                    [7.,8.]
+                ]
+            ].into_dyn();
+
+        let expected_result =
+            array![
+                [
+                    [0.11920293, 0.11920293],
+                    [0.880797,   0.880797  ]
+                ],
+                [
+                    [0.11920293, 0.11920293],
+                    [0.8807971,  0.8807971 ]
+                ]
+            ].into_dyn();
+
+        let result = op.execute(vec![Arc::new(input)]);
+        assert!(result.is_ok(), "{:?}", result.unwrap_err());
+        assert_eq!(result.unwrap(), Arc::new(expected_result))
+    }
+
+}
