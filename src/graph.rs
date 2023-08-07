@@ -1,4 +1,4 @@
-use std::{str::FromStr, fs::read_to_string, collections::{HashMap, HashSet}, sync::{Arc, MutexGuard, Mutex, PoisonError, RwLock, RwLockReadGuard}, thread::{JoinHandle, self}, hash::Hash};
+use std::{str::FromStr, fs::read_to_string, collections::{HashMap, HashSet}, sync::{Arc, MutexGuard, Mutex, PoisonError, RwLock, RwLockReadGuard, atomic::{AtomicUsize, Ordering}}, thread::{JoinHandle, self}, hash::Hash};
 use crate::{error::OnnxError, parser::OnnxParser, operations::Tensor, onnx_error};
 
 pub use self::{operation::OnnxGraphOperation, input::OnnxGraphInput, output::OnnxGraphOutput, initializer::OnnxGraphInitializer};
@@ -18,12 +18,12 @@ pub enum OnnxGraphNode {
 
 impl OnnxGraphNode {
     /// Restituisce il nome del nodo, indipendentemente dal suo tipo.
-    pub fn name(&self) -> String {
+    pub fn name(&self) -> &String {
         match self {
-            OnnxGraphNode::Initializer(node) => node.name.clone(),
-            OnnxGraphNode::Input(node) => node.name.clone(),
-            OnnxGraphNode::Output(node) => node.name.clone(),
-            OnnxGraphNode::Operation(node) => node.name.clone()
+            OnnxGraphNode::Initializer(node) => &node.name,
+            OnnxGraphNode::Input(node) => &node.name,
+            OnnxGraphNode::Output(node) => &node.name,
+            OnnxGraphNode::Operation(node) => &node.name
         }
     }
 
@@ -41,7 +41,7 @@ impl OnnxGraphNode {
 
 impl PartialEq for OnnxGraphNode {
     fn eq(&self, other: &Self) -> bool {
-        self.name().eq(&other.name())
+        self.name().eq(other.name())
     }
 }
 
@@ -59,6 +59,9 @@ struct InferenceID(usize);
 
 /// Grafo che rappresenta una rete neurale.
 pub struct OnnxGraph {
+    /// Nome del grafo
+    pub name: String,
+
     /// Nomi dei nodi initializer del grafo.
     initializers: Vec<String>,
 
@@ -80,9 +83,12 @@ pub struct OnnxGraph {
     /// [`Mutex`].
     nodes: RwLock<HashMap<String, OnnxGraphNode>>,
 
+    /// Numero di inferenze attualmente in corso.
+    inferences_in_progress: AtomicUsize,
+
     /// Memorizza l'ultimo ID di inferenza utilizzato. Viene incrementato ogni volta che viene avviata un'inferenza nello stesso
     /// processo.
-    last_id: Mutex<InferenceID>
+    last_inference_id: Mutex<InferenceID>
 }
 
 /// Risultato della creazione del grafo, se questa prevede degli errori (ad esempio, a partire da un file).
@@ -97,12 +103,14 @@ impl OnnxGraph {
     /// Crea un nuovo grafo vuoto.
     pub fn new() -> Self {
         Self {
+            name: String::default(),
             initializers: Vec::new(),
             inputs: Vec::new(),
             outputs: Vec::new(),
             operations: Vec::new(),
             nodes: RwLock::new(HashMap::new()),
-            last_id: Mutex::new(InferenceID(0))
+            inferences_in_progress: AtomicUsize::new(0),
+            last_inference_id: Mutex::new(InferenceID(0))
         }
     }
 
@@ -116,15 +124,20 @@ impl OnnxGraph {
 
     /// Aggiunge un nodo esistente al grafo.
     pub fn add_node(&mut self, node: OnnxGraphNode) -> Result<(), OnnxError> {
+        // Evita che vengano effettuate modifiche ai nodi mentre ci sono delle inferenze in corso.
+        if *self.inferences_in_progress.get_mut() > 0 {
+            return Err(onnx_error!("Cannot add nodes while there are inferences in progress."));
+        }
+
         // Lock delle risorse
         let mut nodes =
             self.nodes.write()
                 .map_err(|_| onnx_error!("PoisonError occurred while locking nodes for write (adding node {}).", node.name()))?;
         
-        let name = node.name();
+        let name = node.name().clone();
 
         // Inserisci nome del nodo nel vettore adatto della struttura.
-        match &node {
+        match node {
             OnnxGraphNode::Initializer(_) => &mut self.initializers,
             OnnxGraphNode::Input(_) => &mut self.inputs,
             OnnxGraphNode::Output(_) => &mut self.outputs,
@@ -140,7 +153,7 @@ impl OnnxGraph {
                 (OnnxGraphNode::Initializer(init_node), OnnxGraphNode::Input(mut in_node)) => {
                     // I due nodi con lo stesso nome sono un input ed un initializer (in qualsiasi ordine):
                     // aggiorna il nodo di input in modo che abbia il valore dell'initializer come default
-                    in_node.default_value = Some(init_node.data.clone());
+                    in_node.default_value = Some(init_node.data);
                     nodes.insert(name, OnnxGraphNode::Input(in_node));
                 },
                 (old_node, _) => {
@@ -154,7 +167,16 @@ impl OnnxGraph {
         Ok(())
     }
 
-    fn get_input_value(&self, node: &OnnxGraphInput, inputs: &Arc<HashMap<String, Arc<Tensor>>>) -> Option<Arc<Tensor>> {
+    /// Estrae il valore di un nodo input da `inputs` o, se assente, il suo valore di default.
+    /// 
+    /// # Return
+    /// [`Some(t)`] se il valore `t` è stato trovato ed è valido. [`None`] se questo non è stato trovato e non ha un valore di
+    /// default, oppure se è stato trovato ma non ha una forma valida.
+    fn get_input_value(
+        &self,
+        node: &OnnxGraphInput,
+        inputs: &Arc<HashMap<String, Arc<Tensor>>>
+    ) -> Option<Arc<Tensor>> {
         let input_data =
             inputs.get(&node.name)
                 .or_else(|| node.default_value.as_ref())?
@@ -343,7 +365,7 @@ impl OnnxGraph {
         if op_nodes.len() == 1 {
             // Una operazione: calcola il risultato nel thread corrente.
             let op_node = op_nodes[0];
-            self.clone().compute_operation_node(infer_id, op_node.name.clone(), graph_inputs.clone())
+            self.compute_operation_node(infer_id, op_node.name.clone(), graph_inputs.clone())
         } else if op_nodes.len() > 1 {
             // Più operazioni: crea tanti thread quante sono le operazioni.
             let threads: Vec<(&OnnxGraphOperation, JoinHandle<_>)> = 
@@ -387,14 +409,14 @@ impl OnnxGraph {
         }
     }
 
-    /// Restituisce il nome dei nodi operazione di "primo livello", cioè quelli che contengono dei nodi input o initializer come
+    /// Restituisce il nome dei nodi operazione di "primo livello", cioè quelli che contengono *solo* nodi input o initializer come
     /// nodi entranti. 
     fn get_first_layer_nodes<'a>(&self, nodes: &'a RwLockReadGuard<'a, HashMap<String, OnnxGraphNode>>) -> HashSet<&'a OnnxGraphNode> {
         nodes
             .values()
             .filter(|node| {
                 if let OnnxGraphNode::Operation(op_node) = node {
-                    op_node.inputs.iter().any(|input_name| self.inputs.contains(input_name) || self.initializers.contains(input_name))
+                    op_node.inputs.iter().all(|input_name| self.inputs.contains(input_name) || self.initializers.contains(input_name))
                 } else {
                     false
                 }
@@ -404,11 +426,11 @@ impl OnnxGraph {
 
     /// Restituisce l'ID dell'inferenza attuale e aggiorna l'ID più recente.
     fn generate_inference_id(&self) -> Result<InferenceID, PoisonError<MutexGuard<InferenceID>>> {
-        let mut last_id = self.last_id.lock()?;
-        let InferenceID(current)= *last_id;
+        let mut last_inference_id = self.last_inference_id.lock()?;
+        let InferenceID(current)= *last_inference_id;
 
-        *last_id = InferenceID(current+1);
-        return Ok(*last_id);
+        *last_inference_id = InferenceID(current+1);
+        return Ok(*last_inference_id);
     }
 
     /// Esegue l'inferenza sulla base del grafo attuale, seguendo un approccio top-down: a partire da ogni input, esegui le
@@ -444,7 +466,10 @@ impl OnnxGraph {
             self.nodes.read()
                 .map_err(|_| onnx_error!("[Initial] An error occurred while trying to lock nodes HashMap for read."))?;
 
-        // Ricava i nodi di "primo livello", i.e. quelli che contengono degli input/initializer tra i nodi entranti.
+        // Incrementa numero di inferenze in corso.
+        self.inferences_in_progress.fetch_add(1, Ordering::Relaxed);
+
+        // Ricava i nodi di "primo livello", i.e. quelli che hanno solo input/initializer tra i nodi entranti.
         let first_layer_nodes: Vec<&OnnxGraphOperation> =
             self.get_first_layer_nodes(&nodes)
                 .into_iter()
@@ -458,6 +483,9 @@ impl OnnxGraph {
 
         // Esegui in modo ricorsivo tutte le operazioni relative ai nodi trovati
         let out_hashmap: HashMap<String, Arc<Tensor>> = self.clone().execute_node_operations(infer_id, first_layer_nodes, inputs)?;
+
+        // Decrementa numero di inferenze in corso.
+        self.inferences_in_progress.fetch_sub(1, Ordering::Relaxed);
 
         // A questo punto, tutti gli Arc dentro out_hashmap dovrebbero avere un solo riferimento, quindi si può estrarre ogni valore puntato tramite Arc::try_unwrap
         let final_hashmap: HashMap<String, Tensor> =
