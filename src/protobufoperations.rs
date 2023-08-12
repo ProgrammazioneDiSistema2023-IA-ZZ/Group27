@@ -28,3 +28,14 @@ pub fn leggifloats(v: &Vec<u8>) -> Vec<f32> {
     }
     result
 }
+
+pub fn leggibytes(v: &Vec<u8>) -> Vec<u8> {
+    let mut result = Vec::new();
+    let mut i = 0;
+    while i < v.len()
+    {
+        result.push(u8::from_le_bytes(v[i..i+1].try_into().unwrap()));
+        i += 1;
+    }
+    result
+}

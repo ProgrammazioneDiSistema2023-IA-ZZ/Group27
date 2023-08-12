@@ -75,7 +75,8 @@ pub struct TensorProto {
     pub fieldNumber: HashMap<usize, String>,
     pub tensor : Tensor,
     pub dims:Vec<usize>,
-    pub float_data :Vec<f32> 
+    pub float_data :Vec<f32> ,
+    pub raw_data :Vec<u8> 
 }
 #[derive(Debug)]
 pub struct ModelProto {
@@ -108,11 +109,11 @@ impl AttributeProto {
 }
 impl TensorProto {
     pub fn new() -> Self {
-        let mut result = TensorProto { fieldNumber: HashMap::new(),tensor:array![ []  ].into_dyn() ,dims:Vec::new(),float_data:Vec::new()};
+        let mut result = TensorProto { fieldNumber: HashMap::new(),tensor:array![ []  ].into_dyn() ,dims:Vec::new(),float_data:Vec::new(),raw_data:Vec::new()};
         result.fieldNumber.insert(1, "dims".to_string());
         result.fieldNumber.insert(4, "float_data".to_string());
         result.fieldNumber.insert(2, "data_type".to_string());
-
+        result.fieldNumber.insert(9, "raw_data".to_string());
         result
     }
 }

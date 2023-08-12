@@ -1,16 +1,16 @@
 use std::{
     array,
     fs::File,
-    io::{BufReader, Read},
+    io::{BufReader, Read}, collections::HashMap, sync::Arc,
 };
 
 use crate::{
-    graph::{OnnxGraph, OnnxGraphInitializer, OnnxGraphNode, OnnxGraphInput},
-    protobufoperations::{leggifloats, readVarint},
+    graph::{OnnxGraph, OnnxGraphInitializer, OnnxGraphNode, OnnxGraphInput, OnnxGraphOperation, OnnxGraphOutput},
+    protobufoperations::{leggifloats, readVarint, leggibytes},
     protobufstruct::{
         AttributeProto, Dimension, GraphProto, ModelProto, NodeProto, ProtoBufMessage, Tensor2,
         TensorProto, TensorShapeProto, TypeProto, ValueInfoProto,
-    },
+    }, operations::{Operation, OpType},
 };
 use ndarray::{arr0, arr1, arr2, array, Array, Array2, ArrayBase, Axis, OwnedRepr};
 
@@ -41,6 +41,8 @@ impl<'a> OnnxFileParser<'a> {
     }
 
     pub fn parse(&mut self) {
+
+        let mut GRAFO = OnnxGraph::new();
         let file = File::open(self.path);
         if file.is_err() {
             self.error = Option::Some("File not found".to_string());
@@ -143,41 +145,99 @@ impl<'a> OnnxFileParser<'a> {
 
                 let node_init =
                     OnnxGraphNode::Initializer(OnnxGraphInitializer::new(&e.name, val.into_dyn()));
-                if self.graph.add_node(node_init).is_err() {
+                if GRAFO.add_node(node_init).is_err() {
                     self.error = Some("Error while adding init node".to_string());
                 }
             }
             if e.inputs.len() != 0 && e.outputs.len() != 0 {
                 //NODO OPERATION
 
-                /*  let node_op = OnnxGraphNode::Operation(OnnxGraphOperation::new(
+                  let node_op = OnnxGraphNode::Operation(OnnxGraphOperation::new(
                     &e.name,
                     Operation::new(OpType::try_from(e.op_type.as_str()).unwrap()),
                     e.inputs.iter().map(|s| &s[..]).collect(),
-                    e.outputs.iter().map(|s| &s[..]).collect()
+                    e.outputs.iter().map(|s| &s[..]).collect()));
                      if self.graph.add_node(node_op).is_err(){
                         self.error=Some("Error while adding init node".to_string());
                 }
-                */
+               
             }
         }
         for e in &graph.inputs_node{
-           /*  pub fn with_expected_shape(name: &str, shape: &[usize]) -> Self{
-                Self {
-                    name: name.to_string(),
-                    expected_shape: Some(shape.to_vec().into_boxed_slice()),
-                    default_value: None
-                }
-                   OnnxGraphNode::Input(OnnxGraphInput::new("A"));
-            }*/
             let shape :Vec<usize>= e.tp.t.ts.dim.iter().map(|x| x.value as usize).collect();
             print!("{:?}",shape);
             let node_in =OnnxGraphNode::Input(OnnxGraphInput::with_expected_shape(&e.name,&shape));
-            if self.graph.add_node(node_in).is_err() {
+            if GRAFO.add_node(node_in).is_err() {
+                self.error = Some("Error while adding input node".to_string());
+            }
+        }
+        for e in &graph.outputs_node{
+            let shape :Vec<usize>= e.tp.t.ts.dim.iter().map(|x| x.value as usize).collect();
+            print!("{:?}",shape);
+            let node_in =OnnxGraphNode::Output(OnnxGraphOutput::with_expected_shape(&e.name,&shape));
+            if GRAFO.add_node(node_in).is_err() {
                 self.error = Some("Error while adding input node".to_string());
             }
         }
         
+        /*Lettura input file*/
+
+        let file = File::open("./onnxFile/input_0.pb");
+        if file.is_err() {
+            self.error = Option::Some("File not found".to_string());
+            return;
+        }
+        
+        let mut br = BufReader::new(file.unwrap());
+        let mut binary = Vec::new();
+        br.read_to_end(&mut binary);
+         let mut input_data = ProtoBufMessage::TensorProto(TensorProto::new());
+            index=0;
+            println!("{} - {}",index,binary.len());
+         while index < binary.len() {
+             let val = readVarint(&binary, &mut index);
+             let wireType = val & 0x3;
+             let fieldNumber = val >> 3;
+           
+             match wireType {
+                 0 => {
+                     self.wireType_zero(&mut input_data, &fieldNumber, &binary, &mut index);
+                 }
+                 2 => {
+                     self.wireType_two(&mut input_data, &fieldNumber, &binary, &mut index);
+                 }
+                 _ => {
+                     self.error = Option::Some("Unsupported data type".to_string());
+                 }
+             }
+         }
+         let data = TensorProto::try_from(input_data).unwrap();
+
+         println!("{:?}",data.dims);
+        let  val = Array::from_iter(data.raw_data.iter().map(|v| *v as f32).take(
+            data.dims[0]
+                * data.dims[1]
+                * data.dims[2]
+                * data.dims[3],
+        ))
+        .into_shape((
+            data.dims[0],
+            data.dims[1],
+            data.dims[2],
+            data.dims[3],
+        ))
+        .unwrap()
+        .into_dyn();
+    //Input73
+    let mut input_values = HashMap::new();
+    input_values.insert("Input73".to_string(), val);
+
+
+    let result = Arc::new(GRAFO).infer(input_values);
+        println!("\n\n\n{:?}",result);
+   // assert!(result.is_ok(), "{:?}", result.unwrap_err());
+   // assert_eq!(result.unwrap(), output_values);
+
         return;
     }
 
@@ -239,12 +299,7 @@ impl<'a> OnnxFileParser<'a> {
                             .push(ValueInfoProto::try_from(node).unwrap());
                         println!("FINE OUTPUT!");
                     }
-                    13 => {
-                        /*  println!("");
-                         println!("VALUE INFO!");
-                        // IOTagReader(&vettore[*index..(*index+val)].to_vec());
-                         println!("FINE VALUE INFO!!");*/
-                    }
+                    13 => {/*TAG VALUE INFO - NON NECESSARIO */}
                     _ => {
                         let word =
                             String::from_utf8(vettore[*index..(*index + val)].to_owned()).unwrap();
@@ -313,6 +368,11 @@ impl<'a> OnnxFileParser<'a> {
                     let v = leggifloats(&vettore[*index..*index + val].to_vec());
                     println!("{:?}", v);
                     (*p).float_data = v;
+                }else if *field_number == 9 { //RAW_DATA
+                    print!("ffdfjdighdsghdi");
+                    let v = leggibytes(&vettore[*index..*index + val].to_vec());
+                    println!("{:?}", v);
+                    (*p).raw_data = v;
                 } else {
                     let word =
                         String::from_utf8(vettore[*index..(*index + val)].to_owned()).unwrap();
@@ -463,6 +523,9 @@ impl<'a> OnnxFileParser<'a> {
                         // Campo "dims", è gestito come varint
                         (*p).dims.push(val);
                     }
+                    if *field_number == 9 { //RAW_DATA
+                        print!("\n\n\n\nffdfjdighdsghdi");
+                    }
                 } else {
                     print!("\t\t\t\tNON SUPPORTATO val = {}", field_number);
                 }
@@ -554,3 +617,7 @@ impl<'a> OnnxFileParser<'a> {
         return;
     }
 }
+
+
+
+
