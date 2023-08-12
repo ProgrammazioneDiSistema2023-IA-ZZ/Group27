@@ -9,6 +9,7 @@ mod averagepool;
 mod concat;
 mod constant;
 mod conv;
+mod div;
 mod dropout;
 mod gemm;
 mod lrn;
@@ -38,6 +39,9 @@ pub enum OpType {
 
     /// Convoluzione.
     Conv,
+
+    // Divisione tra due input.
+    Div,
 
     /// Operazione usata durante il training, in questo contesto non fa nulla.
     Dropout,
@@ -73,6 +77,7 @@ impl TryFrom<&str> for OpType {
             "Concat" => Ok(Self::Concat),
             "Constant" => Ok(Self::Constant),
             "Conv" => Ok(Self::Conv),
+            "Div" => Ok(Self::Div),
             "Dropout" => Ok(Self::Dropout),
             "Gemm" => Ok(Self::Gemm),
             "LRN" => Ok(Self::LRN),
@@ -156,6 +161,7 @@ impl Operation {
             OpType::Concat => self.execute_concat(inputs_pointers),
             OpType::Constant => self.execute_constant(inputs_pointers),
             OpType::Conv => self.execute_conv(inputs_pointers),
+            OpType::Div => self.execute_div(inputs_pointers),
             OpType::Dropout => self.execute_dropout(inputs),
             OpType::Gemm => self.execute_gemm(inputs_pointers),
             OpType::LRN => self.execute_lrn(inputs_pointers),
