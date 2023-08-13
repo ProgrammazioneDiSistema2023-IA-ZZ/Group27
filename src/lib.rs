@@ -4,5 +4,3 @@ pub mod operations;
 mod parser;
 mod helper;
 pub mod fileParser;
-mod protobufoperations;
-mod protobufstruct;
