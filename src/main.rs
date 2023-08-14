@@ -9,7 +9,7 @@ fn main() {
     
     /* GOOGLENET */
     
-    //    parser.parse("./onnxFile/googlenet-12/googlenet-12.onnx","./onnxFile/googlenet-12/test_data_set_0/input_0.pb");
+       // parser.parse("./onnxFile/googlenet-12/googlenet-12.onnx","./onnxFile/googlenet-12/test_data_set_0/input_0.pb");
 
   
     /* MNIST */
