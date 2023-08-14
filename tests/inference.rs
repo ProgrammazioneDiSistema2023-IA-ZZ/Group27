@@ -1016,3 +1016,87 @@ fn complex_graph() {
     assert!(result.is_ok(), "{:?}", result.unwrap_err());
     assert_eq!(result.unwrap(), output_values);
 }
+
+#[test]
+fn graph_with_intermediate() {
+    /* CREATE GRAPH */
+    let mut graph = OnnxGraph::new();
+    let x: OnnxGraphNode = OnnxGraphNode::Input(OnnxGraphInput::new("X"));
+    let a = OnnxGraphNode::Input(OnnxGraphInput::new("A"));
+    let b = OnnxGraphNode::Input(OnnxGraphInput::new("B"));
+
+    let mut add_res = graph.add_node(x);
+    assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
+    add_res = graph.add_node(a);
+    assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
+    add_res = graph.add_node(b);
+    assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
+
+    let mat_mul =
+        OnnxGraphNode::Operation(
+            OnnxGraphOperation::new(
+                "MatMul",
+                Operation::new(OpType::MatMul),
+                vec!["X", "A"],
+                vec!["MatMul_out"]
+            )
+        );
+        add_res = graph.add_node(mat_mul);
+    assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
+
+    let add =
+        OnnxGraphNode::Operation(
+            OnnxGraphOperation::new(
+                "Add",
+                Operation::new(OpType::Add),
+                vec!["MatMul_out", "B"],
+                vec!["Y"]
+            )
+        );
+        add_res = graph.add_node(add);
+    assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
+
+    let y = OnnxGraphNode::Output(OnnxGraphOutput::new("Y"));
+    add_res = graph.add_node(y);
+    assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
+
+    /* INPUT VALUES */
+    let mut input_values = HashMap::new();
+
+    let x_values = array![
+        [1.,2.],
+        [3.,4.],
+        [5.,6.],
+    ].into_dyn();
+    assert!(input_values.insert("X".to_string(), x_values).is_none());
+
+    let a_values = array![
+        [1.,2.],
+        [3.,4.]
+    ].into_dyn();
+    assert!(input_values.insert("A".to_string(), a_values).is_none());
+
+    let b_values = array![
+        [2.,3.],
+        [4.,5.],
+        [6.,7.],
+    ].into_dyn();
+    assert!(input_values.insert("B".to_string(), b_values).is_none());
+
+    /* EXPECTED OUTPUT VALUES */
+    let mut output_values = HashMap::new();
+
+    let y = array![
+            [9.,13.],
+            [19.,27.],
+            [29.,41.]
+    ].into_dyn();
+    output_values.insert("Y".to_string(), y);
+
+    /* INFERENCE */
+    let a_graph = Arc::new(graph);
+    let result = a_graph.infer(input_values);
+
+    assert!(result.is_ok(), "{:?}", result.unwrap_err());
+    assert_eq!(result.unwrap(), output_values);
+}
