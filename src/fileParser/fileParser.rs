@@ -34,6 +34,7 @@ fn create_multidim_array(
     plain_vect: Vec<f32>,
     dims: &Vec<usize>,
 ) -> Option<ArrayBase<OwnedRepr<f32>, ndarray::Dim<ndarray::IxDynImpl>>> {
+    
     match dims.len() {
         0 => Some(
             Array::from_iter(plain_vect.iter().map(|v| *v).cycle().take(0))
@@ -71,8 +72,7 @@ fn create_multidim_array(
                     .map(|v| *v)
                     .take(dims[0] * dims[1] * dims[2] * dims[3]),
             )
-            .into_shape((dims[0], dims[1], dims[2], dims[3]))
-            .unwrap()
+            .into_shape((dims[0], dims[1], dims[2], dims[3])).unwrap()
             .into_dyn(),
         ),
         _ => None,
@@ -121,10 +121,11 @@ impl OnnxFileParser {
         */
         for e in &graph.node {
             //RICERCA NODI INITIALIZER, nel caso siano gestiti da tag [node] es: mnist.onnx
-            if e.inputs.len() == 0 {
+          /*  if e.inputs.len() == 0 {
                 let dims = e.attr.tp.dims.len();
                 let float_data = e.attr.tp.float_data.clone();
-                println!("INITIALIZER->{}", e.name);
+                
+                println!("INITIALIZER->{} {:?}", e.name,float_data);
                 let mut val: ArrayBase<OwnedRepr<f32>, ndarray::Dim<ndarray::IxDynImpl>> =
                     create_multidim_array(float_data, &e.attr.tp.dims).unwrap();
                 let node_init =
@@ -132,7 +133,7 @@ impl OnnxFileParser {
                 if building_graph.add_node(node_init).is_err() {
                     self.result = Result::Err("Error while adding init node".to_string());
                 }
-            }
+            }*/ 
             if e.inputs.len() != 0 && e.outputs.len() != 0 {
                 //NODO OPERATION 
                 // non è detto che un nodo abbia un nome... googlenet ha i nomi ai nodi operazione -> è un problema di pytorch che quando esporta il modello non mette i nomi 
@@ -140,9 +141,9 @@ impl OnnxFileParser {
                     self.result = Result::Err("Error: node without a name".to_string());
                     return;
                 }*/
-                println!("OPERATION->{}", &(e.name.clone() + &e.op_type + &e.inputs.join("")));
+                println!("OPERATION->{: <20}  IN-> {:?}  OUT-> {:?}", &(e.name.clone()),e.inputs,e.outputs);
                 let node_op = OnnxGraphNode::Operation(OnnxGraphOperation::new(
-                    &(e.name.clone() + &e.op_type+&e.inputs.join("")),
+                    &(e.name.clone() ),
                     Operation::new(OpType::try_from(e.op_type.as_str()).unwrap()),
                     e.inputs.iter().map(|s| &s[..]).collect(),
                     e.outputs.iter().map(|s| &s[..]).collect(),
@@ -156,32 +157,33 @@ impl OnnxFileParser {
                 
             }
         }
+       
+            graph
+            .tensor_initializer
+            .iter()
+            .for_each(|x| { 
+                println!("INITIALIZER ->{}", x.name);
+                let mut val: ArrayBase<OwnedRepr<f32>, ndarray::Dim<ndarray::IxDynImpl>> =
+                    create_multidim_array(
+                        x.float_data.clone(),
+                        &x.dims,
+                    )
+                    .unwrap();
 
+                let node_init = OnnxGraphNode::Initializer(OnnxGraphInitializer::new(
+                    &x.name,
+                    val,
+                ));
+                let res =building_graph.add_node(node_init);
+                if res.is_err() {
+                    self.result = Result::Err("Error while adding initialer node - ".to_string()+ &res.err().unwrap().msg);
+                }
+            });
+        
         let mut name_input_node = String::new();
         for e in &graph.inputs_node {
-            //RICERCA NODI INITIALIZER, nel caso siano gestiti da tag [input] + [initializer] es: googlenet.onnx
-            graph
-                .tensor_initializer
-                .iter()
-                .filter(|x| x.name == e.name)
-                .for_each(|x| {
-                    println!("INITIALIZER ->{}", e.name);
-                    let mut val: ArrayBase<OwnedRepr<f32>, ndarray::Dim<ndarray::IxDynImpl>> =
-                        create_multidim_array(
-                            (&x.raw_data).into_iter().map(|x| *x as f32).collect(),
-                            &x.dims,
-                        )
-                        .unwrap();
+            
 
-                    let node_init = OnnxGraphNode::Initializer(OnnxGraphInitializer::new(
-                        &e.name,
-                        val.into_dyn(),
-                    ));
-                    let res =building_graph.add_node(node_init);
-                    if res.is_err() {
-                        self.result = Result::Err("Error while adding input node - ".to_string()+ &res.err().unwrap().msg);
-                    }
-                });
 
             if graph
                 .tensor_initializer
@@ -222,7 +224,7 @@ impl OnnxFileParser {
         let mut br = BufReader::new(file.unwrap());
         let mut binary = Vec::new();
         br.read_to_end(&mut binary);
-
+        println!("\nCONTENUTO FILE INPUT ->");
         let mut input_data = ProtoBufMessage::TensorProto(TensorProto::new());
         let res = proto_buffer_tag_reader(&mut input_data, &binary);
         if res.is_some() {
@@ -231,9 +233,9 @@ impl OnnxFileParser {
         }
         let data = TensorProto::try_from(input_data).unwrap();
 
-        println!("{:?}", data.dims);
+        
         let val = create_multidim_array(
-            data.raw_data.into_iter().map(|x| x as f32).collect(),
+            data.float_data,
             &data.dims,
         )
         .unwrap();

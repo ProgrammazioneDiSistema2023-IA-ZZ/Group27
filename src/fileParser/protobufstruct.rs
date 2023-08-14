@@ -134,6 +134,7 @@ impl ModelProto {
         result.fieldNumber.insert(20, "training_info".to_string());
         result.fieldNumber.insert(25, "functions".to_string());
         result.fieldNumber.insert(8, "opset_import".to_string());
+        result.fieldNumber.insert(4, "domain".to_string());
         result
     }
 }
@@ -148,6 +149,7 @@ impl GraphProto {
         result.fieldNumber.insert(15, "sparse_initializer".to_string());
         result.fieldNumber.insert(10, "doc_string".to_string());
         result.fieldNumber.insert(13, "value_info".to_string());
+        
         result
     }
 }

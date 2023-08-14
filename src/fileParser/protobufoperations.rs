@@ -40,7 +40,26 @@ pub fn leggibytes(v: &Vec<u8>) -> Vec<u8> {
     result
 }
 
-
+pub fn leggiint64(v: &Vec<u8>) -> Vec<u64> {
+    let mut result = Vec::new();
+    let mut i = 0;
+    while i < v.len() {
+      
+          result.push(  readVarint(v, &mut i) as u64);
+      //  result.push(u64::from_le_bytes(v[i..i + 8].try_into().unwrap()));
+       // i += 8;
+    }
+    result
+}
+pub fn leggiraw(v: &Vec<u8>) -> Vec<u32> {
+    let mut result = Vec::new();
+    let mut i = 0;
+    while i < v.len() {
+        result.push(u32::from_le_bytes(v[i..i + 4].try_into().unwrap()));
+        i += 4;
+    }
+    result
+}
 pub fn proto_buffer_tag_reader(
      proto: &mut ProtoBufMessage,
     binary:& Vec<u8>,
@@ -81,7 +100,7 @@ fn wireType_two_2(
 )  -> Option<String>{
     match pbm {
         ProtoBufMessage::ModelProto(p) => {
-            print!("\"{}\":", *p.fieldNumber.get(field_number).unwrap());
+            print!("\"{:?}\":",p.fieldNumber.get(field_number).unwrap());
             let val = readVarint(&vettore, index);
             if *field_number == 7 {
                 println!("GRAFOOOOOO!");
@@ -104,9 +123,6 @@ fn wireType_two_2(
                     println!("");
                     let mut node: ProtoBufMessage = ProtoBufMessage::NodeProto(NodeProto::new());
                     proto_buffer_tag_reader(&mut node ,&(vettore[*index..(*index + val)]).to_vec());
-
-                    
-
                     p.node.push(NodeProto::try_from(node).unwrap());
                 }
                 11 => {
@@ -137,6 +153,7 @@ fn wireType_two_2(
                     proto_buffer_tag_reader(&mut node ,&(vettore[*index..(*index + val)]).to_vec());
                     p.tensor_initializer
                     .push(TensorProto::try_from(node).unwrap());
+                    
                   
                 }
                 _ => {
@@ -201,13 +218,13 @@ fn wireType_two_2(
         }
         ProtoBufMessage::TensorProto(p) => {
             if p.fieldNumber.get(field_number).is_some(){
-                print!("\t\t\t\t\"{:?}\":", p.fieldNumber.get(field_number).unwrap());
+                print!("\t\t\t\t\"{:}\":", p.fieldNumber.get(field_number).unwrap());
             }else{
                 panic!("{}",field_number);
             }
             
             let val = readVarint(&vettore, index) as usize;
-            // print!("{}] : ", val);
+           //  print!("val =|{}| : ", val);
 
             if *field_number == 4 {
                 let v = leggifloats(&vettore[*index..*index + val].to_vec());
@@ -215,14 +232,14 @@ fn wireType_two_2(
                 p.float_data = v;
             } else if *field_number == 9 {
                 //RAW_DATA
-                let v = leggibytes(&vettore[*index..*index + val].to_vec());
+                let v = leggiraw(&vettore[*index..*index + val].to_vec());
                 println!(" Vett di {:?} elem", v.len());
-                p.raw_data = v;
+                p.float_data = v.iter().map(|x| *x as f32).collect();
             } else if *field_number== 7{
             
-                let v = leggibytes(&vettore[*index..*index + val].to_vec());
+                let v = leggiint64(&vettore[*index..*index + val].to_vec());
                 println!(" Vett di {:?} elem", v.len());
-                p.raw_data = v;
+                p.float_data  = v.iter().map(|x| *x as f32).collect();
             
             }else{
                 let word = String::from_utf8(vettore[*index..(*index + val)].to_owned()).unwrap();
@@ -316,7 +333,7 @@ fn wireType_two_2(
         }
 
         _ => {
-            return Some("protoBuf message implemented".to_string());
+            return Some("protoBuf message not implemented".to_string());
         }
 
         
@@ -357,7 +374,7 @@ pub fn wireType_zero_2(
             fieldName = (p).fieldNumber.get(field_number);
             if fieldName.is_some() {
                 print!(
-                    "\t\t\"{}\":V",
+                    "\t\t\"{}\":",
                     p.fieldNumber.get(field_number).unwrap()
                 );
                 println!("{}", val);
@@ -370,7 +387,7 @@ pub fn wireType_zero_2(
             fieldName = p.fieldNumber.get(field_number);
             if fieldName.is_some() {
                 print!(
-                    "\t\t\t\t\"{}\":V",
+                    "\t\t\t\t\"{}\":",
                     p.fieldNumber.get(field_number).unwrap()
                 );
                 println!("{}", val);
@@ -401,7 +418,7 @@ pub fn wireType_zero_2(
             fieldName = p.fieldNumber.get(field_number);
             if fieldName.is_some() {
                 print!(
-                    "\t\t\t\"{}\":V",
+                    "\t\t\t\"{}\":",
                     p.fieldNumber.get(field_number).unwrap()
                 );
                 println!("{}", val);
@@ -414,7 +431,7 @@ pub fn wireType_zero_2(
             fieldName = p.fieldNumber.get(field_number);
             if fieldName.is_some() {
                 print!(
-                    "\t\t\t\"{}\":V",
+                    "\t\t\t\"{}\":",
                     p.fieldNumber.get(field_number).unwrap()
                 );
                 println!("{}", val);
@@ -428,7 +445,7 @@ pub fn wireType_zero_2(
             fieldName = p.fieldNumber.get(field_number);
             if fieldName.is_some() {
                 print!(
-                    "\t\t\t\t\"{}\":V",
+                    "\t\t\t\t\"{}\":",
                     p.fieldNumber.get(field_number).unwrap()
                 );
                 println!("{}", val);
@@ -441,7 +458,7 @@ pub fn wireType_zero_2(
             fieldName = p.fieldNumber.get(field_number);
             if fieldName.is_some() {
                 print!(
-                    "\t\t\t\t\t\t\"{}\"[V]:",
+                    "\t\t\t\t\t\t\"{}\":",
                     p.fieldNumber.get(field_number).unwrap()
                 );
                 println!("{}", val);
@@ -456,7 +473,7 @@ pub fn wireType_zero_2(
 
         }
         _ => {
-            return Some("protoBuf message implemented".to_string());
+            return Some("protoBuf message not implemented".to_string());
 
         }
       
