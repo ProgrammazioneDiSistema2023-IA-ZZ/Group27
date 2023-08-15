@@ -25,7 +25,7 @@ pub struct OnnxGraphInput {
 
 impl OnnxGraphInput {
     /// Crea un nuovo nodo input senza alcun valore opzionale.
-    pub fn new(name: &str) -> Self {
+    pub fn new(name: impl ToString) -> Self {
         Self {
             name: name.to_string(),
             expected_shape: None,
@@ -34,7 +34,7 @@ impl OnnxGraphInput {
     }
 
     /// Crea un nuovo nodo con forma attesa.
-    pub fn with_expected_shape(name: &str, shape: &[usize]) -> Self{
+    pub fn with_expected_shape(name: impl ToString, shape: &[usize]) -> Self{
         Self {
             name: name.to_string(),
             expected_shape: Some(shape.to_vec().into_boxed_slice()),

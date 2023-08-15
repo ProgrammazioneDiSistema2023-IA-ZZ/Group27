@@ -80,15 +80,17 @@ pub struct OnnxGraphOperation {
 
 impl OnnxGraphOperation {
     /// Crea un nuovo nodo operazione con i relativi dati.
-    pub fn new<'a, I, O>(name: &str, operation: Operation, inputs: I, outputs: O) -> Self
+    pub fn new<SI, SO, I, O>(name: impl ToString, operation: Operation, inputs: I, outputs: O) -> Self
     where
-        I: IntoIterator<Item = &'a str>,
-        O: IntoIterator<Item = &'a str>
+        SI: ToString,
+        SO: ToString,
+        I: IntoIterator<Item = SI>,
+        O: IntoIterator<Item = SO>
     {
         Self {
             name: name.to_string(),
-            inputs: inputs.into_iter().map(str::to_string).collect(),
-            outputs: outputs.into_iter().map(str::to_string).collect(),
+            inputs: inputs.into_iter().map(|s| s.to_string()).collect(),
+            outputs: outputs.into_iter().map(|s| s.to_string()).collect(),
             operation,
             statuses: Mutex::new(HashMap::new()),
             cv: Condvar::new(),

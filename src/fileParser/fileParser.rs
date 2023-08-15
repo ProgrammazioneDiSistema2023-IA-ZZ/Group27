@@ -143,10 +143,10 @@ impl OnnxFileParser {
                 }*/
                 println!("OPERATION->{: <20}  IN-> {:?}  OUT-> {:?}", &(e.name.clone()),e.inputs,e.outputs);
                 let node_op = OnnxGraphNode::Operation(OnnxGraphOperation::new(
-                    &(e.name.clone() ),
+                    &e.name,
                     Operation::new(OpType::try_from(e.op_type.as_str()).unwrap()),
-                    e.inputs.iter().map(|s| &s[..]),
-                    e.outputs.iter().map(|s| &s[..]),
+                    &e.inputs,
+                    &e.outputs,
                 ));
 
 
@@ -230,8 +230,7 @@ impl OnnxFileParser {
                
                     println!("INTERMEDIATE->{} IN ->{:?}, OUT->{:?}", e,lista_input,lista_output);
                     let node_inter =
-                        OnnxGraphNode::Intermediate(OnnxGraphIntermediate::new(e.clone().as_str(), lista_input[0].clone(), lista_output));
-    
+                        OnnxGraphNode::Intermediate(OnnxGraphIntermediate::new(e, &lista_input[0], lista_output));
     
                     let res =building_graph.add_node(node_inter);
                     if res.is_err() {

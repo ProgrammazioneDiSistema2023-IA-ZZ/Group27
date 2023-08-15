@@ -13,7 +13,7 @@ pub struct OnnxGraphInitializer {
 
 impl OnnxGraphInitializer {
     /// Crea un nuovo nodo initializer.
-    pub fn new(name: &str, data: Tensor) -> Self {
+    pub fn new(name: impl ToString, data: Tensor) -> Self {
         Self {
             name: name.to_string(),
             data: Arc::new(data)

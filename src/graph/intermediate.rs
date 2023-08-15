@@ -15,14 +15,15 @@ pub struct OnnxGraphIntermediate {
 
 impl OnnxGraphIntermediate {
     /// Crea un nuovo nodo intemedio vuoto.
-    pub fn new<'a, O>(name: &str, input: String, outputs: O) -> Self
+    pub fn new<S, O>(name: impl ToString, input: impl ToString, outputs: O) -> Self
     where
-        O: IntoIterator<Item = String>
+        S: ToString,
+        O: IntoIterator<Item = S>
     {
         Self {
             name: name.to_string(),
-            input,
-            outputs: outputs.into_iter().collect()
+            input: input.to_string(),
+            outputs: outputs.into_iter().map(|s| s.to_string()).collect()
         }
     }
 }

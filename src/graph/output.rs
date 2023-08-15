@@ -14,7 +14,7 @@ pub struct OnnxGraphOutput {
 
 impl OnnxGraphOutput {
     /// Crea un nuovo nodo input senza alcun valore opzionale.
-    pub fn new(name: &str) -> Self {
+    pub fn new(name: impl ToString) -> Self {
         Self {
             name: name.to_string(),
             expected_shape: None
