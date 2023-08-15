@@ -230,7 +230,7 @@ impl OnnxFileParser {
                
                     println!("INTERMEDIATE->{} IN ->{:?}, OUT->{:?}", e,lista_input,lista_output);
                     let node_inter =
-                        OnnxGraphNode::Intermediate(OnnxGraphIntermediate{name:e.clone(),input:Some(lista_input[0].clone()),outputs:lista_output.clone()});
+                        OnnxGraphNode::Intermediate(OnnxGraphIntermediate::new(e.clone().as_str(), lista_input[0].clone(), lista_output));
     
     
                     let res =building_graph.add_node(node_inter);

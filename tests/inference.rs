@@ -1,6 +1,6 @@
 use std::{sync::Arc, collections::HashMap, thread};
 use ndarray::array;
-use onnx_rust::{graph::{OnnxGraph, OnnxGraphNode, OnnxGraphInput, OnnxGraphOperation, OnnxGraphOutput, OnnxGraphInitializer}, operations::{Operation, OpType}};
+use onnx_rust::{graph::{OnnxGraph, OnnxGraphNode, OnnxGraphInput, OnnxGraphOperation, OnnxGraphOutput, OnnxGraphInitializer, OnnxGraphIntermediate}, operations::{Operation, OpType}};
 
 #[test]
 fn basic_graph() {
@@ -26,7 +26,7 @@ fn basic_graph() {
                 vec!["Add"]
             )
         );
-        add_res = graph.add_node(mat_mul);
+    add_res = graph.add_node(mat_mul);
     assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
 
     let add =
@@ -38,7 +38,7 @@ fn basic_graph() {
                 vec!["Y"]
             )
         );
-        add_res = graph.add_node(add);
+    add_res = graph.add_node(add);
     assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
 
     let y = OnnxGraphNode::Output(OnnxGraphOutput::new("Y"));
@@ -110,7 +110,7 @@ fn correct_expected_shapes() {
                 vec!["Add"]
             )
         );
-        add_res = graph.add_node(mat_mul);
+    add_res = graph.add_node(mat_mul);
     assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
 
     let add =
@@ -122,7 +122,7 @@ fn correct_expected_shapes() {
                 vec!["Y"]
             )
         );
-        add_res = graph.add_node(add);
+    add_res = graph.add_node(add);
     assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
 
     let y = OnnxGraphNode::Output(OnnxGraphOutput::with_expected_shape("Y", &[3,2]));
@@ -194,7 +194,7 @@ fn wrong_input_shapes() {
                 vec!["Add"]
             )
         );
-        add_res = graph.add_node(mat_mul);
+    add_res = graph.add_node(mat_mul);
     assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
 
     let add =
@@ -206,7 +206,7 @@ fn wrong_input_shapes() {
                 vec!["Y"]
             )
         );
-        add_res = graph.add_node(add);
+    add_res = graph.add_node(add);
     assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
 
     let y: OnnxGraphNode = OnnxGraphNode::Output(OnnxGraphOutput::with_expected_shape("Y", &[3,2]));
@@ -267,7 +267,7 @@ fn wrong_output_shapes() {
                 vec!["Add"]
             )
         );
-        add_res = graph.add_node(mat_mul);
+    add_res = graph.add_node(mat_mul);
     assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
 
     let add =
@@ -279,7 +279,7 @@ fn wrong_output_shapes() {
                 vec!["Y"]
             )
         );
-        add_res = graph.add_node(add);
+    add_res = graph.add_node(add);
     assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
 
     let y = OnnxGraphNode::Output(OnnxGraphOutput::with_expected_shape("Y", &[7,6]));
@@ -337,7 +337,7 @@ fn common_input_node() {
                 vec!["Add"]
             )
         );
-        add_res = graph.add_node(mat_mul);
+    add_res = graph.add_node(mat_mul);
     assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
 
     let add =
@@ -349,7 +349,7 @@ fn common_input_node() {
                 vec!["Y"]
             )
         );
-        add_res = graph.add_node(add);
+    add_res = graph.add_node(add);
     assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
 
     let y: OnnxGraphNode = OnnxGraphNode::Output(OnnxGraphOutput::new("Y"));
@@ -424,7 +424,7 @@ fn use_input_default_value() {
                 vec!["Add"]
             )
         );
-        add_res = graph.add_node(mat_mul);
+    add_res = graph.add_node(mat_mul);
     assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
 
     let add =
@@ -436,7 +436,7 @@ fn use_input_default_value() {
                 vec!["Y"]
             )
         );
-        add_res = graph.add_node(add);
+    add_res = graph.add_node(add);
     assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
 
     let y = OnnxGraphNode::Output(OnnxGraphOutput::new("Y"));
@@ -511,7 +511,7 @@ fn override_input_default_value() {
                 vec!["Add"]
             )
         );
-        add_res = graph.add_node(mat_mul);
+    add_res = graph.add_node(mat_mul);
     assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
 
     let add =
@@ -523,7 +523,7 @@ fn override_input_default_value() {
                 vec!["Y"]
             )
         );
-        add_res = graph.add_node(add);
+    add_res = graph.add_node(add);
     assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
 
     let y = OnnxGraphNode::Output(OnnxGraphOutput::new("Y"));
@@ -596,7 +596,7 @@ fn missing_input_value() {
                 vec!["Add"]
             )
         );
-        add_res = graph.add_node(mat_mul);
+    add_res = graph.add_node(mat_mul);
     assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
 
     let add =
@@ -608,7 +608,7 @@ fn missing_input_value() {
                 vec!["Y"]
             )
         );
-        add_res = graph.add_node(add);
+    add_res = graph.add_node(add);
     assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
 
     let y = OnnxGraphNode::Output(OnnxGraphOutput::new("Y"));
@@ -662,7 +662,7 @@ fn multiple_sequential_inferences() {
                 vec!["Add"]
             )
         );
-        add_res = graph.add_node(mat_mul);
+    add_res = graph.add_node(mat_mul);
     assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
 
     let add =
@@ -674,7 +674,7 @@ fn multiple_sequential_inferences() {
                 vec!["Y"]
             )
         );
-        add_res = graph.add_node(add);
+    add_res = graph.add_node(add);
     assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
 
     let y = OnnxGraphNode::Output(OnnxGraphOutput::new("Y"));
@@ -781,7 +781,7 @@ fn multiple_parallel_inferences() {
                 vec!["Add"]
             )
         );
-        add_res = graph.add_node(mat_mul);
+    add_res = graph.add_node(mat_mul);
     assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
 
     let add =
@@ -793,7 +793,7 @@ fn multiple_parallel_inferences() {
                 vec!["Y"]
             )
         );
-        add_res = graph.add_node(add);
+    add_res = graph.add_node(add);
     assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
 
     let y = OnnxGraphNode::Output(OnnxGraphOutput::new("Y"));
@@ -904,7 +904,7 @@ fn complex_graph() {
                 vec!["Add2", "Y1"]
             )
         );
-        add_res = graph.add_node(mat_mul_1);
+    add_res = graph.add_node(mat_mul_1);
     assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
 
     let add_1 =
@@ -916,7 +916,7 @@ fn complex_graph() {
                 vec!["MatMul2", "Add2"]
             )
         );
-        add_res = graph.add_node(add_1);
+    add_res = graph.add_node(add_1);
     assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
 
     let mat_mul_2 =
@@ -928,7 +928,7 @@ fn complex_graph() {
                 vec!["MatMul3"]
             )
         );
-        add_res = graph.add_node(mat_mul_2);
+    add_res = graph.add_node(mat_mul_2);
     assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
 
     let add_2 =
@@ -940,7 +940,7 @@ fn complex_graph() {
                 vec!["MatMul3", "Y2"]
             )
         );
-        add_res = graph.add_node(add_2);
+    add_res = graph.add_node(add_2);
     assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
 
     let mat_mul_3 =
@@ -952,7 +952,7 @@ fn complex_graph() {
                 vec!["Y3"]
             )
         );
-        add_res = graph.add_node(mat_mul_3);
+    add_res = graph.add_node(mat_mul_3);
     assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
 
     let y1 = OnnxGraphNode::Output(OnnxGraphOutput::new("Y1"));
@@ -1041,7 +1041,7 @@ fn graph_with_intermediate() {
                 vec!["MatMul_out"]
             )
         );
-        add_res = graph.add_node(mat_mul);
+    add_res = graph.add_node(mat_mul);
     assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
 
     let add =
@@ -1053,7 +1053,11 @@ fn graph_with_intermediate() {
                 vec!["Y"]
             )
         );
-        add_res = graph.add_node(add);
+    add_res = graph.add_node(add);
+    assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
+
+    let mat_mul_out = OnnxGraphNode::Intermediate(OnnxGraphIntermediate::new("MatMul_out", "MatMul".to_string(), vec!["Add".to_string()]));
+    add_res = graph.add_node(mat_mul_out);
     assert!(add_res.is_ok(), "{:?}", add_res.unwrap_err());
 
     let y = OnnxGraphNode::Output(OnnxGraphOutput::new("Y"));

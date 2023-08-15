@@ -1,4 +1,4 @@
-use std::{str::FromStr, fs::read_to_string, collections::{HashMap, HashSet}, sync::{Arc, MutexGuard, Mutex, PoisonError, RwLock, RwLockReadGuard, atomic::{AtomicUsize, Ordering}, RwLockWriteGuard}, thread::{JoinHandle, self}, hash::Hash, ops::Index};
+use std::{str::FromStr, fs::read_to_string, collections::{HashMap, HashSet}, sync::{Arc, MutexGuard, Mutex, PoisonError, RwLock, RwLockReadGuard, atomic::{AtomicUsize, Ordering}}, thread::{JoinHandle, self}, hash::Hash};
 use crate::{error::OnnxError, parser::OnnxParser, operations::Tensor, onnx_error};
 
 pub use self::{operation::OnnxGraphOperation, input::OnnxGraphInput, output::OnnxGraphOutput, initializer::OnnxGraphInitializer, intermediate::OnnxGraphIntermediate};
@@ -155,36 +155,39 @@ impl OnnxGraph {
 
         // Inserisci nome del nodo nel vettore adatto della struttura.
         match node {
-            OnnxGraphNode::Initializer(_) => &mut self.initializers,
-            OnnxGraphNode::Input(_) => &mut self.inputs,
-            OnnxGraphNode::Output(_) => &mut self.outputs,
-            OnnxGraphNode::Operation(_) => &mut self.operations,
-            OnnxGraphNode::Intermediate(_) => return Err(onnx_error!("Node {name} cannot be an intermediate node"))
-        }.push(name.clone());
-
-        // Se il nodo da aggiungere è di tipo operazione, aggiungi tutti i suoi input/output non ancora presenti nell'HashMap
-        // nodes come nodi intermedi
-        if let OnnxGraphNode::Operation(op_node) = &node {
-            let mut intermediates =
-                self.intermediates.lock()
-                    .map_err(|_| onnx_error!("[Initial] An error occurred while trying to lock intermediates Vec."))?;
-            
-            for (i, in_out_name) in op_node.inputs.iter().chain(op_node.outputs.iter()).enumerate() {
-                let interm_node = 
-                    nodes
-                        .entry(in_out_name.clone())
-                        .or_insert_with(|| OnnxGraphNode::Intermediate(OnnxGraphIntermediate::new(in_out_name.as_str())));
-                if let OnnxGraphNode::Intermediate(interm_node) = interm_node {
-                    if i < op_node.inputs.len() {
-                        interm_node.outputs.push(name.clone());
-                    } else {
-                        interm_node.input = Some(name.clone());
-                    }
-                    intermediates.insert(in_out_name.clone());
+            OnnxGraphNode::Initializer(_) => self.initializers.push(name.clone()),
+            OnnxGraphNode::Input(_) => self.inputs.push(name.clone()),
+            OnnxGraphNode::Output(_) => self.outputs.push(name.clone()),
+            OnnxGraphNode::Operation(_) => self.operations.push(name.clone()),
+            OnnxGraphNode::Intermediate(interm_node) => {
+                // Dato il nodo entrante E al nodo intermedio I, aggiungi i nodi uscenti di I ai nodi uscenti di E e rimuovi I dalla
+                // stessa collezione.
+                let interm_input_node =
+                    nodes.get_mut(&interm_node.input)
+                         .ok_or_else(|| onnx_error!("[{}] Input node {} does not exist.", interm_node.name, interm_node.input))?;
+                if let OnnxGraphNode::Operation(op_node) = interm_input_node {
+                    op_node.outputs.retain(|s| *s != interm_node.name);
+                    op_node.outputs.extend(interm_node.outputs.clone());
                 }
-            }
-        }
 
+                // Per ogni nodo uscente U dal nodo intermedio I, aggiungi il nodo entrante di I ai nodi entranti di U e rimuovi I
+                // dalla stessa collezione.
+                for interm_output_name in interm_node.outputs {
+                    let interm_output_node =
+                        nodes.get_mut(&interm_output_name)
+                            .ok_or_else(|| onnx_error!("[{}] Output node {} does not exist.", interm_node.name, interm_output_name))?;
+                    if let OnnxGraphNode::Operation(op_node) = interm_output_node {
+                        op_node.inputs.retain(|s| *s != interm_node.name);
+                        op_node.inputs.push(interm_node.input.clone());
+                    }
+                }
+
+                // Non seve aggiungere il nodo intermedio alla collezione
+                return Ok(())
+            }
+        };
+
+        // Aggiungi nodo alla collezione
         if let Some(old_node) = nodes.insert(name.clone(), node) {
             // Trovato nodo duplicato: rimuovi dall'HashMap
             let new_node = nodes.remove(&name).unwrap();
@@ -197,16 +200,6 @@ impl OnnxGraph {
                     in_node.default_value = Some(init_node.data);
                     nodes.insert(name, OnnxGraphNode::Input(in_node));
                 },
-                (OnnxGraphNode::Intermediate(_), new_node) => {
-                    // Il nodo precedente era intermediate: sostituiscilo con il nodo nuovo
-                    nodes.insert(name.clone(), new_node);
-
-                    // Rimuovi nome del nodo dall'array degli initializer
-                    let mut intermediates =
-                        self.intermediates.lock()
-                            .map_err(|_| onnx_error!("[Initial] An error occurred while trying to lock intermediates Vec."))?;
-                    assert!(intermediates.remove(&name));
-                },
                 (old_node, _) => {
                     // Re-inserisci il nodo di input nella HashMap e termina con un errore.
                     nodes.insert(name.clone(), old_node);
@@ -214,62 +207,6 @@ impl OnnxGraph {
                 }
             };
         }
-
-        Ok(())
-    }
-
-    /// Rimuove i nodi intermedi dal grafo, se presenti, lasciando solo le altre tipologie e mantenendole collegate tra loro.
-    /// 
-    /// # Errore
-    /// Se le operazioni di lock non vanno a buon fine.
-    fn remove_intermediate_nodes(&self) -> Result<(), OnnxError> {
-        // Lock array nodi intermedi
-        let mut intermediates =
-            self.intermediates.lock()
-                .map_err(|_| onnx_error!("[Initial] An error occurred while trying to lock intermediates Vec."))?;
-
-        // Nessun nodo intermedio da rimuovere
-        if intermediates.len() == 0 {
-            return Ok(())
-        }
-
-        // Lock hashmap nodi (write)
-        let mut nodes =
-            self.nodes.write()
-                .map_err(|_| onnx_error!("[Initial] An error occurred while trying to lock nodes HashMap for write."))?;
-
-        for interm_name in intermediates.iter() {
-            let interm_node: OnnxGraphIntermediate =
-                nodes.remove(interm_name).unwrap()
-                     .try_into().unwrap();
-
-            // Dato il nodo entrante E al nodo intermedio I, aggiungi i nodi uscenti di I ai nodi uscenti di E e rimuovi I dalla
-            // stessa collezione.
-            let interm_input_name =
-                interm_node.input
-                    .ok_or_else(|| onnx_error!("[{interm_name}] Node has no input."))?;
-            let interm_input_node =
-                nodes.get_mut(&interm_input_name)
-                     .ok_or_else(|| onnx_error!("[{interm_name}] Input node {} does not exist.", interm_input_name))?;
-            if let OnnxGraphNode::Operation(op_node) = interm_input_node {
-                op_node.outputs.extend(interm_node.outputs.clone());
-                op_node.outputs.retain(|s| s != interm_name);
-            }
-
-            // Per ogni nodo uscente U dal nodo intermedio I, aggiungi il nodo entrante di I ai nodi entranti di U e rimuovi I
-            // dalla stessa collezione.
-            for interm_output_name in interm_node.outputs {
-                let interm_output_node =
-                    nodes.get_mut(&interm_output_name)
-                         .ok_or_else(|| onnx_error!("[{interm_name}] Output node {} does not exist.", interm_output_name))?;
-                if let OnnxGraphNode::Operation(op_node) = interm_output_node {
-                    op_node.inputs.push(interm_input_name.clone());
-                    op_node.inputs.retain(|s| s != interm_name);
-                }
-            }
-        }
-
-        intermediates.clear();
 
         Ok(())
     }
@@ -564,9 +501,6 @@ impl OnnxGraph {
                 .collect()
         );
 
-        // Rimozione dei nodi intermedi (se presenti)
-        self.remove_intermediate_nodes()?;
-
         // Lock delle risorse
         let infer_id =
             self.generate_inference_id()
@@ -575,7 +509,7 @@ impl OnnxGraph {
         let nodes =
             self.nodes.read()
                 .map_err(|_| onnx_error!("[Initial] An error occurred while trying to lock nodes HashMap for read."))?;
-
+                
         // Incrementa numero di inferenze in corso.
         self.inferences_in_progress.fetch_add(1, Ordering::Relaxed);
 

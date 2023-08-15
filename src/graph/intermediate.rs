@@ -5,7 +5,7 @@ pub struct OnnxGraphIntermediate {
     pub name: String,
 
     /// Nome del nodo entrante. Può essere impostato in un secondo momento dopo la creazione.
-    pub input: Option<String>,
+    pub input: String,
 
     /// Nomi dei nodi uscenti.
     pub outputs: Vec<String>
@@ -13,11 +13,11 @@ pub struct OnnxGraphIntermediate {
 
 impl OnnxGraphIntermediate {
     /// Crea un nuovo nodo intemedio vuoto.
-    pub(super) fn new(name: &str) -> Self {
+    pub fn new(name: &str, input: String, outputs: Vec<String>) -> Self {
         Self {
             name: name.to_string(),
-            input: None,
-            outputs: Vec::new()
+            input,
+            outputs
         }
     }
 }
