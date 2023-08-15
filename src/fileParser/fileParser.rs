@@ -182,9 +182,7 @@ impl OnnxFileParser {
         
         let mut name_input_node = String::new();
         for e in &graph.inputs_node {
-            
-
-
+        
             if graph
                 .tensor_initializer
                 .iter()
@@ -211,6 +209,38 @@ impl OnnxFileParser {
             if building_graph.add_node(node_in).is_err() {
                 self.result = Result::Err("Error while adding input node".to_string());
             }
+        }
+
+        /*RICERCA NODI INTERMEDIATE */
+        for e in &graph.value_info_node{
+            if !graph.tensor_initializer.iter().any(|z|z.name==*e){
+              
+                let mut lista_input = Vec::new();
+                graph.node.iter().for_each(|x|{
+                    if x.outputs.iter().any(|x| x==e){
+                        lista_input.push(x.name.clone());
+                    }
+                });
+                let mut lista_output = Vec::new();
+                graph.node.iter().for_each(|x|{
+                    if x.inputs.iter().any(|x| x==e){
+                        lista_output.push(x.name.clone());
+                    }
+                });
+               
+                    println!("INTERMEDIATE->{} IN ->{:?}, OUT->{:?}", e,lista_input,lista_output);
+                    let node_inter =
+                        OnnxGraphNode::Intermediate(OnnxGraphIntermediate{name:e.clone(),input:Some(lista_input[0].clone()),outputs:lista_output.clone()});
+    
+    
+                    let res =building_graph.add_node(node_inter);
+                    if res.is_err() {
+                        self.result = Result::Err("Error while adding intermediate node - ".to_string()+ &res.err().unwrap().msg);
+                    }
+                
+                
+            }
+           
         }
 
         /*FINE FUNZIONE DI PARSING , assegnare valore corretto*/

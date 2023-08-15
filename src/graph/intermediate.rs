@@ -2,13 +2,13 @@
 /// altri nodi.
 pub struct OnnxGraphIntermediate {
     /// Nome del nodo.
-    pub(super) name: String,
+    pub name: String,
 
     /// Nome del nodo entrante. Può essere impostato in un secondo momento dopo la creazione.
-    pub(super) input: Option<String>,
+    pub input: Option<String>,
 
     /// Nomi dei nodi uscenti.
-    pub(super) outputs: Vec<String>
+    pub outputs: Vec<String>
 }
 
 impl OnnxGraphIntermediate {

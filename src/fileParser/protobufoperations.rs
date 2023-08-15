@@ -145,7 +145,18 @@ fn wireType_two_2(
                         .push(ValueInfoProto::try_from(node).unwrap());
                     println!("FINE OUTPUT!");
                 }
-                13 => { /*TAG VALUE INFO - NON NECESSARIO */ }
+                13 => { /*TAG VALUE INFO - NON NECESSARIO */ 
+                
+                    println!("");
+                    println!("VALUE INFO!");
+                    let mut node: ProtoBufMessage =
+                        ProtoBufMessage::ValueInfoProto(ValueInfoProto::new());
+                        proto_buffer_tag_reader(&mut node ,&(vettore[*index..(*index + val)]).to_vec());
+                    p.value_info_node
+                        .push(ValueInfoProto::try_from(node).unwrap().name);
+                    println!("VALUE INFO!");
+                
+                }
                 5=>{
                     println!(" INITIAL");
                     let mut node: ProtoBufMessage =

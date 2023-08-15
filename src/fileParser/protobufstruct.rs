@@ -68,6 +68,7 @@ pub struct GraphProto {
     pub inputs_node: Vec<ValueInfoProto>,
     pub outputs_node: Vec<ValueInfoProto>,
     pub tensor_initializer :Vec<TensorProto>,
+    pub value_info_node:Vec<String>,
     pub name:String,
 
 }
@@ -140,7 +141,7 @@ impl ModelProto {
 }
 impl GraphProto {
     pub fn new() -> Self {
-        let mut result = GraphProto { tensor_initializer: Vec::new(),fieldNumber: HashMap::new(), node:Vec::new(),inputs_node:Vec::new(),outputs_node:Vec::new() ,name:String::new()};
+        let mut result = GraphProto { value_info_node:Vec::new(),tensor_initializer: Vec::new(),fieldNumber: HashMap::new(), node:Vec::new(),inputs_node:Vec::new(),outputs_node:Vec::new() ,name:String::new()};
         result.fieldNumber.insert(1, "node".to_string());
         result.fieldNumber.insert(2, "name".to_string());
         result.fieldNumber.insert(11, "input".to_string());
