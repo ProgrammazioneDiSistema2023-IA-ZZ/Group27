@@ -145,8 +145,8 @@ impl OnnxFileParser {
                 let node_op = OnnxGraphNode::Operation(OnnxGraphOperation::new(
                     &(e.name.clone() ),
                     Operation::new(OpType::try_from(e.op_type.as_str()).unwrap()),
-                    e.inputs.iter().map(|s| &s[..]).collect(),
-                    e.outputs.iter().map(|s| &s[..]).collect(),
+                    e.inputs.iter().map(|s| &s[..]),
+                    e.outputs.iter().map(|s| &s[..]),
                 ));
 
 

@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 /// Nodo intermedio all'interno di un grafo. Si riferisce ai nodi non espressamente dichiarati ma usati come input/output ad
 /// altri nodi.
 pub struct OnnxGraphIntermediate {
@@ -8,16 +10,19 @@ pub struct OnnxGraphIntermediate {
     pub input: String,
 
     /// Nomi dei nodi uscenti.
-    pub outputs: Vec<String>
+    pub outputs: HashSet<String>
 }
 
 impl OnnxGraphIntermediate {
     /// Crea un nuovo nodo intemedio vuoto.
-    pub fn new(name: &str, input: String, outputs: Vec<String>) -> Self {
+    pub fn new<'a, O>(name: &str, input: String, outputs: O) -> Self
+    where
+        O: IntoIterator<Item = String>
+    {
         Self {
             name: name.to_string(),
             input,
-            outputs
+            outputs: outputs.into_iter().collect()
         }
     }
 }

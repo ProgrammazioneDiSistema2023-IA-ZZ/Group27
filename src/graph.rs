@@ -76,19 +76,16 @@ pub struct OnnxGraph {
     pub name: String,
 
     /// Nomi dei nodi initializer del grafo.
-    initializers: Vec<String>,
+    initializers: HashSet<String>,
 
     /// Nomi dei nodi input del grafo.
-    inputs: Vec<String>,
+    inputs: HashSet<String>,
 
     /// Nomi dei nodi output del grafo.
-    outputs: Vec<String>,
+    outputs: HashSet<String>,
 
     /// Nomi dei nodi operazione del grafo.
-    operations: Vec<String>,
-
-    /// Nomi dei nodi intemedi del grafo.
-    intermediates: Mutex<HashSet<String>>,
+    operations: HashSet<String>,
 
     /// [`HashMap`] che mappa il nome del nodo alla struttura [`OnnxGraphNode`] corrispondente.
     /// 
@@ -120,11 +117,10 @@ impl OnnxGraph {
     pub fn new() -> Self {
         Self {
             name: String::default(),
-            initializers: Vec::new(),
-            inputs: Vec::new(),
-            outputs: Vec::new(),
-            intermediates: Mutex::new(HashSet::new()),
-            operations: Vec::new(),
+            initializers: HashSet::new(),
+            inputs: HashSet::new(),
+            outputs: HashSet::new(),
+            operations: HashSet::new(),
             nodes: RwLock::new(HashMap::new()),
             inferences_in_progress: AtomicUsize::new(0),
             last_inference_id: Mutex::new(InferenceID(0))
@@ -155,10 +151,10 @@ impl OnnxGraph {
 
         // Inserisci nome del nodo nel vettore adatto della struttura.
         match node {
-            OnnxGraphNode::Initializer(_) => self.initializers.push(name.clone()),
-            OnnxGraphNode::Input(_) => self.inputs.push(name.clone()),
-            OnnxGraphNode::Output(_) => self.outputs.push(name.clone()),
-            OnnxGraphNode::Operation(_) => self.operations.push(name.clone()),
+            OnnxGraphNode::Initializer(_) => self.initializers.insert(name.clone()),
+            OnnxGraphNode::Input(_) => self.inputs.insert(name.clone()),
+            OnnxGraphNode::Output(_) => self.outputs.insert(name.clone()),
+            OnnxGraphNode::Operation(_) => self.operations.insert(name.clone()),
             OnnxGraphNode::Intermediate(interm_node) => {
                 // Dato il nodo entrante E al nodo intermedio I, aggiungi i nodi uscenti di I ai nodi uscenti di E e rimuovi I dalla
                 // stessa collezione.
@@ -166,19 +162,23 @@ impl OnnxGraph {
                     nodes.get_mut(&interm_node.input)
                          .ok_or_else(|| onnx_error!("[{}] Input node {} does not exist.", interm_node.name, interm_node.input))?;
                 if let OnnxGraphNode::Operation(op_node) = interm_input_node {
-                    op_node.outputs.retain(|s| *s != interm_node.name);
+                    op_node.outputs.remove(&interm_node.name);
                     op_node.outputs.extend(interm_node.outputs.clone());
                 }
 
-                // Per ogni nodo uscente U dal nodo intermedio I, aggiungi il nodo entrante di I ai nodi entranti di U e rimuovi I
-                // dalla stessa collezione.
+                // Per ogni nodo uscente U dal nodo intermedio I, sostituisci il nome di I dai nodi entranti di U con il nodo
+                // entrante di I.
                 for interm_output_name in interm_node.outputs {
                     let interm_output_node =
                         nodes.get_mut(&interm_output_name)
                             .ok_or_else(|| onnx_error!("[{}] Output node {} does not exist.", interm_node.name, interm_output_name))?;
                     if let OnnxGraphNode::Operation(op_node) = interm_output_node {
-                        op_node.inputs.retain(|s| *s != interm_node.name);
-                        op_node.inputs.push(interm_node.input.clone());
+                        let opnode_interm_input =
+                            op_node.inputs
+                                .iter_mut()
+                                .find(|input_name| **input_name == interm_node.name)
+                                .ok_or_else(|| onnx_error!("[{}] ", interm_node.name))?;
+                        *opnode_interm_input = interm_node.input.clone();
                     }
                 }
 

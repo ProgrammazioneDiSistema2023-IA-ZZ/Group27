@@ -1,4 +1,4 @@
-use std::{collections::HashMap, sync::{Mutex, Condvar, Arc}};
+use std::{collections::{HashMap, HashSet}, sync::{Mutex, Condvar, Arc}};
 
 use crate::{operations::{Operation, OperationResult, Tensor}, helper::InnerMutexGuard, error::OnnxError, onnx_error};
 
@@ -52,10 +52,12 @@ pub struct OnnxGraphOperation {
     pub(super) name: String,
     
     /// Nomi dei nodi in entrata nel nodo operazione.
+    /// 
+    /// È un Vec e non un HashSet perchè l'ordine degli input è importante.
     pub(super) inputs: Vec<String>,
 
     /// Nomi dei nodi in uscita dal nodo operazione.
-    pub(super) outputs: Vec<String>,
+    pub(super) outputs: HashSet<String>,
 
     /// Operazione da eseguire nel nodo.
     operation: Operation,
@@ -78,7 +80,11 @@ pub struct OnnxGraphOperation {
 
 impl OnnxGraphOperation {
     /// Crea un nuovo nodo operazione con i relativi dati.
-    pub fn new(name: &str, operation: Operation, inputs: Vec<&str>, outputs: Vec<&str>) -> Self {
+    pub fn new<'a, I, O>(name: &str, operation: Operation, inputs: I, outputs: O) -> Self
+    where
+        I: IntoIterator<Item = &'a str>,
+        O: IntoIterator<Item = &'a str>
+    {
         Self {
             name: name.to_string(),
             inputs: inputs.into_iter().map(str::to_string).collect(),
