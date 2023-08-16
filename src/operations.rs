@@ -92,7 +92,7 @@ impl TryFrom<&str> for OpType {
 }
 
 /// Valore di un attributo, che può essere di un qualunque tipo.
-#[derive(Clone)]
+#[derive(Clone,Debug)]
 pub enum Attribute {
     Undefined,
     Float(f32),

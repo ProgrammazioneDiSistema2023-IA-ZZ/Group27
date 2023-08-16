@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use ndarray::{SliceArg, array};
 
-use crate::operations::Tensor;
+use crate::operations::{Tensor, Attribute};
 
 #[derive(Debug)]
 pub enum ProtoBufMessage {
@@ -60,6 +60,7 @@ pub struct NodeProto {
    pub inputs : Vec<String>,
    pub outputs: Vec<String>,
    pub op_type: String,
+   pub attributes: HashMap<String, Attribute>,
 }
 #[derive(Debug)]
 pub struct GraphProto {
@@ -90,13 +91,20 @@ pub struct ModelProto {
 #[derive(Debug)]
 pub struct AttributeProto {
     pub  fieldNumber: HashMap<usize, String>,
-    pub  tp : TensorProto,
+    pub  tp : TensorProto, // per i nodi di input/ouput
+    pub name :String,
+    pub attr : Attribute,
+    
    
 }
 
 impl AttributeProto {
     pub fn new() -> Self {
-        let mut result = AttributeProto { fieldNumber: HashMap::new(),tp:TensorProto::new()};
+        let mut result = AttributeProto { fieldNumber: HashMap::new(),
+            name :String::new(),
+            attr:Attribute::Undefined,
+            tp:TensorProto::new()
+        };
         result.fieldNumber.insert(0, "undefined".to_string());
         result.fieldNumber.insert(7, "floats".to_string());
         result.fieldNumber.insert(8, "ints".to_string());
@@ -106,8 +114,10 @@ impl AttributeProto {
         result.fieldNumber.insert(3, "i".to_string());
         result.fieldNumber.insert(4, "s".to_string());
         result.fieldNumber.insert(5, "t".to_string());
+      
         result.fieldNumber.insert(1, "name".to_string());
         result.fieldNumber.insert(20, "type".to_string());
+   
         result
     }
 }
@@ -162,6 +172,7 @@ impl NodeProto {
             name : "".to_string(),
             inputs:vec![],outputs:vec![],
             op_type:String::new(),
+            attributes:HashMap::new(),
         };
         result.fieldNumber.insert(1, "input".to_string());
         result.fieldNumber.insert(2, "output".to_string());

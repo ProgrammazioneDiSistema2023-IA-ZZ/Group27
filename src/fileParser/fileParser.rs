@@ -12,7 +12,7 @@ use ndarray::{arr0, arr1, arr2, array, Array, Array2, ArrayBase, Axis, OwnedRepr
 use crate::fileParser::protobufoperations::*;
 use crate::fileParser::protobufstruct::*;
 use crate::graph::*;
-use crate::operations::{OpType, Operation};
+use crate::operations::*;
 
 /*
 #[derive(Debug)]
@@ -120,20 +120,7 @@ impl OnnxFileParser {
                        vero, quindi con solo tag [input] da nodi initializer [input]+[initializer]
         */
         for e in &graph.node {
-            //RICERCA NODI INITIALIZER, nel caso siano gestiti da tag [node] es: mnist.onnx
-          /*  if e.inputs.len() == 0 {
-                let dims = e.attr.tp.dims.len();
-                let float_data = e.attr.tp.float_data.clone();
-                
-                println!("INITIALIZER->{} {:?}", e.name,float_data);
-                let mut val: ArrayBase<OwnedRepr<f32>, ndarray::Dim<ndarray::IxDynImpl>> =
-                    create_multidim_array(float_data, &e.attr.tp.dims).unwrap();
-                let node_init =
-                    OnnxGraphNode::Initializer(OnnxGraphInitializer::new(&e.name, val.into_dyn()));
-                if building_graph.add_node(node_init).is_err() {
-                    self.result = Result::Err("Error while adding init node".to_string());
-                }
-            }*/ 
+  
             if e.inputs.len() != 0 && e.outputs.len() != 0 {
                 //NODO OPERATION 
                 // non è detto che un nodo abbia un nome... googlenet ha i nomi ai nodi operazione -> è un problema di pytorch che quando esporta il modello non mette i nomi 
@@ -141,14 +128,17 @@ impl OnnxFileParser {
                     self.result = Result::Err("Error: node without a name".to_string());
                     return;
                 }*/
-                println!("OPERATION->{: <20}  IN-> {:?}  OUT-> {:?}", &(e.name.clone()),e.inputs,e.outputs);
+                println!("+--------");
+                println!("|OPERATION->{: <20}  ATTR-> {:?}  ", &(e.op_type),e.attributes);
+                println!("|IN-> {:?}  OUT-> {:?}",e.inputs,e.outputs);
+                println!("+--------\n");
                 let node_op = OnnxGraphNode::Operation(OnnxGraphOperation::new(
                     &e.name,
-                    Operation::new(OpType::try_from(e.op_type.as_str()).unwrap()),
+                    Operation::with_attributes(OpType::try_from(e.op_type.as_str()).unwrap(),e.attributes.clone()),
                     &e.inputs,
                     &e.outputs,
                 ));
-
+             
 
                 let res =building_graph.add_node(node_op);
                 if res.is_err() {
@@ -162,14 +152,16 @@ impl OnnxFileParser {
             .tensor_initializer
             .iter()
             .for_each(|x| { 
-                println!("INITIALIZER ->{}", x.name);
+                println!("+--------");
+                println!("|INITIALIZER->{: <20}  DIMS-> {:?}  ", x.name,x.dims);
+                println!("+--------\n");
                 let mut val: ArrayBase<OwnedRepr<f32>, ndarray::Dim<ndarray::IxDynImpl>> =
                     create_multidim_array(
                         x.float_data.clone(),
                         &x.dims,
                     )
                     .unwrap();
-
+                
                 let node_init = OnnxGraphNode::Initializer(OnnxGraphInitializer::new(
                     &x.name,
                     val,
