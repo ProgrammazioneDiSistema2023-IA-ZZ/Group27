@@ -1,5 +1,5 @@
 use std::sync::Arc;
-use ndarray::{Array4, s};
+use ndarray::{Array4, s, ArrayViewD, Ix2};
 
 use super::{Operation, OnnxError, onnx_error, Tensor, OperationResult, Attribute};
 
@@ -151,15 +151,15 @@ impl Operation {
         for (n_batch, batch) in padded_data.outer_iter().enumerate() {
             for (n_channel, channel) in batch.outer_iter().enumerate() {
                 let output =
-                    Self::map_2d_windows(
-                        channel,
-                        (kernel_h, kernel_w),
-                        |window| {
+                    Self::map_windows(
+                        channel.into_dyn(),
+                        &[kernel_h, kernel_w],
+                        |window: ArrayViewD<Option<f32>>| {
                             let values: Vec<f32> = if count_include_pad == 1 {
                                 // Conta anche il padding (valore 0) nel calcolo del risultato.
                                 window
                                     .into_iter()
-                                    .map(|v| v.unwrap_or(0.))
+                                    .map(|&v| v.unwrap_or(0.))
                                     .collect()
                             } else {
                                 // Non contare il padding nel calcolo del risultato.
@@ -171,8 +171,8 @@ impl Operation {
 
                             values.iter().sum::<f32>() / values.len() as f32
                         },
-                        (strides_h, strides_w)
-                    )?;
+                        &[strides_h, strides_w]
+                    )?.into_dimensionality::<Ix2>().map_err(|_| onnx_error!("Could not convert dynamic array into 2D."))?;
                 result.slice_mut(s![n_batch, n_channel, .., ..]).assign(&output);
             }
         }

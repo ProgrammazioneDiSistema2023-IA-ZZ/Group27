@@ -1,7 +1,7 @@
 extern crate ndarray;
 
 use std::{sync::Arc, collections::HashMap};
-use ndarray::{ArrayD, Array2, Array1, ArrayView2};
+use ndarray::{ArrayD, Array1, ArrayViewD, Zip};
 use crate::{error::OnnxError, onnx_error};
 
 mod add;
@@ -235,38 +235,55 @@ impl Operation {
         }
     }
 
-    /// Divide un [`Tensor`] bidimensionale in finestre di dimensioni `window_dim` e applica la funzione `f` ad ognuna.
+    /// Divide un [`Tensor`] di dimensioni generiche in finestre di dimensioni `window_dim` e applica la funzione `f` ad ognuna.
     /// 
-    /// Il risultato di ogni chiamata di `f` viene salvato in un nuovo array bidimensionale, di dimensioni che dipendono da
-    /// `window_dim` e dalle `strides` (finestre saltate sia in lunghezza che in altezza).
+    /// Il risultato di ogni chiamata di `f` viene salvato in un nuovo array multidimensionale generico, avente forma che
+    /// dipende da `data`, `window_dim` e dalle `strides` (finestre saltate sia in lunghezza che in altezza).
     /// 
     /// # Errore
     /// Se le dimensioni della finestra non sono compatibili con il numero di risultati calcolati.
-    fn map_2d_windows<I, O>(
-        data: ArrayView2<I>,
-        window_dim: (usize, usize),
-        f: impl FnMut(ArrayView2<I>) -> O,
-        (strides_h, strides_w): (usize, usize)
-    ) -> Result<Array2<O>, OnnxError> {
-        let [ data_h, data_w ]: [usize; 2] = data.shape().try_into().unwrap();
-        let ( window_h, window_w ) = window_dim;
-        let windows_w = data_w-window_w+1;
-        let (out_h, out_w) = ((data_h-window_h)/strides_h+1, (data_w-window_w)/strides_w+1);
-        
+    fn map_windows<I, O>(
+        data: ArrayViewD<I>,
+        window_dim: &[usize],
+        f: impl FnMut(ArrayViewD<I>) -> O,
+        strides: &[usize]
+    ) -> Result<ArrayD<O>, OnnxError> {
+        // Numero totale delle finestre, per ogni dimensione
+        let window_amounts =
+            Zip::from(data.shape()).and(window_dim)
+                .map_collect(|data_len, window_len| data_len - window_len + 1)
+                .to_vec();
+
+        // Dimensioni dell'output
+        let out_shape = 
+            Zip::from(data.shape()).and(window_dim).and(strides)
+                .map_collect(|data_len, window_len, strides_len| (data_len-window_len)/strides_len+1)
+                .to_vec();
+
         data
             .windows(window_dim)
             .into_iter()
             .enumerate()
-            .filter_map(|(i, window)| {
-                // Determina se la riga/colonna è da saltare in base alle strides.
-                let n_row = i/windows_w;
-                let n_col = i%windows_w;
-                if n_row % strides_h == 0 && n_col % strides_w == 0 { Some(window) } else { None }
+            .filter_map(|(mut i, window)| {
+                // Determina posizione corrente
+                let mut position = Vec::with_capacity(window_amounts.len());
+                for w_i in 0..window_amounts.len() {
+                    let product: usize = window_amounts.iter().skip(w_i+1).map(|v| *v).product();
+                    position.push(i / product);
+                    i %= product;
+                }
+
+                // Determina se la posizione corrente è da saltare in base alle strides.
+                if Zip::from(&position).and(strides).all(|&pos, &stride| pos % stride == 0) {
+                    Some(window)
+                } else {
+                    None
+                }
             })
             .map(f)
             .collect::<Array1<O>>()
-            .into_shape((out_h, out_w))
-            .map_err(|_| onnx_error!("Could not insert mapped values into {out_h}x{out_w} matrix."))
+            .into_shape(out_shape.clone())
+            .map_err(|_| onnx_error!("Could not insert mapped values into {} matrix.", out_shape.into_iter().map(|v| v.to_string()).collect::<Vec<_>>().join("x")))
     }
 
 }

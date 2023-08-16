@@ -151,11 +151,11 @@ impl Operation {
         for (n_batch, batch) in padded_data.outer_iter().enumerate() {
             for (n_channel, channel) in batch.outer_iter().enumerate() {
                 let output =
-                    Self::map_2d_windows(
-                        channel,
-                        (kernel_h, kernel_w),
+                    Self::map_windows(
+                        channel.into_dyn(),
+                         &[kernel_h, kernel_w],
                         |window| *window.into_iter().max_by(|a, b| a.partial_cmp(b).unwrap()).unwrap(),
-                        (strides_h, strides_w)
+                        &[strides_h, strides_w]
                     )?;
                 result.slice_mut(s![n_batch, n_channel, .., ..]).assign(&output);
             }

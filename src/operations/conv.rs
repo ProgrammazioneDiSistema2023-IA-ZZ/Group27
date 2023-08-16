@@ -1,5 +1,5 @@
 use std::sync::Arc;
-use ndarray::{Array1, Array4, s};
+use ndarray::{Array1, Array4, s, Ix2};
 
 use super::{Operation, OnnxError, onnx_error, Tensor, OperationResult, Attribute};
 
@@ -141,12 +141,12 @@ impl Operation {
                         .fold(Ok(channel.to_owned()), |output, fmap| {
                             let bias_val = bias[fmap];
                             let kernel = weights.slice(s![fmap, n_channel, .., ..]);
-                            Self::map_2d_windows(
-                                output?.view(),
-                                kernel.dim(),
+                            Self::map_windows(
+                                output?.view().into_dyn(),
+                                kernel.shape(),
                                 |window| (&window * &kernel).sum() + bias_val,
-                                (strides_h, strides_w)
-                            )
+                                &[strides_h, strides_w]
+                            ).and_then(|res| res.into_dimensionality::<Ix2>().map_err(|_| onnx_error!("Could not convert dynamic array into 2D.")))
                         })?;
                 // Assegna al risultato
                 result.slice_mut(s![n_batch, n_channel, .., ..]).assign(&output);
