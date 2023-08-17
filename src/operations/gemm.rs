@@ -81,9 +81,11 @@ impl Operation {
         let mut result = alpha * a_prime.dot(&b_prime);
 
         if let Some(c) = c {
+            let c_shape = [a_prime.shape()[0], b_prime.shape()[1]];
             let c_2d =
                 c.view()
-                 .into_dimensionality::<Ix2>().map_err(|_| onnx_error!("Only two-dimensional products are supported. Matrix C was found to have {} dimension(s).", c.shape().len()))?;
+                 .into_shape(c_shape)
+                 .map_err(|_| onnx_error!("Could not convert matrix C to shape {}x{}.", c_shape[0], c_shape[1]))?;
             result = result + beta * &c_2d;
         }
 
@@ -95,7 +97,7 @@ impl Operation {
 #[cfg(test)]
 mod tests {
     use std::{sync::Arc, collections::HashMap};
-    use ndarray::{Array, array};
+    use ndarray::{Array, array, Array1};
     use crate::operations::{Operation, OpType, Attribute};
 
     #[test]
@@ -152,9 +154,8 @@ mod tests {
             .unwrap().into_dyn();
 
         let c =
-            Array::from_iter((13..=21).map(|i| i as f32).cycle().take(3*3))
-            .into_shape((3,3))
-            .unwrap().into_dyn();
+            Array1::from_iter((13..=21).map(|i| i as f32).cycle().take(3*3))
+            .into_dyn();
 
         let expected_result =
             array![
