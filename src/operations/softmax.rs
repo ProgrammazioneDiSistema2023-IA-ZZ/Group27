@@ -42,14 +42,14 @@ impl Operation {
         // input_exp = e^input
         let input_exp = input.mapv(|v| E.powf(v));
         
-        // Somma i valori di input_exp lungo l'asse (questo genera un array con una dimensione minore rispetto all'input)
-        let mut axis_sums = input_exp.sum_axis(Axis(axis));
-
-        // Ripeti i valori delle somme lungo l'asse, in modo da mantenere la stessa forma dell'input
-        axis_sums.insert_axis_inplace(Axis(axis));
-        let axis_values = axis_sums.index_axis(Axis(axis), 0).to_owned();
-        let axis_size = input_exp.shape()[axis];
-        (0..axis_size-1).for_each(|_| axis_sums.push(Axis(axis), axis_values.view()).unwrap());
+        // Somma i valori di input_exp lungo l'asse (questo genera un array con una dimensione minore rispetto all'input), poi
+        // effettua il broadcast in modo da mantenere la stessa forma dell'input.
+        let axis_sums =
+            input_exp
+                .sum_axis(Axis(axis))
+                .insert_axis(Axis(axis))
+                .broadcast(input_exp.dim()).unwrap()
+                .to_owned();
 
         let result = &input_exp / &axis_sums;
         Ok(Arc::new(result))
