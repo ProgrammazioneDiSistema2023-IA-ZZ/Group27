@@ -1,5 +1,5 @@
-use std::sync::Arc;
-use ndarray::{Array1, s, Array4};
+use std::sync::{Arc, Mutex};
+use ndarray::{Array1, s, Array4, parallel::prelude::{IntoParallelIterator, IndexedParallelIterator, ParallelIterator}};
 
 use super::{Operation, OnnxError, onnx_error, Tensor, OperationResult, Attribute};
 
@@ -65,29 +65,47 @@ impl Operation {
         };
 
         /*** LRN ***/
-        let mut result = Array4::<f32>::zeros((batches, channels, data_h, data_w));
-        for (n_batch, batch) in data.outer_iter().enumerate() {
-            for (n_channel, channel) in batch.outer_iter().enumerate() {
-                let ch_from = usize::checked_sub(n_channel, size/2).unwrap_or(0);
-                let ch_to = usize::min(channels-1, f32::ceil(n_channel as f32 + size as f32/2.) as usize);
+        let result = Mutex::new(Array4::<f32>::zeros((batches, channels, data_h, data_w)));
 
-                let normalized = 
-                    channel
-                        .indexed_iter()
-                        .map(|(dim, val)| {
-                            let quadratic_sum = batch.slice(s![ch_from..=ch_to, dim[0], dim[1]]).mapv(|v| v.powi(2)).sum();
-                            *val / (bias + alpha * quadratic_sum).powf(beta) // NOTA: la formula potrebbe essere sbagliata
-                        })
-                        .collect::<Array1<f32>>()
-                        .to_shape(channel.dim())
-                        .unwrap()
-                        .to_owned();
-                
-                result.slice_mut(s![n_batch, n_channel, .., ..]).assign(&normalized);
-            }
+        for (n_batch, batch) in data.outer_iter().enumerate() {
+            batch
+                .outer_iter()
+                .into_par_iter()
+                .enumerate()
+                .map(|(n_channel, channel)| {
+                    let ch_from = usize::checked_sub(n_channel, (size-1)/2).unwrap_or(0);
+                    let ch_to = usize::min(channels-1, n_channel + f32::ceil((size-1) as f32/2.) as usize);
+
+                    let normalized = 
+                        channel
+                            .indexed_iter()
+                            .map(|(dim, val)| {
+                                let quadratic_sum = batch.slice(s![ch_from..=ch_to, dim[0], dim[1]]).mapv(|v| v.powi(2)).sum();
+                                *val / (bias + (alpha / size as f32) * quadratic_sum).powf(beta) // NOTA: la formula potrebbe essere sbagliata
+                            })
+                            .collect::<Array1<f32>>()
+                            .to_shape(channel.dim())
+                            .unwrap()
+                            .to_owned();
+
+                    let mut result =
+                    result.lock()
+                        .map_err(|_| onnx_error!("A PoisonError occurred while convoluting"))?;
+                    result.slice_mut(s![n_batch, n_channel, .., ..]).assign(&normalized);
+
+                    Ok(())
+                })
+                .collect::<Result<(), OnnxError>>()?;
         }
 
-        Ok(Arc::new(result.into_dyn()))
+        // Estrai risultato dal mutex
+        let result =
+            result
+                .into_inner()
+                .map_err(|_| onnx_error!("A PoisonError occurred while extracting result from Mutex"))?
+                .into_dyn();
+
+        Ok(Arc::new(result))
     }
 
 }
@@ -134,24 +152,25 @@ mod tests {
 
         let expected_result = array![
             [
-                [0.50, 0.25, 0.30],
-                [0.20, 0.17, 0.15],
-                [0.12, 0.10, 0.10],
+                [ 1.00, 0.50, 0.60 ],
+                [ 0.40, 0.33, 0.30 ],
+                [ 0.24, 0.20, 0.2 ]
             ],
             [
-                [0.17, 0.22, 0.07],
-                [0.07, 0.14, 0.04],
-                [0.04, 0.04, 0.03],
+                [ 0.40, 0.80, 0.40 ],
+                [ 0.31, 0.46, 0.31 ],
+                [ 0.24, 0.32, 0.24 ]
+            ],
+     
+            [
+                [ 0.20, 0.40, 0.80 ],
+                [ 0.18, 0.50, 0.60 ],
+                [ 0.40, 0.46, 0.25 ]
             ],
             [
-                [0.10, 0.11, 0.33],
-                [0.08, 0.12, 0.21],
-                [0.14, 0.10, 0.10]
-            ],
-            [
-                [0.20, 0.40, 0.20],
-                [0.15, 0.25, 0.10],
-                [0.10, 0.15, 0.13]
+                [ 0.50, 1.00, 2.00 ],
+                [ 0.40, 1.00, 2.00 ],
+                [ 1.00, 1.00, 0.50 ]
             ]
         ].into_shape((1, 4, 3, 3)).unwrap().into_dyn();
 
