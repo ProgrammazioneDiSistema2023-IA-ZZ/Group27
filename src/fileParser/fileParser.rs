@@ -261,7 +261,7 @@ impl OnnxFileParser {
         )
         .unwrap();
 
-      
+        println!("{:?}",val);
 
     
         let mut input_values = HashMap::new();

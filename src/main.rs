@@ -13,7 +13,7 @@ fn main() {
 
   
     /* MNIST */
-      parser.parse("./onnxFile/mnist-12/mnist-12.onnx","./onnxFile/mnist-12/test_data_set_0/input_0.pb");
+    parser.parse("./onnxFile/mnist-12/mnist-12.onnx","./onnxFile/mnist-12/test_data_set_0/input_0.pb");
     
      if parser.result.is_err(){
         println!("{}",parser.result.err().unwrap());
