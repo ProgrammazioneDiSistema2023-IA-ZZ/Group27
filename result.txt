@@ -1,0 +1,7720 @@
+"ir_version":S7
+""producer_name"":"onnx-caffe2"
+""graph"":GRAFOOOOOO!
+"node":
+		"input":"data_0"
+		"input":"conv1/7x7_s2_w_0"
+		"input":"conv1/7x7_s2_b_0"
+		"output":"conv1/7x7_s2_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":2
+ints
+			"ints":2
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([2, 2])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":3
+ints
+			"ints":3
+ints
+			"ints":3
+ints
+			"ints":3
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([2, 2]), "pads": Ints([3, 3, 3, 3])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":7
+ints
+			"ints":7
+ints
+			"type":7
+tipo non gestito "type"
+{"kernel_shape": Ints([7, 7]), "strides": Ints([2, 2]), "pads": Ints([3, 3, 3, 3])}
+"node":
+		"input":"conv1/7x7_s2_1"
+		"output":"conv1/7x7_s2_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"conv1/7x7_s2_2"
+		"output":"pool1/3x3_s2_1"
+		"name":""
+		"op_type":"MaxPool"
+		"attribute":
+			"name":7] : "strides"
+			"ints":2
+ints
+			"ints":2
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([2, 2])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":2
+ints
+			"ints":2
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([2, 2]), "pads": Ints([0, 0, 2, 2])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":3
+ints
+			"ints":3
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([2, 2]), "pads": Ints([0, 0, 2, 2]), "kernel_shape": Ints([3, 3])}
+"node":
+		"input":"pool1/3x3_s2_1"
+		"output":"pool1/norm1_1"
+		"name":""
+		"op_type":"LRN"
+		"attribute":
+			"name":4] : "size"
+			"i":5
+i
+			"type":2
+tipo non gestito "type"
+{"size": Int(5)}
+		"attribute":
+			"name":5] : "alpha"
+{"alpha": Undefined, "size": Int(5)}
+		"attribute":
+			"name":4] : "beta"
+{"alpha": Undefined, "size": Int(5), "beta": Undefined}
+		"attribute":
+			"name":4] : "bias"
+{"alpha": Undefined, "beta": Undefined, "size": Int(5), "bias": Undefined}
+"node":
+		"input":"pool1/norm1_1"
+		"input":"conv2/3x3_reduce_w_0"
+		"input":"conv2/3x3_reduce_b_0"
+		"output":"conv2/3x3_reduce_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}
+"node":
+		"input":"conv2/3x3_reduce_1"
+		"output":"conv2/3x3_reduce_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"conv2/3x3_reduce_2"
+		"input":"conv2/3x3_w_0"
+		"input":"conv2/3x3_b_0"
+		"output":"conv2/3x3_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":3
+ints
+			"ints":3
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}
+"node":
+		"input":"conv2/3x3_1"
+		"output":"conv2/3x3_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"conv2/3x3_2"
+		"output":"conv2/norm2_1"
+		"name":""
+		"op_type":"LRN"
+		"attribute":
+			"name":4] : "size"
+			"i":5
+i
+			"type":2
+tipo non gestito "type"
+{"size": Int(5)}
+		"attribute":
+			"name":5] : "alpha"
+{"size": Int(5), "alpha": Undefined}
+		"attribute":
+			"name":4] : "beta"
+{"size": Int(5), "beta": Undefined, "alpha": Undefined}
+		"attribute":
+			"name":4] : "bias"
+{"beta": Undefined, "size": Int(5), "bias": Undefined, "alpha": Undefined}
+"node":
+		"input":"conv2/norm2_1"
+		"output":"pool2/3x3_s2_1"
+		"name":""
+		"op_type":"MaxPool"
+		"attribute":
+			"name":7] : "strides"
+			"ints":2
+ints
+			"ints":2
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([2, 2])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":2
+ints
+			"ints":2
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([2, 2]), "pads": Ints([0, 0, 2, 2])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":3
+ints
+			"ints":3
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([2, 2]), "pads": Ints([0, 0, 2, 2]), "kernel_shape": Ints([3, 3])}
+"node":
+		"input":"pool2/3x3_s2_1"
+		"input":"inception_3a/1x1_w_0"
+		"input":"inception_3a/1x1_b_0"
+		"output":"inception_3a/1x1_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+"node":
+		"input":"inception_3a/1x1_1"
+		"output":"inception_3a/1x1_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"pool2/3x3_s2_1"
+		"input":"inception_3a/3x3_reduce_w_0"
+		"input":"inception_3a/3x3_reduce_b_0"
+		"output":"inception_3a/3x3_reduce_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}
+"node":
+		"input":"inception_3a/3x3_reduce_1"
+		"output":"inception_3a/3x3_reduce_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_3a/3x3_reduce_2"
+		"input":"inception_3a/3x3_w_0"
+		"input":"inception_3a/3x3_b_0"
+		"output":"inception_3a/3x3_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":3
+ints
+			"ints":3
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3]), "strides": Ints([1, 1])}
+"node":
+		"input":"inception_3a/3x3_1"
+		"output":"inception_3a/3x3_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"pool2/3x3_s2_1"
+		"input":"inception_3a/5x5_reduce_w_0"
+		"input":"inception_3a/5x5_reduce_b_0"
+		"output":"inception_3a/5x5_reduce_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}
+"node":
+		"input":"inception_3a/5x5_reduce_1"
+		"output":"inception_3a/5x5_reduce_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_3a/5x5_reduce_2"
+		"input":"inception_3a/5x5_w_0"
+		"input":"inception_3a/5x5_b_0"
+		"output":"inception_3a/5x5_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":2
+ints
+			"ints":2
+ints
+			"ints":2
+ints
+			"ints":2
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":5
+ints
+			"ints":5
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2]), "kernel_shape": Ints([5, 5])}
+"node":
+		"input":"inception_3a/5x5_1"
+		"output":"inception_3a/5x5_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"pool2/3x3_s2_1"
+		"output":"inception_3a/pool_1"
+		"name":""
+		"op_type":"MaxPool"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":3
+ints
+			"ints":3
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}
+"node":
+		"input":"inception_3a/pool_1"
+		"input":"inception_3a/pool_proj_w_0"
+		"input":"inception_3a/pool_proj_b_0"
+		"output":"inception_3a/pool_proj_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}
+"node":
+		"input":"inception_3a/pool_proj_1"
+		"output":"inception_3a/pool_proj_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_3a/1x1_2"
+		"input":"inception_3a/3x3_2"
+		"input":"inception_3a/5x5_2"
+		"input":"inception_3a/pool_proj_2"
+		"output":"inception_3a/output_1"
+		"name":""
+		"op_type":"Concat"
+		"attribute":
+			"name":4] : "axis"
+			"i":1
+i
+			"type":2
+tipo non gestito "type"
+{"axis": Int(1)}
+"node":
+		"input":"inception_3a/output_1"
+		"input":"inception_3b/1x1_w_0"
+		"input":"inception_3b/1x1_b_0"
+		"output":"inception_3b/1x1_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}
+"node":
+		"input":"inception_3b/1x1_1"
+		"output":"inception_3b/1x1_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_3a/output_1"
+		"input":"inception_3b/3x3_reduce_w_0"
+		"input":"inception_3b/3x3_reduce_b_0"
+		"output":"inception_3b/3x3_reduce_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}
+"node":
+		"input":"inception_3b/3x3_reduce_1"
+		"output":"inception_3b/3x3_reduce_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_3b/3x3_reduce_2"
+		"input":"inception_3b/3x3_w_0"
+		"input":"inception_3b/3x3_b_0"
+		"output":"inception_3b/3x3_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":3
+ints
+			"ints":3
+ints
+			"type":7
+tipo non gestito "type"
+{"kernel_shape": Ints([3, 3]), "strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
+"node":
+		"input":"inception_3b/3x3_1"
+		"output":"inception_3b/3x3_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_3a/output_1"
+		"input":"inception_3b/5x5_reduce_w_0"
+		"input":"inception_3b/5x5_reduce_b_0"
+		"output":"inception_3b/5x5_reduce_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
+"node":
+		"input":"inception_3b/5x5_reduce_1"
+		"output":"inception_3b/5x5_reduce_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_3b/5x5_reduce_2"
+		"input":"inception_3b/5x5_w_0"
+		"input":"inception_3b/5x5_b_0"
+		"output":"inception_3b/5x5_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":2
+ints
+			"ints":2
+ints
+			"ints":2
+ints
+			"ints":2
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":5
+ints
+			"ints":5
+ints
+			"type":7
+tipo non gestito "type"
+{"kernel_shape": Ints([5, 5]), "strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2])}
+"node":
+		"input":"inception_3b/5x5_1"
+		"output":"inception_3b/5x5_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_3a/output_1"
+		"output":"inception_3b/pool_1"
+		"name":""
+		"op_type":"MaxPool"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":3
+ints
+			"ints":3
+ints
+			"type":7
+tipo non gestito "type"
+{"kernel_shape": Ints([3, 3]), "pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}
+"node":
+		"input":"inception_3b/pool_1"
+		"input":"inception_3b/pool_proj_w_0"
+		"input":"inception_3b/pool_proj_b_0"
+		"output":"inception_3b/pool_proj_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+"node":
+		"input":"inception_3b/pool_proj_1"
+		"output":"inception_3b/pool_proj_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_3b/1x1_2"
+		"input":"inception_3b/3x3_2"
+		"input":"inception_3b/5x5_2"
+		"input":"inception_3b/pool_proj_2"
+		"output":"inception_3b/output_1"
+		"name":""
+		"op_type":"Concat"
+		"attribute":
+			"name":4] : "axis"
+			"i":1
+i
+			"type":2
+tipo non gestito "type"
+{"axis": Int(1)}
+"node":
+		"input":"inception_3b/output_1"
+		"output":"pool3/3x3_s2_1"
+		"name":""
+		"op_type":"MaxPool"
+		"attribute":
+			"name":7] : "strides"
+			"ints":2
+ints
+			"ints":2
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([2, 2])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":2
+ints
+			"ints":2
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([2, 2]), "pads": Ints([0, 0, 2, 2])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":3
+ints
+			"ints":3
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([2, 2]), "pads": Ints([0, 0, 2, 2]), "kernel_shape": Ints([3, 3])}
+"node":
+		"input":"pool3/3x3_s2_1"
+		"input":"inception_4a/1x1_w_0"
+		"input":"inception_4a/1x1_b_0"
+		"output":"inception_4a/1x1_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}
+"node":
+		"input":"inception_4a/1x1_1"
+		"output":"inception_4a/1x1_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"pool3/3x3_s2_1"
+		"input":"inception_4a/3x3_reduce_w_0"
+		"input":"inception_4a/3x3_reduce_b_0"
+		"output":"inception_4a/3x3_reduce_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}
+"node":
+		"input":"inception_4a/3x3_reduce_1"
+		"output":"inception_4a/3x3_reduce_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_4a/3x3_reduce_2"
+		"input":"inception_4a/3x3_w_0"
+		"input":"inception_4a/3x3_b_0"
+		"output":"inception_4a/3x3_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":3
+ints
+			"ints":3
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}
+"node":
+		"input":"inception_4a/3x3_1"
+		"output":"inception_4a/3x3_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"pool3/3x3_s2_1"
+		"input":"inception_4a/5x5_reduce_w_0"
+		"input":"inception_4a/5x5_reduce_b_0"
+		"output":"inception_4a/5x5_reduce_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+"node":
+		"input":"inception_4a/5x5_reduce_1"
+		"output":"inception_4a/5x5_reduce_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_4a/5x5_reduce_2"
+		"input":"inception_4a/5x5_w_0"
+		"input":"inception_4a/5x5_b_0"
+		"output":"inception_4a/5x5_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":2
+ints
+			"ints":2
+ints
+			"ints":2
+ints
+			"ints":2
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([2, 2, 2, 2]), "strides": Ints([1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":5
+ints
+			"ints":5
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([2, 2, 2, 2]), "kernel_shape": Ints([5, 5]), "strides": Ints([1, 1])}
+"node":
+		"input":"inception_4a/5x5_1"
+		"output":"inception_4a/5x5_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"pool3/3x3_s2_1"
+		"output":"inception_4a/pool_1"
+		"name":""
+		"op_type":"MaxPool"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":3
+ints
+			"ints":3
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3]), "strides": Ints([1, 1])}
+"node":
+		"input":"inception_4a/pool_1"
+		"input":"inception_4a/pool_proj_w_0"
+		"input":"inception_4a/pool_proj_b_0"
+		"output":"inception_4a/pool_proj_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+"node":
+		"input":"inception_4a/pool_proj_1"
+		"output":"inception_4a/pool_proj_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_4a/1x1_2"
+		"input":"inception_4a/3x3_2"
+		"input":"inception_4a/5x5_2"
+		"input":"inception_4a/pool_proj_2"
+		"output":"inception_4a/output_1"
+		"name":""
+		"op_type":"Concat"
+		"attribute":
+			"name":4] : "axis"
+			"i":1
+i
+			"type":2
+tipo non gestito "type"
+{"axis": Int(1)}
+"node":
+		"input":"inception_4a/output_1"
+		"input":"inception_4b/1x1_w_0"
+		"input":"inception_4b/1x1_b_0"
+		"output":"inception_4b/1x1_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}
+"node":
+		"input":"inception_4b/1x1_1"
+		"output":"inception_4b/1x1_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_4a/output_1"
+		"input":"inception_4b/3x3_reduce_w_0"
+		"input":"inception_4b/3x3_reduce_b_0"
+		"output":"inception_4b/3x3_reduce_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+"node":
+		"input":"inception_4b/3x3_reduce_1"
+		"output":"inception_4b/3x3_reduce_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_4b/3x3_reduce_2"
+		"input":"inception_4b/3x3_w_0"
+		"input":"inception_4b/3x3_b_0"
+		"output":"inception_4b/3x3_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":3
+ints
+			"ints":3
+ints
+			"type":7
+tipo non gestito "type"
+{"kernel_shape": Ints([3, 3]), "strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
+"node":
+		"input":"inception_4b/3x3_1"
+		"output":"inception_4b/3x3_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_4a/output_1"
+		"input":"inception_4b/5x5_reduce_w_0"
+		"input":"inception_4b/5x5_reduce_b_0"
+		"output":"inception_4b/5x5_reduce_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}
+"node":
+		"input":"inception_4b/5x5_reduce_1"
+		"output":"inception_4b/5x5_reduce_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_4b/5x5_reduce_2"
+		"input":"inception_4b/5x5_w_0"
+		"input":"inception_4b/5x5_b_0"
+		"output":"inception_4b/5x5_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":2
+ints
+			"ints":2
+ints
+			"ints":2
+ints
+			"ints":2
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([2, 2, 2, 2]), "strides": Ints([1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":5
+ints
+			"ints":5
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([2, 2, 2, 2]), "kernel_shape": Ints([5, 5]), "strides": Ints([1, 1])}
+"node":
+		"input":"inception_4b/5x5_1"
+		"output":"inception_4b/5x5_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_4a/output_1"
+		"output":"inception_4b/pool_1"
+		"name":""
+		"op_type":"MaxPool"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":3
+ints
+			"ints":3
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}
+"node":
+		"input":"inception_4b/pool_1"
+		"input":"inception_4b/pool_proj_w_0"
+		"input":"inception_4b/pool_proj_b_0"
+		"output":"inception_4b/pool_proj_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+"node":
+		"input":"inception_4b/pool_proj_1"
+		"output":"inception_4b/pool_proj_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_4b/1x1_2"
+		"input":"inception_4b/3x3_2"
+		"input":"inception_4b/5x5_2"
+		"input":"inception_4b/pool_proj_2"
+		"output":"inception_4b/output_1"
+		"name":""
+		"op_type":"Concat"
+		"attribute":
+			"name":4] : "axis"
+			"i":1
+i
+			"type":2
+tipo non gestito "type"
+{"axis": Int(1)}
+"node":
+		"input":"inception_4b/output_1"
+		"input":"inception_4c/1x1_w_0"
+		"input":"inception_4c/1x1_b_0"
+		"output":"inception_4c/1x1_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}
+"node":
+		"input":"inception_4c/1x1_1"
+		"output":"inception_4c/1x1_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_4b/output_1"
+		"input":"inception_4c/3x3_reduce_w_0"
+		"input":"inception_4c/3x3_reduce_b_0"
+		"output":"inception_4c/3x3_reduce_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+"node":
+		"input":"inception_4c/3x3_reduce_1"
+		"output":"inception_4c/3x3_reduce_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_4c/3x3_reduce_2"
+		"input":"inception_4c/3x3_w_0"
+		"input":"inception_4c/3x3_b_0"
+		"output":"inception_4c/3x3_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":3
+ints
+			"ints":3
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}
+"node":
+		"input":"inception_4c/3x3_1"
+		"output":"inception_4c/3x3_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_4b/output_1"
+		"input":"inception_4c/5x5_reduce_w_0"
+		"input":"inception_4c/5x5_reduce_b_0"
+		"output":"inception_4c/5x5_reduce_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1]), "kernel_shape": Ints([1, 1])}
+"node":
+		"input":"inception_4c/5x5_reduce_1"
+		"output":"inception_4c/5x5_reduce_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_4c/5x5_reduce_2"
+		"input":"inception_4c/5x5_w_0"
+		"input":"inception_4c/5x5_b_0"
+		"output":"inception_4c/5x5_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":2
+ints
+			"ints":2
+ints
+			"ints":2
+ints
+			"ints":2
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":5
+ints
+			"ints":5
+ints
+			"type":7
+tipo non gestito "type"
+{"kernel_shape": Ints([5, 5]), "strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2])}
+"node":
+		"input":"inception_4c/5x5_1"
+		"output":"inception_4c/5x5_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_4b/output_1"
+		"output":"inception_4c/pool_1"
+		"name":""
+		"op_type":"MaxPool"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":3
+ints
+			"ints":3
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}
+"node":
+		"input":"inception_4c/pool_1"
+		"input":"inception_4c/pool_proj_w_0"
+		"input":"inception_4c/pool_proj_b_0"
+		"output":"inception_4c/pool_proj_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+"node":
+		"input":"inception_4c/pool_proj_1"
+		"output":"inception_4c/pool_proj_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_4c/1x1_2"
+		"input":"inception_4c/3x3_2"
+		"input":"inception_4c/5x5_2"
+		"input":"inception_4c/pool_proj_2"
+		"output":"inception_4c/output_1"
+		"name":""
+		"op_type":"Concat"
+		"attribute":
+			"name":4] : "axis"
+			"i":1
+i
+			"type":2
+tipo non gestito "type"
+{"axis": Int(1)}
+"node":
+		"input":"inception_4c/output_1"
+		"input":"inception_4d/1x1_w_0"
+		"input":"inception_4d/1x1_b_0"
+		"output":"inception_4d/1x1_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}
+"node":
+		"input":"inception_4d/1x1_1"
+		"output":"inception_4d/1x1_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_4c/output_1"
+		"input":"inception_4d/3x3_reduce_w_0"
+		"input":"inception_4d/3x3_reduce_b_0"
+		"output":"inception_4d/3x3_reduce_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+"node":
+		"input":"inception_4d/3x3_reduce_1"
+		"output":"inception_4d/3x3_reduce_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_4d/3x3_reduce_2"
+		"input":"inception_4d/3x3_w_0"
+		"input":"inception_4d/3x3_b_0"
+		"output":"inception_4d/3x3_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":3
+ints
+			"ints":3
+ints
+			"type":7
+tipo non gestito "type"
+{"kernel_shape": Ints([3, 3]), "pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}
+"node":
+		"input":"inception_4d/3x3_1"
+		"output":"inception_4d/3x3_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_4c/output_1"
+		"input":"inception_4d/5x5_reduce_w_0"
+		"input":"inception_4d/5x5_reduce_b_0"
+		"output":"inception_4d/5x5_reduce_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}
+"node":
+		"input":"inception_4d/5x5_reduce_1"
+		"output":"inception_4d/5x5_reduce_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_4d/5x5_reduce_2"
+		"input":"inception_4d/5x5_w_0"
+		"input":"inception_4d/5x5_b_0"
+		"output":"inception_4d/5x5_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":2
+ints
+			"ints":2
+ints
+			"ints":2
+ints
+			"ints":2
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":5
+ints
+			"ints":5
+ints
+			"type":7
+tipo non gestito "type"
+{"kernel_shape": Ints([5, 5]), "strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2])}
+"node":
+		"input":"inception_4d/5x5_1"
+		"output":"inception_4d/5x5_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_4c/output_1"
+		"output":"inception_4d/pool_1"
+		"name":""
+		"op_type":"MaxPool"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":3
+ints
+			"ints":3
+ints
+			"type":7
+tipo non gestito "type"
+{"kernel_shape": Ints([3, 3]), "strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
+"node":
+		"input":"inception_4d/pool_1"
+		"input":"inception_4d/pool_proj_w_0"
+		"input":"inception_4d/pool_proj_b_0"
+		"output":"inception_4d/pool_proj_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}
+"node":
+		"input":"inception_4d/pool_proj_1"
+		"output":"inception_4d/pool_proj_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_4d/1x1_2"
+		"input":"inception_4d/3x3_2"
+		"input":"inception_4d/5x5_2"
+		"input":"inception_4d/pool_proj_2"
+		"output":"inception_4d/output_1"
+		"name":""
+		"op_type":"Concat"
+		"attribute":
+			"name":4] : "axis"
+			"i":1
+i
+			"type":2
+tipo non gestito "type"
+{"axis": Int(1)}
+"node":
+		"input":"inception_4d/output_1"
+		"input":"inception_4e/1x1_w_0"
+		"input":"inception_4e/1x1_b_0"
+		"output":"inception_4e/1x1_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
+"node":
+		"input":"inception_4e/1x1_1"
+		"output":"inception_4e/1x1_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_4d/output_1"
+		"input":"inception_4e/3x3_reduce_w_0"
+		"input":"inception_4e/3x3_reduce_b_0"
+		"output":"inception_4e/3x3_reduce_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}
+"node":
+		"input":"inception_4e/3x3_reduce_1"
+		"output":"inception_4e/3x3_reduce_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_4e/3x3_reduce_2"
+		"input":"inception_4e/3x3_w_0"
+		"input":"inception_4e/3x3_b_0"
+		"output":"inception_4e/3x3_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":3
+ints
+			"ints":3
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1]), "kernel_shape": Ints([3, 3])}
+"node":
+		"input":"inception_4e/3x3_1"
+		"output":"inception_4e/3x3_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_4d/output_1"
+		"input":"inception_4e/5x5_reduce_w_0"
+		"input":"inception_4e/5x5_reduce_b_0"
+		"output":"inception_4e/5x5_reduce_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}
+"node":
+		"input":"inception_4e/5x5_reduce_1"
+		"output":"inception_4e/5x5_reduce_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_4e/5x5_reduce_2"
+		"input":"inception_4e/5x5_w_0"
+		"input":"inception_4e/5x5_b_0"
+		"output":"inception_4e/5x5_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":2
+ints
+			"ints":2
+ints
+			"ints":2
+ints
+			"ints":2
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([2, 2, 2, 2]), "strides": Ints([1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":5
+ints
+			"ints":5
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([2, 2, 2, 2]), "kernel_shape": Ints([5, 5]), "strides": Ints([1, 1])}
+"node":
+		"input":"inception_4e/5x5_1"
+		"output":"inception_4e/5x5_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_4d/output_1"
+		"output":"inception_4e/pool_1"
+		"name":""
+		"op_type":"MaxPool"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":3
+ints
+			"ints":3
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1]), "kernel_shape": Ints([3, 3])}
+"node":
+		"input":"inception_4e/pool_1"
+		"input":"inception_4e/pool_proj_w_0"
+		"input":"inception_4e/pool_proj_b_0"
+		"output":"inception_4e/pool_proj_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+"node":
+		"input":"inception_4e/pool_proj_1"
+		"output":"inception_4e/pool_proj_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_4e/1x1_2"
+		"input":"inception_4e/3x3_2"
+		"input":"inception_4e/5x5_2"
+		"input":"inception_4e/pool_proj_2"
+		"output":"inception_4e/output_1"
+		"name":""
+		"op_type":"Concat"
+		"attribute":
+			"name":4] : "axis"
+			"i":1
+i
+			"type":2
+tipo non gestito "type"
+{"axis": Int(1)}
+"node":
+		"input":"inception_4e/output_1"
+		"output":"pool4/3x3_s2_1"
+		"name":""
+		"op_type":"MaxPool"
+		"attribute":
+			"name":7] : "strides"
+			"ints":2
+ints
+			"ints":2
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([2, 2])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":2
+ints
+			"ints":2
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([2, 2]), "pads": Ints([0, 0, 2, 2])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":3
+ints
+			"ints":3
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([2, 2]), "pads": Ints([0, 0, 2, 2]), "kernel_shape": Ints([3, 3])}
+"node":
+		"input":"pool4/3x3_s2_1"
+		"input":"inception_5a/1x1_w_0"
+		"input":"inception_5a/1x1_b_0"
+		"output":"inception_5a/1x1_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+"node":
+		"input":"inception_5a/1x1_1"
+		"output":"inception_5a/1x1_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"pool4/3x3_s2_1"
+		"input":"inception_5a/3x3_reduce_w_0"
+		"input":"inception_5a/3x3_reduce_b_0"
+		"output":"inception_5a/3x3_reduce_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}
+"node":
+		"input":"inception_5a/3x3_reduce_1"
+		"output":"inception_5a/3x3_reduce_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_5a/3x3_reduce_2"
+		"input":"inception_5a/3x3_w_0"
+		"input":"inception_5a/3x3_b_0"
+		"output":"inception_5a/3x3_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":3
+ints
+			"ints":3
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1]), "kernel_shape": Ints([3, 3])}
+"node":
+		"input":"inception_5a/3x3_1"
+		"output":"inception_5a/3x3_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"pool4/3x3_s2_1"
+		"input":"inception_5a/5x5_reduce_w_0"
+		"input":"inception_5a/5x5_reduce_b_0"
+		"output":"inception_5a/5x5_reduce_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1]), "kernel_shape": Ints([1, 1])}
+"node":
+		"input":"inception_5a/5x5_reduce_1"
+		"output":"inception_5a/5x5_reduce_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_5a/5x5_reduce_2"
+		"input":"inception_5a/5x5_w_0"
+		"input":"inception_5a/5x5_b_0"
+		"output":"inception_5a/5x5_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":2
+ints
+			"ints":2
+ints
+			"ints":2
+ints
+			"ints":2
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":5
+ints
+			"ints":5
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "kernel_shape": Ints([5, 5]), "pads": Ints([2, 2, 2, 2])}
+"node":
+		"input":"inception_5a/5x5_1"
+		"output":"inception_5a/5x5_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"pool4/3x3_s2_1"
+		"output":"inception_5a/pool_1"
+		"name":""
+		"op_type":"MaxPool"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":3
+ints
+			"ints":3
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3]), "strides": Ints([1, 1])}
+"node":
+		"input":"inception_5a/pool_1"
+		"input":"inception_5a/pool_proj_w_0"
+		"input":"inception_5a/pool_proj_b_0"
+		"output":"inception_5a/pool_proj_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+"node":
+		"input":"inception_5a/pool_proj_1"
+		"output":"inception_5a/pool_proj_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_5a/1x1_2"
+		"input":"inception_5a/3x3_2"
+		"input":"inception_5a/5x5_2"
+		"input":"inception_5a/pool_proj_2"
+		"output":"inception_5a/output_1"
+		"name":""
+		"op_type":"Concat"
+		"attribute":
+			"name":4] : "axis"
+			"i":1
+i
+			"type":2
+tipo non gestito "type"
+{"axis": Int(1)}
+"node":
+		"input":"inception_5a/output_1"
+		"input":"inception_5b/1x1_w_0"
+		"input":"inception_5b/1x1_b_0"
+		"output":"inception_5b/1x1_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}
+"node":
+		"input":"inception_5b/1x1_1"
+		"output":"inception_5b/1x1_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_5a/output_1"
+		"input":"inception_5b/3x3_reduce_w_0"
+		"input":"inception_5b/3x3_reduce_b_0"
+		"output":"inception_5b/3x3_reduce_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}
+"node":
+		"input":"inception_5b/3x3_reduce_1"
+		"output":"inception_5b/3x3_reduce_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_5b/3x3_reduce_2"
+		"input":"inception_5b/3x3_w_0"
+		"input":"inception_5b/3x3_b_0"
+		"output":"inception_5b/3x3_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":3
+ints
+			"ints":3
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}
+"node":
+		"input":"inception_5b/3x3_1"
+		"output":"inception_5b/3x3_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_5a/output_1"
+		"input":"inception_5b/5x5_reduce_w_0"
+		"input":"inception_5b/5x5_reduce_b_0"
+		"output":"inception_5b/5x5_reduce_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1]), "kernel_shape": Ints([1, 1])}
+"node":
+		"input":"inception_5b/5x5_reduce_1"
+		"output":"inception_5b/5x5_reduce_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_5b/5x5_reduce_2"
+		"input":"inception_5b/5x5_w_0"
+		"input":"inception_5b/5x5_b_0"
+		"output":"inception_5b/5x5_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":2
+ints
+			"ints":2
+ints
+			"ints":2
+ints
+			"ints":2
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":5
+ints
+			"ints":5
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "kernel_shape": Ints([5, 5]), "pads": Ints([2, 2, 2, 2])}
+"node":
+		"input":"inception_5b/5x5_1"
+		"output":"inception_5b/5x5_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_5a/output_1"
+		"output":"inception_5b/pool_1"
+		"name":""
+		"op_type":"MaxPool"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":3
+ints
+			"ints":3
+ints
+			"type":7
+tipo non gestito "type"
+{"kernel_shape": Ints([3, 3]), "strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
+"node":
+		"input":"inception_5b/pool_1"
+		"input":"inception_5b/pool_proj_w_0"
+		"input":"inception_5b/pool_proj_b_0"
+		"output":"inception_5b/pool_proj_1"
+		"name":""
+		"op_type":"Conv"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1]), "kernel_shape": Ints([1, 1])}
+"node":
+		"input":"inception_5b/pool_proj_1"
+		"output":"inception_5b/pool_proj_2"
+		"name":""
+		"op_type":"Relu"
+"node":
+		"input":"inception_5b/1x1_2"
+		"input":"inception_5b/3x3_2"
+		"input":"inception_5b/5x5_2"
+		"input":"inception_5b/pool_proj_2"
+		"output":"inception_5b/output_1"
+		"name":""
+		"op_type":"Concat"
+		"attribute":
+			"name":4] : "axis"
+			"i":1
+i
+			"type":2
+tipo non gestito "type"
+{"axis": Int(1)}
+"node":
+		"input":"inception_5b/output_1"
+		"output":"pool5/7x7_s1_1"
+		"name":""
+		"op_type":"AveragePool"
+		"attribute":
+			"name":7] : "strides"
+			"ints":1
+ints
+			"ints":1
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1])}
+		"attribute":
+			"name":4] : "pads"
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"ints":0
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+		"attribute":
+			"name":12] : "kernel_shape"
+			"ints":7
+ints
+			"ints":7
+ints
+			"type":7
+tipo non gestito "type"
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([7, 7])}
+"node":
+		"input":"pool5/7x7_s1_1"
+		"input":"264"
+		"output":"pool5/7x7_s1_2"
+		"output":"_pool5/7x7_s1_mask_1"
+		"name":""
+		"op_type":"Dropout"
+"node":
+		"input":"pool5/7x7_s1_2"
+		"input":"OC2_DUMMY_1"
+		"output":"OC2_DUMMY_0"
+		"op_type":"Reshape"
+"node":
+		"input":"OC2_DUMMY_0"
+		"input":"loss3/classifier_w_0"
+		"input":"loss3/classifier_b_0"
+		"output":"loss3/classifier_1"
+		"op_type":"Gemm"
+		"attribute":
+			"name":6] : "transB"
+			"i":1
+i
+			"type":2
+tipo non gestito "type"
+{"transB": Int(1)}
+"node":
+		"input":"loss3/classifier_1"
+		"output":"prob_1"
+		"name":""
+		"op_type":"Softmax"
+"name":"bvlc_googlenet"
+"initializer": INITIAL
+				"dims":64
+				"data_type":1
+				"name":"conv1/7x7_s2_b_0"
+				"raw_data": Vett di 256 elem
+"initializer": INITIAL
+				"dims":64
+				"dims":3
+				"dims":7
+				"dims":7
+				"data_type":1
+				"name":"conv1/7x7_s2_w_0"
+				"raw_data": Vett di 37632 elem
+"initializer": INITIAL
+				"dims":192
+				"data_type":1
+				"name":"conv2/3x3_b_0"
+				"raw_data": Vett di 768 elem
+"initializer": INITIAL
+				"dims":64
+				"data_type":1
+				"name":"conv2/3x3_reduce_b_0"
+				"raw_data": Vett di 256 elem
+"initializer": INITIAL
+				"dims":64
+				"dims":64
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"conv2/3x3_reduce_w_0"
+				"raw_data": Vett di 16384 elem
+"initializer": INITIAL
+				"dims":192
+				"dims":64
+				"dims":3
+				"dims":3
+				"data_type":1
+				"name":"conv2/3x3_w_0"
+				"raw_data": Vett di 442368 elem
+"initializer": INITIAL
+				"dims":64
+				"data_type":1
+				"name":"inception_3a/1x1_b_0"
+				"raw_data": Vett di 256 elem
+"initializer": INITIAL
+				"dims":64
+				"dims":192
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_3a/1x1_w_0"
+				"raw_data": Vett di 49152 elem
+"initializer": INITIAL
+				"dims":128
+				"data_type":1
+				"name":"inception_3a/3x3_b_0"
+				"raw_data": Vett di 512 elem
+"initializer": INITIAL
+				"dims":96
+				"data_type":1
+				"name":"inception_3a/3x3_reduce_b_0"
+				"raw_data": Vett di 384 elem
+"initializer": INITIAL
+				"dims":96
+				"dims":192
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_3a/3x3_reduce_w_0"
+				"raw_data": Vett di 73728 elem
+"initializer": INITIAL
+				"dims":128
+				"dims":96
+				"dims":3
+				"dims":3
+				"data_type":1
+				"name":"inception_3a/3x3_w_0"
+				"raw_data": Vett di 442368 elem
+"initializer": INITIAL
+				"dims":32
+				"data_type":1
+				"name":"inception_3a/5x5_b_0"
+				"raw_data": Vett di 128 elem
+"initializer": INITIAL
+				"dims":16
+				"data_type":1
+				"name":"inception_3a/5x5_reduce_b_0"
+				"raw_data": Vett di 64 elem
+"initializer": INITIAL
+				"dims":16
+				"dims":192
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_3a/5x5_reduce_w_0"
+				"raw_data": Vett di 12288 elem
+"initializer": INITIAL
+				"dims":32
+				"dims":16
+				"dims":5
+				"dims":5
+				"data_type":1
+				"name":"inception_3a/5x5_w_0"
+				"raw_data": Vett di 51200 elem
+"initializer": INITIAL
+				"dims":32
+				"data_type":1
+				"name":"inception_3a/pool_proj_b_0"
+				"raw_data": Vett di 128 elem
+"initializer": INITIAL
+				"dims":32
+				"dims":192
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_3a/pool_proj_w_0"
+				"raw_data": Vett di 24576 elem
+"initializer": INITIAL
+				"dims":128
+				"data_type":1
+				"name":"inception_3b/1x1_b_0"
+				"raw_data": Vett di 512 elem
+"initializer": INITIAL
+				"dims":128
+				"dims":256
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_3b/1x1_w_0"
+				"raw_data": Vett di 131072 elem
+"initializer": INITIAL
+				"dims":192
+				"data_type":1
+				"name":"inception_3b/3x3_b_0"
+				"raw_data": Vett di 768 elem
+"initializer": INITIAL
+				"dims":128
+				"data_type":1
+				"name":"inception_3b/3x3_reduce_b_0"
+				"raw_data": Vett di 512 elem
+"initializer": INITIAL
+				"dims":128
+				"dims":256
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_3b/3x3_reduce_w_0"
+				"raw_data": Vett di 131072 elem
+"initializer": INITIAL
+				"dims":192
+				"dims":128
+				"dims":3
+				"dims":3
+				"data_type":1
+				"name":"inception_3b/3x3_w_0"
+				"raw_data": Vett di 884736 elem
+"initializer": INITIAL
+				"dims":96
+				"data_type":1
+				"name":"inception_3b/5x5_b_0"
+				"raw_data": Vett di 384 elem
+"initializer": INITIAL
+				"dims":32
+				"data_type":1
+				"name":"inception_3b/5x5_reduce_b_0"
+				"raw_data": Vett di 128 elem
+"initializer": INITIAL
+				"dims":32
+				"dims":256
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_3b/5x5_reduce_w_0"
+				"raw_data": Vett di 32768 elem
+"initializer": INITIAL
+				"dims":96
+				"dims":32
+				"dims":5
+				"dims":5
+				"data_type":1
+				"name":"inception_3b/5x5_w_0"
+				"raw_data": Vett di 307200 elem
+"initializer": INITIAL
+				"dims":64
+				"data_type":1
+				"name":"inception_3b/pool_proj_b_0"
+				"raw_data": Vett di 256 elem
+"initializer": INITIAL
+				"dims":64
+				"dims":256
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_3b/pool_proj_w_0"
+				"raw_data": Vett di 65536 elem
+"initializer": INITIAL
+				"dims":192
+				"data_type":1
+				"name":"inception_4a/1x1_b_0"
+				"raw_data": Vett di 768 elem
+"initializer": INITIAL
+				"dims":192
+				"dims":480
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_4a/1x1_w_0"
+				"raw_data": Vett di 368640 elem
+"initializer": INITIAL
+				"dims":208
+				"data_type":1
+				"name":"inception_4a/3x3_b_0"
+				"raw_data": Vett di 832 elem
+"initializer": INITIAL
+				"dims":96
+				"data_type":1
+				"name":"inception_4a/3x3_reduce_b_0"
+				"raw_data": Vett di 384 elem
+"initializer": INITIAL
+				"dims":96
+				"dims":480
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_4a/3x3_reduce_w_0"
+				"raw_data": Vett di 184320 elem
+"initializer": INITIAL
+				"dims":208
+				"dims":96
+				"dims":3
+				"dims":3
+				"data_type":1
+				"name":"inception_4a/3x3_w_0"
+				"raw_data": Vett di 718848 elem
+"initializer": INITIAL
+				"dims":48
+				"data_type":1
+				"name":"inception_4a/5x5_b_0"
+				"raw_data": Vett di 192 elem
+"initializer": INITIAL
+				"dims":16
+				"data_type":1
+				"name":"inception_4a/5x5_reduce_b_0"
+				"raw_data": Vett di 64 elem
+"initializer": INITIAL
+				"dims":16
+				"dims":480
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_4a/5x5_reduce_w_0"
+				"raw_data": Vett di 30720 elem
+"initializer": INITIAL
+				"dims":48
+				"dims":16
+				"dims":5
+				"dims":5
+				"data_type":1
+				"name":"inception_4a/5x5_w_0"
+				"raw_data": Vett di 76800 elem
+"initializer": INITIAL
+				"dims":64
+				"data_type":1
+				"name":"inception_4a/pool_proj_b_0"
+				"raw_data": Vett di 256 elem
+"initializer": INITIAL
+				"dims":64
+				"dims":480
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_4a/pool_proj_w_0"
+				"raw_data": Vett di 122880 elem
+"initializer": INITIAL
+				"dims":160
+				"data_type":1
+				"name":"inception_4b/1x1_b_0"
+				"raw_data": Vett di 640 elem
+"initializer": INITIAL
+				"dims":160
+				"dims":512
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_4b/1x1_w_0"
+				"raw_data": Vett di 327680 elem
+"initializer": INITIAL
+				"dims":224
+				"data_type":1
+				"name":"inception_4b/3x3_b_0"
+				"raw_data": Vett di 896 elem
+"initializer": INITIAL
+				"dims":112
+				"data_type":1
+				"name":"inception_4b/3x3_reduce_b_0"
+				"raw_data": Vett di 448 elem
+"initializer": INITIAL
+				"dims":112
+				"dims":512
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_4b/3x3_reduce_w_0"
+				"raw_data": Vett di 229376 elem
+"initializer": INITIAL
+				"dims":224
+				"dims":112
+				"dims":3
+				"dims":3
+				"data_type":1
+				"name":"inception_4b/3x3_w_0"
+				"raw_data": Vett di 903168 elem
+"initializer": INITIAL
+				"dims":64
+				"data_type":1
+				"name":"inception_4b/5x5_b_0"
+				"raw_data": Vett di 256 elem
+"initializer": INITIAL
+				"dims":24
+				"data_type":1
+				"name":"inception_4b/5x5_reduce_b_0"
+				"raw_data": Vett di 96 elem
+"initializer": INITIAL
+				"dims":24
+				"dims":512
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_4b/5x5_reduce_w_0"
+				"raw_data": Vett di 49152 elem
+"initializer": INITIAL
+				"dims":64
+				"dims":24
+				"dims":5
+				"dims":5
+				"data_type":1
+				"name":"inception_4b/5x5_w_0"
+				"raw_data": Vett di 153600 elem
+"initializer": INITIAL
+				"dims":64
+				"data_type":1
+				"name":"inception_4b/pool_proj_b_0"
+				"raw_data": Vett di 256 elem
+"initializer": INITIAL
+				"dims":64
+				"dims":512
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_4b/pool_proj_w_0"
+				"raw_data": Vett di 131072 elem
+"initializer": INITIAL
+				"dims":128
+				"data_type":1
+				"name":"inception_4c/1x1_b_0"
+				"raw_data": Vett di 512 elem
+"initializer": INITIAL
+				"dims":128
+				"dims":512
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_4c/1x1_w_0"
+				"raw_data": Vett di 262144 elem
+"initializer": INITIAL
+				"dims":256
+				"data_type":1
+				"name":"inception_4c/3x3_b_0"
+				"raw_data": Vett di 1024 elem
+"initializer": INITIAL
+				"dims":128
+				"data_type":1
+				"name":"inception_4c/3x3_reduce_b_0"
+				"raw_data": Vett di 512 elem
+"initializer": INITIAL
+				"dims":128
+				"dims":512
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_4c/3x3_reduce_w_0"
+				"raw_data": Vett di 262144 elem
+"initializer": INITIAL
+				"dims":256
+				"dims":128
+				"dims":3
+				"dims":3
+				"data_type":1
+				"name":"inception_4c/3x3_w_0"
+				"raw_data": Vett di 1179648 elem
+"initializer": INITIAL
+				"dims":64
+				"data_type":1
+				"name":"inception_4c/5x5_b_0"
+				"raw_data": Vett di 256 elem
+"initializer": INITIAL
+				"dims":24
+				"data_type":1
+				"name":"inception_4c/5x5_reduce_b_0"
+				"raw_data": Vett di 96 elem
+"initializer": INITIAL
+				"dims":24
+				"dims":512
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_4c/5x5_reduce_w_0"
+				"raw_data": Vett di 49152 elem
+"initializer": INITIAL
+				"dims":64
+				"dims":24
+				"dims":5
+				"dims":5
+				"data_type":1
+				"name":"inception_4c/5x5_w_0"
+				"raw_data": Vett di 153600 elem
+"initializer": INITIAL
+				"dims":64
+				"data_type":1
+				"name":"inception_4c/pool_proj_b_0"
+				"raw_data": Vett di 256 elem
+"initializer": INITIAL
+				"dims":64
+				"dims":512
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_4c/pool_proj_w_0"
+				"raw_data": Vett di 131072 elem
+"initializer": INITIAL
+				"dims":112
+				"data_type":1
+				"name":"inception_4d/1x1_b_0"
+				"raw_data": Vett di 448 elem
+"initializer": INITIAL
+				"dims":112
+				"dims":512
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_4d/1x1_w_0"
+				"raw_data": Vett di 229376 elem
+"initializer": INITIAL
+				"dims":288
+				"data_type":1
+				"name":"inception_4d/3x3_b_0"
+				"raw_data": Vett di 1152 elem
+"initializer": INITIAL
+				"dims":144
+				"data_type":1
+				"name":"inception_4d/3x3_reduce_b_0"
+				"raw_data": Vett di 576 elem
+"initializer": INITIAL
+				"dims":144
+				"dims":512
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_4d/3x3_reduce_w_0"
+				"raw_data": Vett di 294912 elem
+"initializer": INITIAL
+				"dims":288
+				"dims":144
+				"dims":3
+				"dims":3
+				"data_type":1
+				"name":"inception_4d/3x3_w_0"
+				"raw_data": Vett di 1492992 elem
+"initializer": INITIAL
+				"dims":64
+				"data_type":1
+				"name":"inception_4d/5x5_b_0"
+				"raw_data": Vett di 256 elem
+"initializer": INITIAL
+				"dims":32
+				"data_type":1
+				"name":"inception_4d/5x5_reduce_b_0"
+				"raw_data": Vett di 128 elem
+"initializer": INITIAL
+				"dims":32
+				"dims":512
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_4d/5x5_reduce_w_0"
+				"raw_data": Vett di 65536 elem
+"initializer": INITIAL
+				"dims":64
+				"dims":32
+				"dims":5
+				"dims":5
+				"data_type":1
+				"name":"inception_4d/5x5_w_0"
+				"raw_data": Vett di 204800 elem
+"initializer": INITIAL
+				"dims":64
+				"data_type":1
+				"name":"inception_4d/pool_proj_b_0"
+				"raw_data": Vett di 256 elem
+"initializer": INITIAL
+				"dims":64
+				"dims":512
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_4d/pool_proj_w_0"
+				"raw_data": Vett di 131072 elem
+"initializer": INITIAL
+				"dims":256
+				"data_type":1
+				"name":"inception_4e/1x1_b_0"
+				"raw_data": Vett di 1024 elem
+"initializer": INITIAL
+				"dims":256
+				"dims":528
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_4e/1x1_w_0"
+				"raw_data": Vett di 540672 elem
+"initializer": INITIAL
+				"dims":320
+				"data_type":1
+				"name":"inception_4e/3x3_b_0"
+				"raw_data": Vett di 1280 elem
+"initializer": INITIAL
+				"dims":160
+				"data_type":1
+				"name":"inception_4e/3x3_reduce_b_0"
+				"raw_data": Vett di 640 elem
+"initializer": INITIAL
+				"dims":160
+				"dims":528
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_4e/3x3_reduce_w_0"
+				"raw_data": Vett di 337920 elem
+"initializer": INITIAL
+				"dims":320
+				"dims":160
+				"dims":3
+				"dims":3
+				"data_type":1
+				"name":"inception_4e/3x3_w_0"
+				"raw_data": Vett di 1843200 elem
+"initializer": INITIAL
+				"dims":128
+				"data_type":1
+				"name":"inception_4e/5x5_b_0"
+				"raw_data": Vett di 512 elem
+"initializer": INITIAL
+				"dims":32
+				"data_type":1
+				"name":"inception_4e/5x5_reduce_b_0"
+				"raw_data": Vett di 128 elem
+"initializer": INITIAL
+				"dims":32
+				"dims":528
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_4e/5x5_reduce_w_0"
+				"raw_data": Vett di 67584 elem
+"initializer": INITIAL
+				"dims":128
+				"dims":32
+				"dims":5
+				"dims":5
+				"data_type":1
+				"name":"inception_4e/5x5_w_0"
+				"raw_data": Vett di 409600 elem
+"initializer": INITIAL
+				"dims":128
+				"data_type":1
+				"name":"inception_4e/pool_proj_b_0"
+				"raw_data": Vett di 512 elem
+"initializer": INITIAL
+				"dims":128
+				"dims":528
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_4e/pool_proj_w_0"
+				"raw_data": Vett di 270336 elem
+"initializer": INITIAL
+				"dims":256
+				"data_type":1
+				"name":"inception_5a/1x1_b_0"
+				"raw_data": Vett di 1024 elem
+"initializer": INITIAL
+				"dims":256
+				"dims":832
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_5a/1x1_w_0"
+				"raw_data": Vett di 851968 elem
+"initializer": INITIAL
+				"dims":320
+				"data_type":1
+				"name":"inception_5a/3x3_b_0"
+				"raw_data": Vett di 1280 elem
+"initializer": INITIAL
+				"dims":160
+				"data_type":1
+				"name":"inception_5a/3x3_reduce_b_0"
+				"raw_data": Vett di 640 elem
+"initializer": INITIAL
+				"dims":160
+				"dims":832
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_5a/3x3_reduce_w_0"
+				"raw_data": Vett di 532480 elem
+"initializer": INITIAL
+				"dims":320
+				"dims":160
+				"dims":3
+				"dims":3
+				"data_type":1
+				"name":"inception_5a/3x3_w_0"
+				"raw_data": Vett di 1843200 elem
+"initializer": INITIAL
+				"dims":128
+				"data_type":1
+				"name":"inception_5a/5x5_b_0"
+				"raw_data": Vett di 512 elem
+"initializer": INITIAL
+				"dims":32
+				"data_type":1
+				"name":"inception_5a/5x5_reduce_b_0"
+				"raw_data": Vett di 128 elem
+"initializer": INITIAL
+				"dims":32
+				"dims":832
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_5a/5x5_reduce_w_0"
+				"raw_data": Vett di 106496 elem
+"initializer": INITIAL
+				"dims":128
+				"dims":32
+				"dims":5
+				"dims":5
+				"data_type":1
+				"name":"inception_5a/5x5_w_0"
+				"raw_data": Vett di 409600 elem
+"initializer": INITIAL
+				"dims":128
+				"data_type":1
+				"name":"inception_5a/pool_proj_b_0"
+				"raw_data": Vett di 512 elem
+"initializer": INITIAL
+				"dims":128
+				"dims":832
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_5a/pool_proj_w_0"
+				"raw_data": Vett di 425984 elem
+"initializer": INITIAL
+				"dims":384
+				"data_type":1
+				"name":"inception_5b/1x1_b_0"
+				"raw_data": Vett di 1536 elem
+"initializer": INITIAL
+				"dims":384
+				"dims":832
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_5b/1x1_w_0"
+				"raw_data": Vett di 1277952 elem
+"initializer": INITIAL
+				"dims":384
+				"data_type":1
+				"name":"inception_5b/3x3_b_0"
+				"raw_data": Vett di 1536 elem
+"initializer": INITIAL
+				"dims":192
+				"data_type":1
+				"name":"inception_5b/3x3_reduce_b_0"
+				"raw_data": Vett di 768 elem
+"initializer": INITIAL
+				"dims":192
+				"dims":832
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_5b/3x3_reduce_w_0"
+				"raw_data": Vett di 638976 elem
+"initializer": INITIAL
+				"dims":384
+				"dims":192
+				"dims":3
+				"dims":3
+				"data_type":1
+				"name":"inception_5b/3x3_w_0"
+				"raw_data": Vett di 2654208 elem
+"initializer": INITIAL
+				"dims":128
+				"data_type":1
+				"name":"inception_5b/5x5_b_0"
+				"raw_data": Vett di 512 elem
+"initializer": INITIAL
+				"dims":48
+				"data_type":1
+				"name":"inception_5b/5x5_reduce_b_0"
+				"raw_data": Vett di 192 elem
+"initializer": INITIAL
+				"dims":48
+				"dims":832
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_5b/5x5_reduce_w_0"
+				"raw_data": Vett di 159744 elem
+"initializer": INITIAL
+				"dims":128
+				"dims":48
+				"dims":5
+				"dims":5
+				"data_type":1
+				"name":"inception_5b/5x5_w_0"
+				"raw_data": Vett di 614400 elem
+"initializer": INITIAL
+				"dims":128
+				"data_type":1
+				"name":"inception_5b/pool_proj_b_0"
+				"raw_data": Vett di 512 elem
+"initializer": INITIAL
+				"dims":128
+				"dims":832
+				"dims":1
+				"dims":1
+				"data_type":1
+				"name":"inception_5b/pool_proj_w_0"
+				"raw_data": Vett di 425984 elem
+"initializer": INITIAL
+				"dims":1000
+				"data_type":1
+				"name":"loss3/classifier_b_0"
+				"raw_data": Vett di 4000 elem
+"initializer": INITIAL
+				"dims":1000
+				"dims":1024
+				"data_type":1
+				"name":"loss3/classifier_w_0"
+				"raw_data": Vett di 4096000 elem
+"initializer": INITIAL
+				"dims":2
+				"data_type":7
+				"name":"OC2_DUMMY_1"
+				"raw_data": Vett di 16 elem
+"initializer": INITIAL
+				"data_type":1
+				"float_data": Vett di 1 elem
+				"name":"264"
+"input":
+INPUT!
+		"name":"data_0"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":3
+					"dimension":
+						"dim_value":224
+					"dimension":
+						"dim_value":224
+FINE INPUT!
+"ouput":
+OUTPUT!
+		"name":"prob_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":1000
+FINE OUTPUT!
+"value_info":
+VALUE INFO!
+		"name":"conv1/7x7_s2_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":64
+					"dimension":
+						"dim_value":112
+					"dimension":
+						"dim_value":112
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"conv1/7x7_s2_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":64
+					"dimension":
+						"dim_value":112
+					"dimension":
+						"dim_value":112
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"pool1/3x3_s2_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":64
+					"dimension":
+						"dim_value":56
+					"dimension":
+						"dim_value":56
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"pool1/norm1_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":64
+					"dimension":
+						"dim_value":56
+					"dimension":
+						"dim_value":56
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"conv2/3x3_reduce_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":64
+					"dimension":
+						"dim_value":56
+					"dimension":
+						"dim_value":56
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"conv2/3x3_reduce_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":64
+					"dimension":
+						"dim_value":56
+					"dimension":
+						"dim_value":56
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"conv2/3x3_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":192
+					"dimension":
+						"dim_value":56
+					"dimension":
+						"dim_value":56
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"conv2/3x3_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":192
+					"dimension":
+						"dim_value":56
+					"dimension":
+						"dim_value":56
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"conv2/norm2_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":192
+					"dimension":
+						"dim_value":56
+					"dimension":
+						"dim_value":56
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"pool2/3x3_s2_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":192
+					"dimension":
+						"dim_value":28
+					"dimension":
+						"dim_value":28
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_3a/1x1_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":64
+					"dimension":
+						"dim_value":28
+					"dimension":
+						"dim_value":28
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_3a/1x1_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":64
+					"dimension":
+						"dim_value":28
+					"dimension":
+						"dim_value":28
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_3a/3x3_reduce_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":96
+					"dimension":
+						"dim_value":28
+					"dimension":
+						"dim_value":28
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_3a/3x3_reduce_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":96
+					"dimension":
+						"dim_value":28
+					"dimension":
+						"dim_value":28
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_3a/3x3_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":128
+					"dimension":
+						"dim_value":28
+					"dimension":
+						"dim_value":28
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_3a/3x3_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":128
+					"dimension":
+						"dim_value":28
+					"dimension":
+						"dim_value":28
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_3a/5x5_reduce_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":16
+					"dimension":
+						"dim_value":28
+					"dimension":
+						"dim_value":28
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_3a/5x5_reduce_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":16
+					"dimension":
+						"dim_value":28
+					"dimension":
+						"dim_value":28
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_3a/5x5_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":32
+					"dimension":
+						"dim_value":28
+					"dimension":
+						"dim_value":28
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_3a/5x5_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":32
+					"dimension":
+						"dim_value":28
+					"dimension":
+						"dim_value":28
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_3a/pool_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":192
+					"dimension":
+						"dim_value":28
+					"dimension":
+						"dim_value":28
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_3a/pool_proj_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":32
+					"dimension":
+						"dim_value":28
+					"dimension":
+						"dim_value":28
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_3a/pool_proj_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":32
+					"dimension":
+						"dim_value":28
+					"dimension":
+						"dim_value":28
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_3a/output_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":256
+					"dimension":
+						"dim_value":28
+					"dimension":
+						"dim_value":28
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_3b/1x1_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":128
+					"dimension":
+						"dim_value":28
+					"dimension":
+						"dim_value":28
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_3b/1x1_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":128
+					"dimension":
+						"dim_value":28
+					"dimension":
+						"dim_value":28
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_3b/3x3_reduce_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":128
+					"dimension":
+						"dim_value":28
+					"dimension":
+						"dim_value":28
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_3b/3x3_reduce_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":128
+					"dimension":
+						"dim_value":28
+					"dimension":
+						"dim_value":28
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_3b/3x3_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":192
+					"dimension":
+						"dim_value":28
+					"dimension":
+						"dim_value":28
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_3b/3x3_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":192
+					"dimension":
+						"dim_value":28
+					"dimension":
+						"dim_value":28
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_3b/5x5_reduce_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":32
+					"dimension":
+						"dim_value":28
+					"dimension":
+						"dim_value":28
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_3b/5x5_reduce_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":32
+					"dimension":
+						"dim_value":28
+					"dimension":
+						"dim_value":28
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_3b/5x5_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":96
+					"dimension":
+						"dim_value":28
+					"dimension":
+						"dim_value":28
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_3b/5x5_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":96
+					"dimension":
+						"dim_value":28
+					"dimension":
+						"dim_value":28
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_3b/pool_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":256
+					"dimension":
+						"dim_value":28
+					"dimension":
+						"dim_value":28
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_3b/pool_proj_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":64
+					"dimension":
+						"dim_value":28
+					"dimension":
+						"dim_value":28
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_3b/pool_proj_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":64
+					"dimension":
+						"dim_value":28
+					"dimension":
+						"dim_value":28
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_3b/output_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":480
+					"dimension":
+						"dim_value":28
+					"dimension":
+						"dim_value":28
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"pool3/3x3_s2_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":480
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4a/1x1_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":192
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4a/1x1_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":192
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4a/3x3_reduce_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":96
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4a/3x3_reduce_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":96
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4a/3x3_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":208
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4a/3x3_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":208
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4a/5x5_reduce_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":16
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4a/5x5_reduce_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":16
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4a/5x5_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":48
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4a/5x5_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":48
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4a/pool_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":480
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4a/pool_proj_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":64
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4a/pool_proj_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":64
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4a/output_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":512
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4b/1x1_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":160
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4b/1x1_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":160
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4b/3x3_reduce_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":112
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4b/3x3_reduce_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":112
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4b/3x3_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":224
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4b/3x3_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":224
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4b/5x5_reduce_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":24
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4b/5x5_reduce_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":24
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4b/5x5_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":64
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4b/5x5_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":64
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4b/pool_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":512
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4b/pool_proj_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":64
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4b/pool_proj_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":64
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4b/output_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":512
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4c/1x1_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":128
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4c/1x1_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":128
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4c/3x3_reduce_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":128
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4c/3x3_reduce_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":128
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4c/3x3_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":256
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4c/3x3_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":256
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4c/5x5_reduce_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":24
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4c/5x5_reduce_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":24
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4c/5x5_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":64
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4c/5x5_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":64
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4c/pool_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":512
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4c/pool_proj_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":64
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4c/pool_proj_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":64
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4c/output_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":512
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4d/1x1_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":112
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4d/1x1_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":112
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4d/3x3_reduce_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":144
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4d/3x3_reduce_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":144
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4d/3x3_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":288
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4d/3x3_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":288
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4d/5x5_reduce_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":32
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4d/5x5_reduce_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":32
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4d/5x5_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":64
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4d/5x5_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":64
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4d/pool_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":512
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4d/pool_proj_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":64
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4d/pool_proj_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":64
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4d/output_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":528
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4e/1x1_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":256
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4e/1x1_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":256
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4e/3x3_reduce_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":160
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4e/3x3_reduce_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":160
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4e/3x3_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":320
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4e/3x3_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":320
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4e/5x5_reduce_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":32
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4e/5x5_reduce_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":32
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4e/5x5_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":128
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4e/5x5_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":128
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4e/pool_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":528
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4e/pool_proj_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":128
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4e/pool_proj_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":128
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_4e/output_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":832
+					"dimension":
+						"dim_value":14
+					"dimension":
+						"dim_value":14
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"pool4/3x3_s2_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":832
+					"dimension":
+						"dim_value":7
+					"dimension":
+						"dim_value":7
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_5a/1x1_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":256
+					"dimension":
+						"dim_value":7
+					"dimension":
+						"dim_value":7
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_5a/1x1_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":256
+					"dimension":
+						"dim_value":7
+					"dimension":
+						"dim_value":7
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_5a/3x3_reduce_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":160
+					"dimension":
+						"dim_value":7
+					"dimension":
+						"dim_value":7
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_5a/3x3_reduce_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":160
+					"dimension":
+						"dim_value":7
+					"dimension":
+						"dim_value":7
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_5a/3x3_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":320
+					"dimension":
+						"dim_value":7
+					"dimension":
+						"dim_value":7
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_5a/3x3_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":320
+					"dimension":
+						"dim_value":7
+					"dimension":
+						"dim_value":7
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_5a/5x5_reduce_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":32
+					"dimension":
+						"dim_value":7
+					"dimension":
+						"dim_value":7
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_5a/5x5_reduce_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":32
+					"dimension":
+						"dim_value":7
+					"dimension":
+						"dim_value":7
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_5a/5x5_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":128
+					"dimension":
+						"dim_value":7
+					"dimension":
+						"dim_value":7
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_5a/5x5_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":128
+					"dimension":
+						"dim_value":7
+					"dimension":
+						"dim_value":7
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_5a/pool_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":832
+					"dimension":
+						"dim_value":7
+					"dimension":
+						"dim_value":7
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_5a/pool_proj_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":128
+					"dimension":
+						"dim_value":7
+					"dimension":
+						"dim_value":7
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_5a/pool_proj_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":128
+					"dimension":
+						"dim_value":7
+					"dimension":
+						"dim_value":7
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_5a/output_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":832
+					"dimension":
+						"dim_value":7
+					"dimension":
+						"dim_value":7
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_5b/1x1_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":384
+					"dimension":
+						"dim_value":7
+					"dimension":
+						"dim_value":7
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_5b/1x1_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":384
+					"dimension":
+						"dim_value":7
+					"dimension":
+						"dim_value":7
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_5b/3x3_reduce_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":192
+					"dimension":
+						"dim_value":7
+					"dimension":
+						"dim_value":7
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_5b/3x3_reduce_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":192
+					"dimension":
+						"dim_value":7
+					"dimension":
+						"dim_value":7
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_5b/3x3_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":384
+					"dimension":
+						"dim_value":7
+					"dimension":
+						"dim_value":7
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_5b/3x3_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":384
+					"dimension":
+						"dim_value":7
+					"dimension":
+						"dim_value":7
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_5b/5x5_reduce_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":48
+					"dimension":
+						"dim_value":7
+					"dimension":
+						"dim_value":7
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_5b/5x5_reduce_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":48
+					"dimension":
+						"dim_value":7
+					"dimension":
+						"dim_value":7
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_5b/5x5_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":128
+					"dimension":
+						"dim_value":7
+					"dimension":
+						"dim_value":7
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_5b/5x5_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":128
+					"dimension":
+						"dim_value":7
+					"dimension":
+						"dim_value":7
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_5b/pool_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":832
+					"dimension":
+						"dim_value":7
+					"dimension":
+						"dim_value":7
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_5b/pool_proj_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":128
+					"dimension":
+						"dim_value":7
+					"dimension":
+						"dim_value":7
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_5b/pool_proj_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":128
+					"dimension":
+						"dim_value":7
+					"dimension":
+						"dim_value":7
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"inception_5b/output_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":1024
+					"dimension":
+						"dim_value":7
+					"dimension":
+						"dim_value":7
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"pool5/7x7_s1_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":1024
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":1
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"pool5/7x7_s1_2"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":1024
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":1
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"OC2_DUMMY_0"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":1024
+VALUE INFO!
+"value_info":
+VALUE INFO!
+		"name":"loss3/classifier_1"
+		"type":
+			"tensor_type":
+				"elem_type":1
+				"shape":
+					"dimension":
+						"dim_value":1
+					"dimension":
+						"dim_value":1000
+VALUE INFO!
+FINE GRAFO
+""opset_import"":
+
+---------------CREAZIONE GRAFO------------
++--------
+|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([7, 7]), "strides": Ints([2, 2]), "pads": Ints([3, 3, 3, 3])}  
+|IN-> ["data_0", "conv1/7x7_s2_w_0", "conv1/7x7_s2_b_0"]  OUT-> ["conv1/7x7_s2_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["conv1/7x7_s2_1"]  OUT-> ["conv1/7x7_s2_2"]
++--------
+
++--------
+|OPERATION->MaxPool               ATTR-> {"strides": Ints([2, 2]), "pads": Ints([0, 0, 2, 2]), "kernel_shape": Ints([3, 3])}  
+|IN-> ["conv1/7x7_s2_2"]  OUT-> ["pool1/3x3_s2_1"]
++--------
+
++--------
+|OPERATION->LRN                   ATTR-> {"alpha": Undefined, "beta": Undefined, "size": Int(5), "bias": Undefined}  
+|IN-> ["pool1/3x3_s2_1"]  OUT-> ["pool1/norm1_1"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}  
+|IN-> ["pool1/norm1_1", "conv2/3x3_reduce_w_0", "conv2/3x3_reduce_b_0"]  OUT-> ["conv2/3x3_reduce_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["conv2/3x3_reduce_1"]  OUT-> ["conv2/3x3_reduce_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}  
+|IN-> ["conv2/3x3_reduce_2", "conv2/3x3_w_0", "conv2/3x3_b_0"]  OUT-> ["conv2/3x3_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["conv2/3x3_1"]  OUT-> ["conv2/3x3_2"]
++--------
+
++--------
+|OPERATION->LRN                   ATTR-> {"beta": Undefined, "size": Int(5), "bias": Undefined, "alpha": Undefined}  
+|IN-> ["conv2/3x3_2"]  OUT-> ["conv2/norm2_1"]
++--------
+
++--------
+|OPERATION->MaxPool               ATTR-> {"strides": Ints([2, 2]), "pads": Ints([0, 0, 2, 2]), "kernel_shape": Ints([3, 3])}  
+|IN-> ["conv2/norm2_1"]  OUT-> ["pool2/3x3_s2_1"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
+|IN-> ["pool2/3x3_s2_1", "inception_3a/1x1_w_0", "inception_3a/1x1_b_0"]  OUT-> ["inception_3a/1x1_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_3a/1x1_1"]  OUT-> ["inception_3a/1x1_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}  
+|IN-> ["pool2/3x3_s2_1", "inception_3a/3x3_reduce_w_0", "inception_3a/3x3_reduce_b_0"]  OUT-> ["inception_3a/3x3_reduce_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_3a/3x3_reduce_1"]  OUT-> ["inception_3a/3x3_reduce_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3]), "strides": Ints([1, 1])}  
+|IN-> ["inception_3a/3x3_reduce_2", "inception_3a/3x3_w_0", "inception_3a/3x3_b_0"]  OUT-> ["inception_3a/3x3_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_3a/3x3_1"]  OUT-> ["inception_3a/3x3_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}  
+|IN-> ["pool2/3x3_s2_1", "inception_3a/5x5_reduce_w_0", "inception_3a/5x5_reduce_b_0"]  OUT-> ["inception_3a/5x5_reduce_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_3a/5x5_reduce_1"]  OUT-> ["inception_3a/5x5_reduce_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2]), "kernel_shape": Ints([5, 5])}  
+|IN-> ["inception_3a/5x5_reduce_2", "inception_3a/5x5_w_0", "inception_3a/5x5_b_0"]  OUT-> ["inception_3a/5x5_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_3a/5x5_1"]  OUT-> ["inception_3a/5x5_2"]
++--------
+
++--------
+|OPERATION->MaxPool               ATTR-> {"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}  
+|IN-> ["pool2/3x3_s2_1"]  OUT-> ["inception_3a/pool_1"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}  
+|IN-> ["inception_3a/pool_1", "inception_3a/pool_proj_w_0", "inception_3a/pool_proj_b_0"]  OUT-> ["inception_3a/pool_proj_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_3a/pool_proj_1"]  OUT-> ["inception_3a/pool_proj_2"]
++--------
+
++--------
+|OPERATION->Concat                ATTR-> {"axis": Int(1)}  
+|IN-> ["inception_3a/1x1_2", "inception_3a/3x3_2", "inception_3a/5x5_2", "inception_3a/pool_proj_2"]  OUT-> ["inception_3a/output_1"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}  
+|IN-> ["inception_3a/output_1", "inception_3b/1x1_w_0", "inception_3b/1x1_b_0"]  OUT-> ["inception_3b/1x1_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_3b/1x1_1"]  OUT-> ["inception_3b/1x1_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}  
+|IN-> ["inception_3a/output_1", "inception_3b/3x3_reduce_w_0", "inception_3b/3x3_reduce_b_0"]  OUT-> ["inception_3b/3x3_reduce_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_3b/3x3_reduce_1"]  OUT-> ["inception_3b/3x3_reduce_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([3, 3]), "strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}  
+|IN-> ["inception_3b/3x3_reduce_2", "inception_3b/3x3_w_0", "inception_3b/3x3_b_0"]  OUT-> ["inception_3b/3x3_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_3b/3x3_1"]  OUT-> ["inception_3b/3x3_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}  
+|IN-> ["inception_3a/output_1", "inception_3b/5x5_reduce_w_0", "inception_3b/5x5_reduce_b_0"]  OUT-> ["inception_3b/5x5_reduce_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_3b/5x5_reduce_1"]  OUT-> ["inception_3b/5x5_reduce_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([5, 5]), "strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2])}  
+|IN-> ["inception_3b/5x5_reduce_2", "inception_3b/5x5_w_0", "inception_3b/5x5_b_0"]  OUT-> ["inception_3b/5x5_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_3b/5x5_1"]  OUT-> ["inception_3b/5x5_2"]
++--------
+
++--------
+|OPERATION->MaxPool               ATTR-> {"kernel_shape": Ints([3, 3]), "pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}  
+|IN-> ["inception_3a/output_1"]  OUT-> ["inception_3b/pool_1"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
+|IN-> ["inception_3b/pool_1", "inception_3b/pool_proj_w_0", "inception_3b/pool_proj_b_0"]  OUT-> ["inception_3b/pool_proj_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_3b/pool_proj_1"]  OUT-> ["inception_3b/pool_proj_2"]
++--------
+
++--------
+|OPERATION->Concat                ATTR-> {"axis": Int(1)}  
+|IN-> ["inception_3b/1x1_2", "inception_3b/3x3_2", "inception_3b/5x5_2", "inception_3b/pool_proj_2"]  OUT-> ["inception_3b/output_1"]
++--------
+
++--------
+|OPERATION->MaxPool               ATTR-> {"strides": Ints([2, 2]), "pads": Ints([0, 0, 2, 2]), "kernel_shape": Ints([3, 3])}  
+|IN-> ["inception_3b/output_1"]  OUT-> ["pool3/3x3_s2_1"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}  
+|IN-> ["pool3/3x3_s2_1", "inception_4a/1x1_w_0", "inception_4a/1x1_b_0"]  OUT-> ["inception_4a/1x1_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4a/1x1_1"]  OUT-> ["inception_4a/1x1_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}  
+|IN-> ["pool3/3x3_s2_1", "inception_4a/3x3_reduce_w_0", "inception_4a/3x3_reduce_b_0"]  OUT-> ["inception_4a/3x3_reduce_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4a/3x3_reduce_1"]  OUT-> ["inception_4a/3x3_reduce_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}  
+|IN-> ["inception_4a/3x3_reduce_2", "inception_4a/3x3_w_0", "inception_4a/3x3_b_0"]  OUT-> ["inception_4a/3x3_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4a/3x3_1"]  OUT-> ["inception_4a/3x3_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
+|IN-> ["pool3/3x3_s2_1", "inception_4a/5x5_reduce_w_0", "inception_4a/5x5_reduce_b_0"]  OUT-> ["inception_4a/5x5_reduce_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4a/5x5_reduce_1"]  OUT-> ["inception_4a/5x5_reduce_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"pads": Ints([2, 2, 2, 2]), "kernel_shape": Ints([5, 5]), "strides": Ints([1, 1])}  
+|IN-> ["inception_4a/5x5_reduce_2", "inception_4a/5x5_w_0", "inception_4a/5x5_b_0"]  OUT-> ["inception_4a/5x5_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4a/5x5_1"]  OUT-> ["inception_4a/5x5_2"]
++--------
+
++--------
+|OPERATION->MaxPool               ATTR-> {"pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3]), "strides": Ints([1, 1])}  
+|IN-> ["pool3/3x3_s2_1"]  OUT-> ["inception_4a/pool_1"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
+|IN-> ["inception_4a/pool_1", "inception_4a/pool_proj_w_0", "inception_4a/pool_proj_b_0"]  OUT-> ["inception_4a/pool_proj_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4a/pool_proj_1"]  OUT-> ["inception_4a/pool_proj_2"]
++--------
+
++--------
+|OPERATION->Concat                ATTR-> {"axis": Int(1)}  
+|IN-> ["inception_4a/1x1_2", "inception_4a/3x3_2", "inception_4a/5x5_2", "inception_4a/pool_proj_2"]  OUT-> ["inception_4a/output_1"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}  
+|IN-> ["inception_4a/output_1", "inception_4b/1x1_w_0", "inception_4b/1x1_b_0"]  OUT-> ["inception_4b/1x1_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4b/1x1_1"]  OUT-> ["inception_4b/1x1_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
+|IN-> ["inception_4a/output_1", "inception_4b/3x3_reduce_w_0", "inception_4b/3x3_reduce_b_0"]  OUT-> ["inception_4b/3x3_reduce_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4b/3x3_reduce_1"]  OUT-> ["inception_4b/3x3_reduce_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([3, 3]), "strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}  
+|IN-> ["inception_4b/3x3_reduce_2", "inception_4b/3x3_w_0", "inception_4b/3x3_b_0"]  OUT-> ["inception_4b/3x3_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4b/3x3_1"]  OUT-> ["inception_4b/3x3_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}  
+|IN-> ["inception_4a/output_1", "inception_4b/5x5_reduce_w_0", "inception_4b/5x5_reduce_b_0"]  OUT-> ["inception_4b/5x5_reduce_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4b/5x5_reduce_1"]  OUT-> ["inception_4b/5x5_reduce_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"pads": Ints([2, 2, 2, 2]), "kernel_shape": Ints([5, 5]), "strides": Ints([1, 1])}  
+|IN-> ["inception_4b/5x5_reduce_2", "inception_4b/5x5_w_0", "inception_4b/5x5_b_0"]  OUT-> ["inception_4b/5x5_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4b/5x5_1"]  OUT-> ["inception_4b/5x5_2"]
++--------
+
++--------
+|OPERATION->MaxPool               ATTR-> {"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}  
+|IN-> ["inception_4a/output_1"]  OUT-> ["inception_4b/pool_1"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
+|IN-> ["inception_4b/pool_1", "inception_4b/pool_proj_w_0", "inception_4b/pool_proj_b_0"]  OUT-> ["inception_4b/pool_proj_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4b/pool_proj_1"]  OUT-> ["inception_4b/pool_proj_2"]
++--------
+
++--------
+|OPERATION->Concat                ATTR-> {"axis": Int(1)}  
+|IN-> ["inception_4b/1x1_2", "inception_4b/3x3_2", "inception_4b/5x5_2", "inception_4b/pool_proj_2"]  OUT-> ["inception_4b/output_1"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}  
+|IN-> ["inception_4b/output_1", "inception_4c/1x1_w_0", "inception_4c/1x1_b_0"]  OUT-> ["inception_4c/1x1_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4c/1x1_1"]  OUT-> ["inception_4c/1x1_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
+|IN-> ["inception_4b/output_1", "inception_4c/3x3_reduce_w_0", "inception_4c/3x3_reduce_b_0"]  OUT-> ["inception_4c/3x3_reduce_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4c/3x3_reduce_1"]  OUT-> ["inception_4c/3x3_reduce_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}  
+|IN-> ["inception_4c/3x3_reduce_2", "inception_4c/3x3_w_0", "inception_4c/3x3_b_0"]  OUT-> ["inception_4c/3x3_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4c/3x3_1"]  OUT-> ["inception_4c/3x3_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1]), "kernel_shape": Ints([1, 1])}  
+|IN-> ["inception_4b/output_1", "inception_4c/5x5_reduce_w_0", "inception_4c/5x5_reduce_b_0"]  OUT-> ["inception_4c/5x5_reduce_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4c/5x5_reduce_1"]  OUT-> ["inception_4c/5x5_reduce_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([5, 5]), "strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2])}  
+|IN-> ["inception_4c/5x5_reduce_2", "inception_4c/5x5_w_0", "inception_4c/5x5_b_0"]  OUT-> ["inception_4c/5x5_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4c/5x5_1"]  OUT-> ["inception_4c/5x5_2"]
++--------
+
++--------
+|OPERATION->MaxPool               ATTR-> {"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}  
+|IN-> ["inception_4b/output_1"]  OUT-> ["inception_4c/pool_1"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
+|IN-> ["inception_4c/pool_1", "inception_4c/pool_proj_w_0", "inception_4c/pool_proj_b_0"]  OUT-> ["inception_4c/pool_proj_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4c/pool_proj_1"]  OUT-> ["inception_4c/pool_proj_2"]
++--------
+
++--------
+|OPERATION->Concat                ATTR-> {"axis": Int(1)}  
+|IN-> ["inception_4c/1x1_2", "inception_4c/3x3_2", "inception_4c/5x5_2", "inception_4c/pool_proj_2"]  OUT-> ["inception_4c/output_1"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}  
+|IN-> ["inception_4c/output_1", "inception_4d/1x1_w_0", "inception_4d/1x1_b_0"]  OUT-> ["inception_4d/1x1_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4d/1x1_1"]  OUT-> ["inception_4d/1x1_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
+|IN-> ["inception_4c/output_1", "inception_4d/3x3_reduce_w_0", "inception_4d/3x3_reduce_b_0"]  OUT-> ["inception_4d/3x3_reduce_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4d/3x3_reduce_1"]  OUT-> ["inception_4d/3x3_reduce_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([3, 3]), "pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}  
+|IN-> ["inception_4d/3x3_reduce_2", "inception_4d/3x3_w_0", "inception_4d/3x3_b_0"]  OUT-> ["inception_4d/3x3_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4d/3x3_1"]  OUT-> ["inception_4d/3x3_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}  
+|IN-> ["inception_4c/output_1", "inception_4d/5x5_reduce_w_0", "inception_4d/5x5_reduce_b_0"]  OUT-> ["inception_4d/5x5_reduce_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4d/5x5_reduce_1"]  OUT-> ["inception_4d/5x5_reduce_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([5, 5]), "strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2])}  
+|IN-> ["inception_4d/5x5_reduce_2", "inception_4d/5x5_w_0", "inception_4d/5x5_b_0"]  OUT-> ["inception_4d/5x5_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4d/5x5_1"]  OUT-> ["inception_4d/5x5_2"]
++--------
+
++--------
+|OPERATION->MaxPool               ATTR-> {"kernel_shape": Ints([3, 3]), "strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}  
+|IN-> ["inception_4c/output_1"]  OUT-> ["inception_4d/pool_1"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}  
+|IN-> ["inception_4d/pool_1", "inception_4d/pool_proj_w_0", "inception_4d/pool_proj_b_0"]  OUT-> ["inception_4d/pool_proj_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4d/pool_proj_1"]  OUT-> ["inception_4d/pool_proj_2"]
++--------
+
++--------
+|OPERATION->Concat                ATTR-> {"axis": Int(1)}  
+|IN-> ["inception_4d/1x1_2", "inception_4d/3x3_2", "inception_4d/5x5_2", "inception_4d/pool_proj_2"]  OUT-> ["inception_4d/output_1"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}  
+|IN-> ["inception_4d/output_1", "inception_4e/1x1_w_0", "inception_4e/1x1_b_0"]  OUT-> ["inception_4e/1x1_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4e/1x1_1"]  OUT-> ["inception_4e/1x1_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}  
+|IN-> ["inception_4d/output_1", "inception_4e/3x3_reduce_w_0", "inception_4e/3x3_reduce_b_0"]  OUT-> ["inception_4e/3x3_reduce_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4e/3x3_reduce_1"]  OUT-> ["inception_4e/3x3_reduce_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1]), "kernel_shape": Ints([3, 3])}  
+|IN-> ["inception_4e/3x3_reduce_2", "inception_4e/3x3_w_0", "inception_4e/3x3_b_0"]  OUT-> ["inception_4e/3x3_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4e/3x3_1"]  OUT-> ["inception_4e/3x3_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}  
+|IN-> ["inception_4d/output_1", "inception_4e/5x5_reduce_w_0", "inception_4e/5x5_reduce_b_0"]  OUT-> ["inception_4e/5x5_reduce_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4e/5x5_reduce_1"]  OUT-> ["inception_4e/5x5_reduce_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"pads": Ints([2, 2, 2, 2]), "kernel_shape": Ints([5, 5]), "strides": Ints([1, 1])}  
+|IN-> ["inception_4e/5x5_reduce_2", "inception_4e/5x5_w_0", "inception_4e/5x5_b_0"]  OUT-> ["inception_4e/5x5_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4e/5x5_1"]  OUT-> ["inception_4e/5x5_2"]
++--------
+
++--------
+|OPERATION->MaxPool               ATTR-> {"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1]), "kernel_shape": Ints([3, 3])}  
+|IN-> ["inception_4d/output_1"]  OUT-> ["inception_4e/pool_1"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
+|IN-> ["inception_4e/pool_1", "inception_4e/pool_proj_w_0", "inception_4e/pool_proj_b_0"]  OUT-> ["inception_4e/pool_proj_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_4e/pool_proj_1"]  OUT-> ["inception_4e/pool_proj_2"]
++--------
+
++--------
+|OPERATION->Concat                ATTR-> {"axis": Int(1)}  
+|IN-> ["inception_4e/1x1_2", "inception_4e/3x3_2", "inception_4e/5x5_2", "inception_4e/pool_proj_2"]  OUT-> ["inception_4e/output_1"]
++--------
+
++--------
+|OPERATION->MaxPool               ATTR-> {"strides": Ints([2, 2]), "pads": Ints([0, 0, 2, 2]), "kernel_shape": Ints([3, 3])}  
+|IN-> ["inception_4e/output_1"]  OUT-> ["pool4/3x3_s2_1"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
+|IN-> ["pool4/3x3_s2_1", "inception_5a/1x1_w_0", "inception_5a/1x1_b_0"]  OUT-> ["inception_5a/1x1_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_5a/1x1_1"]  OUT-> ["inception_5a/1x1_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}  
+|IN-> ["pool4/3x3_s2_1", "inception_5a/3x3_reduce_w_0", "inception_5a/3x3_reduce_b_0"]  OUT-> ["inception_5a/3x3_reduce_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_5a/3x3_reduce_1"]  OUT-> ["inception_5a/3x3_reduce_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1]), "kernel_shape": Ints([3, 3])}  
+|IN-> ["inception_5a/3x3_reduce_2", "inception_5a/3x3_w_0", "inception_5a/3x3_b_0"]  OUT-> ["inception_5a/3x3_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_5a/3x3_1"]  OUT-> ["inception_5a/3x3_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1]), "kernel_shape": Ints([1, 1])}  
+|IN-> ["pool4/3x3_s2_1", "inception_5a/5x5_reduce_w_0", "inception_5a/5x5_reduce_b_0"]  OUT-> ["inception_5a/5x5_reduce_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_5a/5x5_reduce_1"]  OUT-> ["inception_5a/5x5_reduce_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "kernel_shape": Ints([5, 5]), "pads": Ints([2, 2, 2, 2])}  
+|IN-> ["inception_5a/5x5_reduce_2", "inception_5a/5x5_w_0", "inception_5a/5x5_b_0"]  OUT-> ["inception_5a/5x5_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_5a/5x5_1"]  OUT-> ["inception_5a/5x5_2"]
++--------
+
++--------
+|OPERATION->MaxPool               ATTR-> {"pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3]), "strides": Ints([1, 1])}  
+|IN-> ["pool4/3x3_s2_1"]  OUT-> ["inception_5a/pool_1"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
+|IN-> ["inception_5a/pool_1", "inception_5a/pool_proj_w_0", "inception_5a/pool_proj_b_0"]  OUT-> ["inception_5a/pool_proj_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_5a/pool_proj_1"]  OUT-> ["inception_5a/pool_proj_2"]
++--------
+
++--------
+|OPERATION->Concat                ATTR-> {"axis": Int(1)}  
+|IN-> ["inception_5a/1x1_2", "inception_5a/3x3_2", "inception_5a/5x5_2", "inception_5a/pool_proj_2"]  OUT-> ["inception_5a/output_1"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}  
+|IN-> ["inception_5a/output_1", "inception_5b/1x1_w_0", "inception_5b/1x1_b_0"]  OUT-> ["inception_5b/1x1_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_5b/1x1_1"]  OUT-> ["inception_5b/1x1_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}  
+|IN-> ["inception_5a/output_1", "inception_5b/3x3_reduce_w_0", "inception_5b/3x3_reduce_b_0"]  OUT-> ["inception_5b/3x3_reduce_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_5b/3x3_reduce_1"]  OUT-> ["inception_5b/3x3_reduce_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}  
+|IN-> ["inception_5b/3x3_reduce_2", "inception_5b/3x3_w_0", "inception_5b/3x3_b_0"]  OUT-> ["inception_5b/3x3_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_5b/3x3_1"]  OUT-> ["inception_5b/3x3_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1]), "kernel_shape": Ints([1, 1])}  
+|IN-> ["inception_5a/output_1", "inception_5b/5x5_reduce_w_0", "inception_5b/5x5_reduce_b_0"]  OUT-> ["inception_5b/5x5_reduce_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_5b/5x5_reduce_1"]  OUT-> ["inception_5b/5x5_reduce_2"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "kernel_shape": Ints([5, 5]), "pads": Ints([2, 2, 2, 2])}  
+|IN-> ["inception_5b/5x5_reduce_2", "inception_5b/5x5_w_0", "inception_5b/5x5_b_0"]  OUT-> ["inception_5b/5x5_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_5b/5x5_1"]  OUT-> ["inception_5b/5x5_2"]
++--------
+
++--------
+|OPERATION->MaxPool               ATTR-> {"kernel_shape": Ints([3, 3]), "strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}  
+|IN-> ["inception_5a/output_1"]  OUT-> ["inception_5b/pool_1"]
++--------
+
++--------
+|OPERATION->Conv                  ATTR-> {"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1]), "kernel_shape": Ints([1, 1])}  
+|IN-> ["inception_5b/pool_1", "inception_5b/pool_proj_w_0", "inception_5b/pool_proj_b_0"]  OUT-> ["inception_5b/pool_proj_1"]
++--------
+
++--------
+|OPERATION->Relu                  ATTR-> {}  
+|IN-> ["inception_5b/pool_proj_1"]  OUT-> ["inception_5b/pool_proj_2"]
++--------
+
++--------
+|OPERATION->Concat                ATTR-> {"axis": Int(1)}  
+|IN-> ["inception_5b/1x1_2", "inception_5b/3x3_2", "inception_5b/5x5_2", "inception_5b/pool_proj_2"]  OUT-> ["inception_5b/output_1"]
++--------
+
++--------
+|OPERATION->AveragePool           ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([7, 7])}  
+|IN-> ["inception_5b/output_1"]  OUT-> ["pool5/7x7_s1_1"]
++--------
+
++--------
+|OPERATION->Dropout               ATTR-> {}  
+|IN-> ["pool5/7x7_s1_1", "264"]  OUT-> ["pool5/7x7_s1_2", "_pool5/7x7_s1_mask_1"]
++--------
+
++--------
+|OPERATION->Reshape               ATTR-> {}  
+|IN-> ["pool5/7x7_s1_2", "OC2_DUMMY_1"]  OUT-> ["OC2_DUMMY_0"]
++--------
+
++--------
+|OPERATION->Gemm                  ATTR-> {"transB": Int(1)}  
+|IN-> ["OC2_DUMMY_0", "loss3/classifier_w_0", "loss3/classifier_b_0"]  OUT-> ["loss3/classifier_1"]
++--------
+
++--------
+|OPERATION->Softmax               ATTR-> {}  
+|IN-> ["loss3/classifier_1"]  OUT-> ["prob_1"]
++--------
+
++--------
+|INITIALIZER->conv1/7x7_s2_b_0      DIMS-> [64]  
+ Vett di 64 elem
++--------
+
++--------
+|INITIALIZER->conv1/7x7_s2_w_0      DIMS-> [64, 3, 7, 7]  
+ Vett di 9408 elem
++--------
+
++--------
+|INITIALIZER->conv2/3x3_b_0         DIMS-> [192]  
+ Vett di 192 elem
++--------
+
++--------
+|INITIALIZER->conv2/3x3_reduce_b_0  DIMS-> [64]  
+ Vett di 64 elem
++--------
+
++--------
+|INITIALIZER->conv2/3x3_reduce_w_0  DIMS-> [64, 64, 1, 1]  
+ Vett di 4096 elem
++--------
+
++--------
+|INITIALIZER->conv2/3x3_w_0         DIMS-> [192, 64, 3, 3]  
+ Vett di 110592 elem
++--------
+
++--------
+|INITIALIZER->inception_3a/1x1_b_0  DIMS-> [64]  
+ Vett di 64 elem
++--------
+
++--------
+|INITIALIZER->inception_3a/1x1_w_0  DIMS-> [64, 192, 1, 1]  
+ Vett di 12288 elem
++--------
+
++--------
+|INITIALIZER->inception_3a/3x3_b_0  DIMS-> [128]  
+ Vett di 128 elem
++--------
+
++--------
+|INITIALIZER->inception_3a/3x3_reduce_b_0  DIMS-> [96]  
+ Vett di 96 elem
++--------
+
++--------
+|INITIALIZER->inception_3a/3x3_reduce_w_0  DIMS-> [96, 192, 1, 1]  
+ Vett di 18432 elem
++--------
+
++--------
+|INITIALIZER->inception_3a/3x3_w_0  DIMS-> [128, 96, 3, 3]  
+ Vett di 110592 elem
++--------
+
++--------
+|INITIALIZER->inception_3a/5x5_b_0  DIMS-> [32]  
+ Vett di 32 elem
++--------
+
++--------
+|INITIALIZER->inception_3a/5x5_reduce_b_0  DIMS-> [16]  
+ Vett di 16 elem
++--------
+
++--------
+|INITIALIZER->inception_3a/5x5_reduce_w_0  DIMS-> [16, 192, 1, 1]  
+ Vett di 3072 elem
++--------
+
++--------
+|INITIALIZER->inception_3a/5x5_w_0  DIMS-> [32, 16, 5, 5]  
+ Vett di 12800 elem
++--------
+
++--------
+|INITIALIZER->inception_3a/pool_proj_b_0  DIMS-> [32]  
+ Vett di 32 elem
++--------
+
++--------
+|INITIALIZER->inception_3a/pool_proj_w_0  DIMS-> [32, 192, 1, 1]  
+ Vett di 6144 elem
++--------
+
++--------
+|INITIALIZER->inception_3b/1x1_b_0  DIMS-> [128]  
+ Vett di 128 elem
++--------
+
++--------
+|INITIALIZER->inception_3b/1x1_w_0  DIMS-> [128, 256, 1, 1]  
+ Vett di 32768 elem
++--------
+
++--------
+|INITIALIZER->inception_3b/3x3_b_0  DIMS-> [192]  
+ Vett di 192 elem
++--------
+
++--------
+|INITIALIZER->inception_3b/3x3_reduce_b_0  DIMS-> [128]  
+ Vett di 128 elem
++--------
+
++--------
+|INITIALIZER->inception_3b/3x3_reduce_w_0  DIMS-> [128, 256, 1, 1]  
+ Vett di 32768 elem
++--------
+
++--------
+|INITIALIZER->inception_3b/3x3_w_0  DIMS-> [192, 128, 3, 3]  
+ Vett di 221184 elem
++--------
+
++--------
+|INITIALIZER->inception_3b/5x5_b_0  DIMS-> [96]  
+ Vett di 96 elem
++--------
+
++--------
+|INITIALIZER->inception_3b/5x5_reduce_b_0  DIMS-> [32]  
+ Vett di 32 elem
++--------
+
++--------
+|INITIALIZER->inception_3b/5x5_reduce_w_0  DIMS-> [32, 256, 1, 1]  
+ Vett di 8192 elem
++--------
+
++--------
+|INITIALIZER->inception_3b/5x5_w_0  DIMS-> [96, 32, 5, 5]  
+ Vett di 76800 elem
++--------
+
++--------
+|INITIALIZER->inception_3b/pool_proj_b_0  DIMS-> [64]  
+ Vett di 64 elem
++--------
+
++--------
+|INITIALIZER->inception_3b/pool_proj_w_0  DIMS-> [64, 256, 1, 1]  
+ Vett di 16384 elem
++--------
+
++--------
+|INITIALIZER->inception_4a/1x1_b_0  DIMS-> [192]  
+ Vett di 192 elem
++--------
+
++--------
+|INITIALIZER->inception_4a/1x1_w_0  DIMS-> [192, 480, 1, 1]  
+ Vett di 92160 elem
++--------
+
++--------
+|INITIALIZER->inception_4a/3x3_b_0  DIMS-> [208]  
+ Vett di 208 elem
++--------
+
++--------
+|INITIALIZER->inception_4a/3x3_reduce_b_0  DIMS-> [96]  
+ Vett di 96 elem
++--------
+
++--------
+|INITIALIZER->inception_4a/3x3_reduce_w_0  DIMS-> [96, 480, 1, 1]  
+ Vett di 46080 elem
++--------
+
++--------
+|INITIALIZER->inception_4a/3x3_w_0  DIMS-> [208, 96, 3, 3]  
+ Vett di 179712 elem
++--------
+
++--------
+|INITIALIZER->inception_4a/5x5_b_0  DIMS-> [48]  
+ Vett di 48 elem
++--------
+
++--------
+|INITIALIZER->inception_4a/5x5_reduce_b_0  DIMS-> [16]  
+ Vett di 16 elem
++--------
+
++--------
+|INITIALIZER->inception_4a/5x5_reduce_w_0  DIMS-> [16, 480, 1, 1]  
+ Vett di 7680 elem
++--------
+
++--------
+|INITIALIZER->inception_4a/5x5_w_0  DIMS-> [48, 16, 5, 5]  
+ Vett di 19200 elem
++--------
+
++--------
+|INITIALIZER->inception_4a/pool_proj_b_0  DIMS-> [64]  
+ Vett di 64 elem
++--------
+
++--------
+|INITIALIZER->inception_4a/pool_proj_w_0  DIMS-> [64, 480, 1, 1]  
+ Vett di 30720 elem
++--------
+
++--------
+|INITIALIZER->inception_4b/1x1_b_0  DIMS-> [160]  
+ Vett di 160 elem
++--------
+
++--------
+|INITIALIZER->inception_4b/1x1_w_0  DIMS-> [160, 512, 1, 1]  
+ Vett di 81920 elem
++--------
+
++--------
+|INITIALIZER->inception_4b/3x3_b_0  DIMS-> [224]  
+ Vett di 224 elem
++--------
+
++--------
+|INITIALIZER->inception_4b/3x3_reduce_b_0  DIMS-> [112]  
+ Vett di 112 elem
++--------
+
++--------
+|INITIALIZER->inception_4b/3x3_reduce_w_0  DIMS-> [112, 512, 1, 1]  
+ Vett di 57344 elem
++--------
+
++--------
+|INITIALIZER->inception_4b/3x3_w_0  DIMS-> [224, 112, 3, 3]  
+ Vett di 225792 elem
++--------
+
++--------
+|INITIALIZER->inception_4b/5x5_b_0  DIMS-> [64]  
+ Vett di 64 elem
++--------
+
++--------
+|INITIALIZER->inception_4b/5x5_reduce_b_0  DIMS-> [24]  
+ Vett di 24 elem
++--------
+
++--------
+|INITIALIZER->inception_4b/5x5_reduce_w_0  DIMS-> [24, 512, 1, 1]  
+ Vett di 12288 elem
++--------
+
++--------
+|INITIALIZER->inception_4b/5x5_w_0  DIMS-> [64, 24, 5, 5]  
+ Vett di 38400 elem
++--------
+
++--------
+|INITIALIZER->inception_4b/pool_proj_b_0  DIMS-> [64]  
+ Vett di 64 elem
++--------
+
++--------
+|INITIALIZER->inception_4b/pool_proj_w_0  DIMS-> [64, 512, 1, 1]  
+ Vett di 32768 elem
++--------
+
++--------
+|INITIALIZER->inception_4c/1x1_b_0  DIMS-> [128]  
+ Vett di 128 elem
++--------
+
++--------
+|INITIALIZER->inception_4c/1x1_w_0  DIMS-> [128, 512, 1, 1]  
+ Vett di 65536 elem
++--------
+
++--------
+|INITIALIZER->inception_4c/3x3_b_0  DIMS-> [256]  
+ Vett di 256 elem
++--------
+
++--------
+|INITIALIZER->inception_4c/3x3_reduce_b_0  DIMS-> [128]  
+ Vett di 128 elem
++--------
+
++--------
+|INITIALIZER->inception_4c/3x3_reduce_w_0  DIMS-> [128, 512, 1, 1]  
+ Vett di 65536 elem
++--------
+
++--------
+|INITIALIZER->inception_4c/3x3_w_0  DIMS-> [256, 128, 3, 3]  
+ Vett di 294912 elem
++--------
+
++--------
+|INITIALIZER->inception_4c/5x5_b_0  DIMS-> [64]  
+ Vett di 64 elem
++--------
+
++--------
+|INITIALIZER->inception_4c/5x5_reduce_b_0  DIMS-> [24]  
+ Vett di 24 elem
++--------
+
++--------
+|INITIALIZER->inception_4c/5x5_reduce_w_0  DIMS-> [24, 512, 1, 1]  
+ Vett di 12288 elem
++--------
+
++--------
+|INITIALIZER->inception_4c/5x5_w_0  DIMS-> [64, 24, 5, 5]  
+ Vett di 38400 elem
++--------
+
++--------
+|INITIALIZER->inception_4c/pool_proj_b_0  DIMS-> [64]  
+ Vett di 64 elem
++--------
+
++--------
+|INITIALIZER->inception_4c/pool_proj_w_0  DIMS-> [64, 512, 1, 1]  
+ Vett di 32768 elem
++--------
+
++--------
+|INITIALIZER->inception_4d/1x1_b_0  DIMS-> [112]  
+ Vett di 112 elem
++--------
+
++--------
+|INITIALIZER->inception_4d/1x1_w_0  DIMS-> [112, 512, 1, 1]  
+ Vett di 57344 elem
++--------
+
++--------
+|INITIALIZER->inception_4d/3x3_b_0  DIMS-> [288]  
+ Vett di 288 elem
++--------
+
++--------
+|INITIALIZER->inception_4d/3x3_reduce_b_0  DIMS-> [144]  
+ Vett di 144 elem
++--------
+
++--------
+|INITIALIZER->inception_4d/3x3_reduce_w_0  DIMS-> [144, 512, 1, 1]  
+ Vett di 73728 elem
++--------
+
++--------
+|INITIALIZER->inception_4d/3x3_w_0  DIMS-> [288, 144, 3, 3]  
+ Vett di 373248 elem
++--------
+
++--------
+|INITIALIZER->inception_4d/5x5_b_0  DIMS-> [64]  
+ Vett di 64 elem
++--------
+
++--------
+|INITIALIZER->inception_4d/5x5_reduce_b_0  DIMS-> [32]  
+ Vett di 32 elem
++--------
+
++--------
+|INITIALIZER->inception_4d/5x5_reduce_w_0  DIMS-> [32, 512, 1, 1]  
+ Vett di 16384 elem
++--------
+
++--------
+|INITIALIZER->inception_4d/5x5_w_0  DIMS-> [64, 32, 5, 5]  
+ Vett di 51200 elem
++--------
+
++--------
+|INITIALIZER->inception_4d/pool_proj_b_0  DIMS-> [64]  
+ Vett di 64 elem
++--------
+
++--------
+|INITIALIZER->inception_4d/pool_proj_w_0  DIMS-> [64, 512, 1, 1]  
+ Vett di 32768 elem
++--------
+
++--------
+|INITIALIZER->inception_4e/1x1_b_0  DIMS-> [256]  
+ Vett di 256 elem
++--------
+
++--------
+|INITIALIZER->inception_4e/1x1_w_0  DIMS-> [256, 528, 1, 1]  
+ Vett di 135168 elem
++--------
+
++--------
+|INITIALIZER->inception_4e/3x3_b_0  DIMS-> [320]  
+ Vett di 320 elem
++--------
+
++--------
+|INITIALIZER->inception_4e/3x3_reduce_b_0  DIMS-> [160]  
+ Vett di 160 elem
++--------
+
++--------
+|INITIALIZER->inception_4e/3x3_reduce_w_0  DIMS-> [160, 528, 1, 1]  
+ Vett di 84480 elem
++--------
+
++--------
+|INITIALIZER->inception_4e/3x3_w_0  DIMS-> [320, 160, 3, 3]  
+ Vett di 460800 elem
++--------
+
++--------
+|INITIALIZER->inception_4e/5x5_b_0  DIMS-> [128]  
+ Vett di 128 elem
++--------
+
++--------
+|INITIALIZER->inception_4e/5x5_reduce_b_0  DIMS-> [32]  
+ Vett di 32 elem
++--------
+
++--------
+|INITIALIZER->inception_4e/5x5_reduce_w_0  DIMS-> [32, 528, 1, 1]  
+ Vett di 16896 elem
++--------
+
++--------
+|INITIALIZER->inception_4e/5x5_w_0  DIMS-> [128, 32, 5, 5]  
+ Vett di 102400 elem
++--------
+
++--------
+|INITIALIZER->inception_4e/pool_proj_b_0  DIMS-> [128]  
+ Vett di 128 elem
++--------
+
++--------
+|INITIALIZER->inception_4e/pool_proj_w_0  DIMS-> [128, 528, 1, 1]  
+ Vett di 67584 elem
++--------
+
++--------
+|INITIALIZER->inception_5a/1x1_b_0  DIMS-> [256]  
+ Vett di 256 elem
++--------
+
++--------
+|INITIALIZER->inception_5a/1x1_w_0  DIMS-> [256, 832, 1, 1]  
+ Vett di 212992 elem
++--------
+
++--------
+|INITIALIZER->inception_5a/3x3_b_0  DIMS-> [320]  
+ Vett di 320 elem
++--------
+
++--------
+|INITIALIZER->inception_5a/3x3_reduce_b_0  DIMS-> [160]  
+ Vett di 160 elem
++--------
+
++--------
+|INITIALIZER->inception_5a/3x3_reduce_w_0  DIMS-> [160, 832, 1, 1]  
+ Vett di 133120 elem
++--------
+
++--------
+|INITIALIZER->inception_5a/3x3_w_0  DIMS-> [320, 160, 3, 3]  
+ Vett di 460800 elem
++--------
+
++--------
+|INITIALIZER->inception_5a/5x5_b_0  DIMS-> [128]  
+ Vett di 128 elem
++--------
+
++--------
+|INITIALIZER->inception_5a/5x5_reduce_b_0  DIMS-> [32]  
+ Vett di 32 elem
++--------
+
++--------
+|INITIALIZER->inception_5a/5x5_reduce_w_0  DIMS-> [32, 832, 1, 1]  
+ Vett di 26624 elem
++--------
+
++--------
+|INITIALIZER->inception_5a/5x5_w_0  DIMS-> [128, 32, 5, 5]  
+ Vett di 102400 elem
++--------
+
++--------
+|INITIALIZER->inception_5a/pool_proj_b_0  DIMS-> [128]  
+ Vett di 128 elem
++--------
+
++--------
+|INITIALIZER->inception_5a/pool_proj_w_0  DIMS-> [128, 832, 1, 1]  
+ Vett di 106496 elem
++--------
+
++--------
+|INITIALIZER->inception_5b/1x1_b_0  DIMS-> [384]  
+ Vett di 384 elem
++--------
+
++--------
+|INITIALIZER->inception_5b/1x1_w_0  DIMS-> [384, 832, 1, 1]  
+ Vett di 319488 elem
++--------
+
++--------
+|INITIALIZER->inception_5b/3x3_b_0  DIMS-> [384]  
+ Vett di 384 elem
++--------
+
++--------
+|INITIALIZER->inception_5b/3x3_reduce_b_0  DIMS-> [192]  
+ Vett di 192 elem
++--------
+
++--------
+|INITIALIZER->inception_5b/3x3_reduce_w_0  DIMS-> [192, 832, 1, 1]  
+ Vett di 159744 elem
++--------
+
++--------
+|INITIALIZER->inception_5b/3x3_w_0  DIMS-> [384, 192, 3, 3]  
+ Vett di 663552 elem
++--------
+
++--------
+|INITIALIZER->inception_5b/5x5_b_0  DIMS-> [128]  
+ Vett di 128 elem
++--------
+
++--------
+|INITIALIZER->inception_5b/5x5_reduce_b_0  DIMS-> [48]  
+ Vett di 48 elem
++--------
+
++--------
+|INITIALIZER->inception_5b/5x5_reduce_w_0  DIMS-> [48, 832, 1, 1]  
+ Vett di 39936 elem
++--------
+
++--------
+|INITIALIZER->inception_5b/5x5_w_0  DIMS-> [128, 48, 5, 5]  
+ Vett di 153600 elem
++--------
+
++--------
+|INITIALIZER->inception_5b/pool_proj_b_0  DIMS-> [128]  
+ Vett di 128 elem
++--------
+
++--------
+|INITIALIZER->inception_5b/pool_proj_w_0  DIMS-> [128, 832, 1, 1]  
+ Vett di 106496 elem
++--------
+
++--------
+|INITIALIZER->loss3/classifier_b_0  DIMS-> [1000]  
+ Vett di 1000 elem
++--------
+
++--------
+|INITIALIZER->loss3/classifier_w_0  DIMS-> [1000, 1024]  
+ Vett di 1024000 elem
++--------
+
++--------
+|INITIALIZER->OC2_DUMMY_1           DIMS-> [2]  
+ Vett di 2 elem
++--------
+
++--------
+|INITIALIZER->264                   DIMS-> []  
++--------
+
+INPUT->data_0
+OUTPUT->prob_1
+INTERMEDIATE->conv1/7x7_s2_1 IN ->["__0"], OUT->["__1"]
+INTERMEDIATE->conv1/7x7_s2_2 IN ->["__1"], OUT->["__2"]
+INTERMEDIATE->pool1/3x3_s2_1 IN ->["__2"], OUT->["__3"]
+INTERMEDIATE->pool1/norm1_1 IN ->["__3"], OUT->["__4"]
+INTERMEDIATE->conv2/3x3_reduce_1 IN ->["__4"], OUT->["__5"]
+INTERMEDIATE->conv2/3x3_reduce_2 IN ->["__5"], OUT->["__6"]
+INTERMEDIATE->conv2/3x3_1 IN ->["__6"], OUT->["__7"]
+INTERMEDIATE->conv2/3x3_2 IN ->["__7"], OUT->["__8"]
+INTERMEDIATE->conv2/norm2_1 IN ->["__8"], OUT->["__9"]
+INTERMEDIATE->pool2/3x3_s2_1 IN ->["__9"], OUT->["__10", "__12", "__16", "__20"]
+INTERMEDIATE->inception_3a/1x1_1 IN ->["__10"], OUT->["__11"]
+INTERMEDIATE->inception_3a/1x1_2 IN ->["__11"], OUT->["__23"]
+INTERMEDIATE->inception_3a/3x3_reduce_1 IN ->["__12"], OUT->["__13"]
+INTERMEDIATE->inception_3a/3x3_reduce_2 IN ->["__13"], OUT->["__14"]
+INTERMEDIATE->inception_3a/3x3_1 IN ->["__14"], OUT->["__15"]
+INTERMEDIATE->inception_3a/3x3_2 IN ->["__15"], OUT->["__23"]
+INTERMEDIATE->inception_3a/5x5_reduce_1 IN ->["__16"], OUT->["__17"]
+INTERMEDIATE->inception_3a/5x5_reduce_2 IN ->["__17"], OUT->["__18"]
+INTERMEDIATE->inception_3a/5x5_1 IN ->["__18"], OUT->["__19"]
+INTERMEDIATE->inception_3a/5x5_2 IN ->["__19"], OUT->["__23"]
+INTERMEDIATE->inception_3a/pool_1 IN ->["__20"], OUT->["__21"]
+INTERMEDIATE->inception_3a/pool_proj_1 IN ->["__21"], OUT->["__22"]
+INTERMEDIATE->inception_3a/pool_proj_2 IN ->["__22"], OUT->["__23"]
+INTERMEDIATE->inception_3a/output_1 IN ->["__23"], OUT->["__24", "__26", "__30", "__34"]
+INTERMEDIATE->inception_3b/1x1_1 IN ->["__24"], OUT->["__25"]
+INTERMEDIATE->inception_3b/1x1_2 IN ->["__25"], OUT->["__37"]
+INTERMEDIATE->inception_3b/3x3_reduce_1 IN ->["__26"], OUT->["__27"]
+INTERMEDIATE->inception_3b/3x3_reduce_2 IN ->["__27"], OUT->["__28"]
+INTERMEDIATE->inception_3b/3x3_1 IN ->["__28"], OUT->["__29"]
+INTERMEDIATE->inception_3b/3x3_2 IN ->["__29"], OUT->["__37"]
+INTERMEDIATE->inception_3b/5x5_reduce_1 IN ->["__30"], OUT->["__31"]
+INTERMEDIATE->inception_3b/5x5_reduce_2 IN ->["__31"], OUT->["__32"]
+INTERMEDIATE->inception_3b/5x5_1 IN ->["__32"], OUT->["__33"]
+INTERMEDIATE->inception_3b/5x5_2 IN ->["__33"], OUT->["__37"]
+INTERMEDIATE->inception_3b/pool_1 IN ->["__34"], OUT->["__35"]
+INTERMEDIATE->inception_3b/pool_proj_1 IN ->["__35"], OUT->["__36"]
+INTERMEDIATE->inception_3b/pool_proj_2 IN ->["__36"], OUT->["__37"]
+INTERMEDIATE->inception_3b/output_1 IN ->["__37"], OUT->["__38"]
+INTERMEDIATE->pool3/3x3_s2_1 IN ->["__38"], OUT->["__39", "__41", "__45", "__49"]
+INTERMEDIATE->inception_4a/1x1_1 IN ->["__39"], OUT->["__40"]
+INTERMEDIATE->inception_4a/1x1_2 IN ->["__40"], OUT->["__52"]
+INTERMEDIATE->inception_4a/3x3_reduce_1 IN ->["__41"], OUT->["__42"]
+INTERMEDIATE->inception_4a/3x3_reduce_2 IN ->["__42"], OUT->["__43"]
+INTERMEDIATE->inception_4a/3x3_1 IN ->["__43"], OUT->["__44"]
+INTERMEDIATE->inception_4a/3x3_2 IN ->["__44"], OUT->["__52"]
+INTERMEDIATE->inception_4a/5x5_reduce_1 IN ->["__45"], OUT->["__46"]
+INTERMEDIATE->inception_4a/5x5_reduce_2 IN ->["__46"], OUT->["__47"]
+INTERMEDIATE->inception_4a/5x5_1 IN ->["__47"], OUT->["__48"]
+INTERMEDIATE->inception_4a/5x5_2 IN ->["__48"], OUT->["__52"]
+INTERMEDIATE->inception_4a/pool_1 IN ->["__49"], OUT->["__50"]
+INTERMEDIATE->inception_4a/pool_proj_1 IN ->["__50"], OUT->["__51"]
+INTERMEDIATE->inception_4a/pool_proj_2 IN ->["__51"], OUT->["__52"]
+INTERMEDIATE->inception_4a/output_1 IN ->["__52"], OUT->["__53", "__55", "__59", "__63"]
+INTERMEDIATE->inception_4b/1x1_1 IN ->["__53"], OUT->["__54"]
+INTERMEDIATE->inception_4b/1x1_2 IN ->["__54"], OUT->["__66"]
+INTERMEDIATE->inception_4b/3x3_reduce_1 IN ->["__55"], OUT->["__56"]
+INTERMEDIATE->inception_4b/3x3_reduce_2 IN ->["__56"], OUT->["__57"]
+INTERMEDIATE->inception_4b/3x3_1 IN ->["__57"], OUT->["__58"]
+INTERMEDIATE->inception_4b/3x3_2 IN ->["__58"], OUT->["__66"]
+INTERMEDIATE->inception_4b/5x5_reduce_1 IN ->["__59"], OUT->["__60"]
+INTERMEDIATE->inception_4b/5x5_reduce_2 IN ->["__60"], OUT->["__61"]
+INTERMEDIATE->inception_4b/5x5_1 IN ->["__61"], OUT->["__62"]
+INTERMEDIATE->inception_4b/5x5_2 IN ->["__62"], OUT->["__66"]
+INTERMEDIATE->inception_4b/pool_1 IN ->["__63"], OUT->["__64"]
+INTERMEDIATE->inception_4b/pool_proj_1 IN ->["__64"], OUT->["__65"]
+INTERMEDIATE->inception_4b/pool_proj_2 IN ->["__65"], OUT->["__66"]
+INTERMEDIATE->inception_4b/output_1 IN ->["__66"], OUT->["__67", "__69", "__73", "__77"]
+INTERMEDIATE->inception_4c/1x1_1 IN ->["__67"], OUT->["__68"]
+INTERMEDIATE->inception_4c/1x1_2 IN ->["__68"], OUT->["__80"]
+INTERMEDIATE->inception_4c/3x3_reduce_1 IN ->["__69"], OUT->["__70"]
+INTERMEDIATE->inception_4c/3x3_reduce_2 IN ->["__70"], OUT->["__71"]
+INTERMEDIATE->inception_4c/3x3_1 IN ->["__71"], OUT->["__72"]
+INTERMEDIATE->inception_4c/3x3_2 IN ->["__72"], OUT->["__80"]
+INTERMEDIATE->inception_4c/5x5_reduce_1 IN ->["__73"], OUT->["__74"]
+INTERMEDIATE->inception_4c/5x5_reduce_2 IN ->["__74"], OUT->["__75"]
+INTERMEDIATE->inception_4c/5x5_1 IN ->["__75"], OUT->["__76"]
+INTERMEDIATE->inception_4c/5x5_2 IN ->["__76"], OUT->["__80"]
+INTERMEDIATE->inception_4c/pool_1 IN ->["__77"], OUT->["__78"]
+INTERMEDIATE->inception_4c/pool_proj_1 IN ->["__78"], OUT->["__79"]
+INTERMEDIATE->inception_4c/pool_proj_2 IN ->["__79"], OUT->["__80"]
+INTERMEDIATE->inception_4c/output_1 IN ->["__80"], OUT->["__81", "__83", "__87", "__91"]
+INTERMEDIATE->inception_4d/1x1_1 IN ->["__81"], OUT->["__82"]
+INTERMEDIATE->inception_4d/1x1_2 IN ->["__82"], OUT->["__94"]
+INTERMEDIATE->inception_4d/3x3_reduce_1 IN ->["__83"], OUT->["__84"]
+INTERMEDIATE->inception_4d/3x3_reduce_2 IN ->["__84"], OUT->["__85"]
+INTERMEDIATE->inception_4d/3x3_1 IN ->["__85"], OUT->["__86"]
+INTERMEDIATE->inception_4d/3x3_2 IN ->["__86"], OUT->["__94"]
+INTERMEDIATE->inception_4d/5x5_reduce_1 IN ->["__87"], OUT->["__88"]
+INTERMEDIATE->inception_4d/5x5_reduce_2 IN ->["__88"], OUT->["__89"]
+INTERMEDIATE->inception_4d/5x5_1 IN ->["__89"], OUT->["__90"]
+INTERMEDIATE->inception_4d/5x5_2 IN ->["__90"], OUT->["__94"]
+INTERMEDIATE->inception_4d/pool_1 IN ->["__91"], OUT->["__92"]
+INTERMEDIATE->inception_4d/pool_proj_1 IN ->["__92"], OUT->["__93"]
+INTERMEDIATE->inception_4d/pool_proj_2 IN ->["__93"], OUT->["__94"]
+INTERMEDIATE->inception_4d/output_1 IN ->["__94"], OUT->["__95", "__97", "__101", "__105"]
+INTERMEDIATE->inception_4e/1x1_1 IN ->["__95"], OUT->["__96"]
+INTERMEDIATE->inception_4e/1x1_2 IN ->["__96"], OUT->["__108"]
+INTERMEDIATE->inception_4e/3x3_reduce_1 IN ->["__97"], OUT->["__98"]
+INTERMEDIATE->inception_4e/3x3_reduce_2 IN ->["__98"], OUT->["__99"]
+INTERMEDIATE->inception_4e/3x3_1 IN ->["__99"], OUT->["__100"]
+INTERMEDIATE->inception_4e/3x3_2 IN ->["__100"], OUT->["__108"]
+INTERMEDIATE->inception_4e/5x5_reduce_1 IN ->["__101"], OUT->["__102"]
+INTERMEDIATE->inception_4e/5x5_reduce_2 IN ->["__102"], OUT->["__103"]
+INTERMEDIATE->inception_4e/5x5_1 IN ->["__103"], OUT->["__104"]
+INTERMEDIATE->inception_4e/5x5_2 IN ->["__104"], OUT->["__108"]
+INTERMEDIATE->inception_4e/pool_1 IN ->["__105"], OUT->["__106"]
+INTERMEDIATE->inception_4e/pool_proj_1 IN ->["__106"], OUT->["__107"]
+INTERMEDIATE->inception_4e/pool_proj_2 IN ->["__107"], OUT->["__108"]
+INTERMEDIATE->inception_4e/output_1 IN ->["__108"], OUT->["__109"]
+INTERMEDIATE->pool4/3x3_s2_1 IN ->["__109"], OUT->["__110", "__112", "__116", "__120"]
+INTERMEDIATE->inception_5a/1x1_1 IN ->["__110"], OUT->["__111"]
+INTERMEDIATE->inception_5a/1x1_2 IN ->["__111"], OUT->["__123"]
+INTERMEDIATE->inception_5a/3x3_reduce_1 IN ->["__112"], OUT->["__113"]
+INTERMEDIATE->inception_5a/3x3_reduce_2 IN ->["__113"], OUT->["__114"]
+INTERMEDIATE->inception_5a/3x3_1 IN ->["__114"], OUT->["__115"]
+INTERMEDIATE->inception_5a/3x3_2 IN ->["__115"], OUT->["__123"]
+INTERMEDIATE->inception_5a/5x5_reduce_1 IN ->["__116"], OUT->["__117"]
+INTERMEDIATE->inception_5a/5x5_reduce_2 IN ->["__117"], OUT->["__118"]
+INTERMEDIATE->inception_5a/5x5_1 IN ->["__118"], OUT->["__119"]
+INTERMEDIATE->inception_5a/5x5_2 IN ->["__119"], OUT->["__123"]
+INTERMEDIATE->inception_5a/pool_1 IN ->["__120"], OUT->["__121"]
+INTERMEDIATE->inception_5a/pool_proj_1 IN ->["__121"], OUT->["__122"]
+INTERMEDIATE->inception_5a/pool_proj_2 IN ->["__122"], OUT->["__123"]
+INTERMEDIATE->inception_5a/output_1 IN ->["__123"], OUT->["__124", "__126", "__130", "__134"]
+INTERMEDIATE->inception_5b/1x1_1 IN ->["__124"], OUT->["__125"]
+INTERMEDIATE->inception_5b/1x1_2 IN ->["__125"], OUT->["__137"]
+INTERMEDIATE->inception_5b/3x3_reduce_1 IN ->["__126"], OUT->["__127"]
+INTERMEDIATE->inception_5b/3x3_reduce_2 IN ->["__127"], OUT->["__128"]
+INTERMEDIATE->inception_5b/3x3_1 IN ->["__128"], OUT->["__129"]
+INTERMEDIATE->inception_5b/3x3_2 IN ->["__129"], OUT->["__137"]
+INTERMEDIATE->inception_5b/5x5_reduce_1 IN ->["__130"], OUT->["__131"]
+INTERMEDIATE->inception_5b/5x5_reduce_2 IN ->["__131"], OUT->["__132"]
+INTERMEDIATE->inception_5b/5x5_1 IN ->["__132"], OUT->["__133"]
+INTERMEDIATE->inception_5b/5x5_2 IN ->["__133"], OUT->["__137"]
+INTERMEDIATE->inception_5b/pool_1 IN ->["__134"], OUT->["__135"]
+INTERMEDIATE->inception_5b/pool_proj_1 IN ->["__135"], OUT->["__136"]
+INTERMEDIATE->inception_5b/pool_proj_2 IN ->["__136"], OUT->["__137"]
+INTERMEDIATE->inception_5b/output_1 IN ->["__137"], OUT->["__138"]
+INTERMEDIATE->pool5/7x7_s1_1 IN ->["__138"], OUT->["__139"]
+INTERMEDIATE->pool5/7x7_s1_2 IN ->["__139"], OUT->["__140"]
+INTERMEDIATE->OC2_DUMMY_0 IN ->["__140"], OUT->["__141"]
+INTERMEDIATE->loss3/classifier_1 IN ->["__141"], OUT->["__142"]
+
+CONTENUTO FILE INPUT ->
+				"dims":1
+				"dims":3
+				"dims":224
+				"dims":224
+				"data_type":1
+				"name":"data_0"
+				"raw_data": Vett di 602112 elem
+ Vett di 150528 elem
+[[[[17.76738, 8.872088, 12.70994, 0.37630937, 10.426729, ..., -0.6312349, 10.550119, 17.229822, -23.779156, 10.02943],
+   [-29.783958, -0.8181445, -6.5128584, -9.01855, -14.114364, ..., -3.920341, -0.27139828, -15.621905, 1.9824336, -8.286268],
+   [-13.621371, 5.7643943, -6.248355, -5.3062963, 2.1633162, ..., 5.3900504, -9.702521, 27.03532, -9.712179, 2.674145],
+   [4.466711, -9.584971, 1.3775301, 2.7183707, 13.362893, ..., 4.023308, 2.0089793, 29.617079, -6.318307, -11.233568],
+   [-18.079428, 9.855907, 3.3291693, -10.520301, 11.763646, ..., 7.851725, 4.507238, -0.68843997, 9.829319, 5.0929728],
+   ...,
+   [-11.07953, -2.8653266, -0.36209422, -15.745678, 5.266351, ..., 6.5476394, -3.5965579, 3.1253557, 14.221491, -0.42594448],
+   [-5.665301, 6.5065074, 3.620404, -13.828198, -5.5049624, ..., -13.893213, 1.1370717, 2.7028546, -11.7829685, -16.281893],
+   [7.611323, 12.530516, -2.5004349, -6.726661, -13.69719, ..., -11.809269, 6.1061983, -1.5514307, -9.458019, 3.5132835],
+   [-7.354202, -16.484636, 2.78544, -11.146089, -4.5266557, ..., 3.5941951, 3.7283938, -4.2217326, -17.317682, -2.3893194],
+   [11.420167, 5.328586, -0.60418034, 1.117922, 14.591718, ..., -14.338946, -7.341658, -4.7494526, -11.045053, 3.9609902]],
+
+  [[-4.245949, 5.645057, 7.1377783, 16.469603, -0.53964657, ..., 1.3820031, -14.171659, 3.6034405, 13.517051, -13.72775],
+   [-3.3274686, 17.932838, -5.5830836, 3.5365412, -0.4239959, ..., 9.686897, 0.683598, 16.829653, -9.757657, 10.465908],
+   [11.537742, 9.785241, 13.488941, -8.732312, 0.20754041, ..., 23.708006, 19.544216, 5.005754, 0.3570061, -7.982924],
+   [4.3814125, -13.444913, 6.792753, -5.535418, 7.113098, ..., -5.176471, 0.4709501, -1.39813, 3.1678278, -15.566768],
+   [7.299682, -3.228921, -1.2643366, 0.54656285, -16.27948, ..., -1.2510715, 10.236292, -5.617052, 13.555964, -9.273805],
+   ...,
+   [7.390106, 6.551458, 1.2498342, -12.005684, -5.973217, ..., -7.752077, 13.06794, -1.9806548, 1.881108, 1.8893453],
+   [-8.5487585, 1.2410543, 2.2703192, 1.3039483, -22.79031, ..., -1.3118737, 1.7121825, 15.654493, 19.678308, -1.2780019],
+   [-6.869951, 2.6747067, 0.8702912, -14.186432, 8.58922, ..., 16.996668, 3.8427734, -11.1037655, -2.1455333, 37.05233],
+   [-5.7057066, -10.667576, 7.0527377, 3.1325517, -17.226978, ..., 6.550066, 7.3697343, -5.993976, 7.674285, 2.5708003],
+   [1.5685511, -1.8863995, 1.2209558, 1.757536, -17.515545, ..., -3.1835575, -10.491204, 9.050206, 2.798162, 0.8119274]],
+
+  [[9.165495, -0.91221035, -5.8609047, -9.849516, -5.0024657, ..., 4.1480455, 1.9347655, -13.195464, 12.378324, -4.6658196],
+   [-15.566781, 26.706257, 18.269869, 5.177954, -9.024062, ..., -0.5896286, 1.8187705, 6.3152056, -2.146191, 4.740922],
+   [-10.9569, 7.6309943, -13.243837, 3.883116, 21.546356, ..., 3.5203528, -9.394902, -0.35232726, 13.631902, -4.144491],
+   [12.624795, 6.3488073, -1.7252507, -1.5032625, -13.101386, ..., 7.9715943, -8.980255, 8.333461, -2.1804223, 4.6370945],
+   [-4.917153, 10.023262, -2.9601905, 17.052727, 3.5679188, ..., 14.327653, -10.307725, 19.217875, -15.553763, 14.782493],
+   ...,
+   [12.441132, 1.1442081, 0.5041329, -26.402876, 1.5868493, ..., -2.6354241, 8.001406, -4.1296906, -8.618922, -5.9372797],
+   [-14.55675, 15.26306, -3.6892803, -15.472007, 0.90721816, ..., -1.8583479, 9.337356, 7.8709617, 1.9335353, -4.6212444],
+   [3.0572016, 30.773397, 3.278474, 1.5662042, 3.1969585, ..., -14.7385025, -9.942686, 2.9483707, 15.430005, 20.562502],
+   [-7.0982857, 13.952895, 4.9009757, 7.2926035, 10.880739, ..., -1.4246731, 3.0624206, 0.7536134, 12.892176, 11.67709],
+   [-15.999081, 0.6513544, -10.868083, 13.81134, 4.470176, ..., -4.5379467, 8.517247, -0.8430254, 14.809061, 5.3305917]]]], shape=[1, 3, 224, 224], strides=[150528, 50176, 224, 1], layout=Cc (0x5), dynamic ndim=4
+
+
+
+Err(OnnxError { msg: "[__140] Could not change shape of tensor: ShapeError/IncompatibleShape: incompatible shapes" })

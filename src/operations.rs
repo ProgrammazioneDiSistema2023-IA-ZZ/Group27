@@ -141,7 +141,24 @@ impl Operation {
     }
 
     /// Crea una nuova operazione da avviare con attributi.
-    pub fn with_attributes(op_type: OpType, attributes: HashMap<String, Attribute>) -> Self {
+    pub fn with_attributes(op_type: OpType, mut attributes: HashMap<String, Attribute>) -> Self {
+       
+       /*LRN ha dei valori di default per alcuni parametri, nel file .onnx sono presenti i parametri alpha,beta,bias ma non sono valorizzati 
+        i valori sono stati presi dalla documentazione ufficiale di LRN
+       */
+  
+        if let OpType::LRN = op_type{
+            if let Attribute::Undefined = attributes.get("alpha").unwrap(){
+                attributes.insert("alpha".to_string(), Attribute::Float(0.0001));
+            }
+            if let Attribute::Undefined = attributes.get("beta").unwrap(){
+                attributes.insert("beta".to_string(), Attribute::Float(0.75));
+            }
+            if let Attribute::Undefined = attributes.get("bias").unwrap(){
+                attributes.insert("bias".to_string(), Attribute::Float(1.0));
+            }
+        }
+        
         Self {
             op_type,
             attributes,

@@ -3,7 +3,7 @@ use std::{
     collections::HashMap,
     fs::File,
     io::{BufReader, Read},
-    sync::Arc,
+    sync::Arc, ops::Range,
    
 };
 
@@ -88,6 +88,8 @@ impl OnnxFileParser {
 
     pub fn parse(&mut self, path: &str, path2: &str) {
         /*Creazione grafo vuoto */
+        let mut range = 0..1000 ;
+        
         let mut building_graph = OnnxGraph::new();
        
         let file = File::open(path);
@@ -112,28 +114,36 @@ impl OnnxFileParser {
             return;
         }
         println!("\n\n---------------CREAZIONE GRAFO------------");
-        let graph = ModelProto::try_from(model).unwrap().graph;
+        let mut graph = ModelProto::try_from(model).unwrap().graph;
 
-        /*
-           MNIST -> il nodo di input è solo 1 ed è taggato input ,nessun nodo taggato initializer. i nodi initializer vengono gestiti come nodi [nodes]
-           GOOGLENET-> il nodo di input è 1 [data_0] ma anche i nodi di tipo initializer sono taggati come [input] e come [initializer] ,occorre separare input
-                       vero, quindi con solo tag [input] da nodi initializer [input]+[initializer]
-        */
-        for e in &graph.node {
+ 
+        for e in &mut graph.node {
   
             if e.inputs.len() != 0 && e.outputs.len() != 0 {
                 //NODO OPERATION 
-                // non è detto che un nodo abbia un nome... googlenet ha i nomi ai nodi operazione -> è un problema di pytorch che quando esporta il modello non mette i nomi 
-               /*  if e.name.is_empty(){
-                    self.result = Result::Err("Error: node without a name".to_string());
-                    return;
-                }*/
+            
+               
+                
+                /*Dropout ha 2 output, ma solo il primo è quello vero, il secondo è "mask" che viene ignorato */
+                if e.op_type == "Dropout"{
+
+                    e.outputs = vec![e.outputs[0].clone()];
+                   
+                }
+                /*  
+                    Alcuni modelli non prevedono un nome proprio per i nodi operazione.
+                    ma il nome serve per individuare correttamente i nodi.
+                    GENERO un nome fittizio UNIVOCO composto da [NOME ORIGINALE]__[TIPO_OP]__[INDEX], dove index è un indice incrementale 
+                 */
+                e.name = vec![e.name.clone(),e.op_type.clone(),(range.next()).unwrap().to_string()].join("__");
                 println!("+--------");
-                println!("|OPERATION->{: <20}  ATTR-> {:?}  ", &(e.op_type),e.attributes);
+                println!("|OPERATION->{: <20}  ATTR-> {:?}  ", &(e.name),e.attributes);
                 println!("|IN-> {:?}  OUT-> {:?}",e.inputs,e.outputs);
                 println!("+--------\n");
+
                 let node_op = OnnxGraphNode::Operation(OnnxGraphOperation::new(
                     &e.name,
+                    
                     Operation::with_attributes(OpType::try_from(e.op_type.as_str()).unwrap(),e.attributes.clone()),
                     &e.inputs,
                     &e.outputs,
@@ -150,10 +160,20 @@ impl OnnxFileParser {
        
             graph
             .tensor_initializer
-            .iter()
+            .iter_mut()
             .for_each(|x| { 
                 println!("+--------");
                 println!("|INITIALIZER->{: <20}  DIMS-> {:?}  ", x.name,x.dims);
+                
+                /*  Raw Data contiene dati che devono essere convertiti correttamente in base al data_type
+                    Per comodità poichè tutte le operazioni sono implementate per lavorare con f32 si fa il seguente passaggio
+                    raw -> data_type -> f32
+                 */
+                if x.raw_data.len()>0{
+                    x.float_data = converterRaw(&x.raw_data, x.data_type );
+                    println!(" Vett di {:?} elem", x.float_data.len());
+                    x.raw_data=Vec::new();
+                }
                 println!("+--------\n");
                 let mut val: ArrayBase<OwnedRepr<f32>, ndarray::Dim<ndarray::IxDynImpl>> =
                     create_multidim_array(
@@ -252,8 +272,12 @@ impl OnnxFileParser {
             self.result = Result::Err("Error while parsing model - ".to_owned() + &res.unwrap());
             return;
         }
-        let data = TensorProto::try_from(input_data).unwrap();
-
+        let mut data = TensorProto::try_from(input_data).unwrap();
+        if data.raw_data.len()>0{
+            data.float_data = converterRaw(&data.raw_data, data.data_type );
+            println!(" Vett di {:?} elem", data.float_data.len());
+            data.raw_data=Vec::new();
+        }
         
         let val = create_multidim_array(
             data.float_data,

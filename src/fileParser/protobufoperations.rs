@@ -20,6 +20,29 @@ pub fn readVarint(vect: &Vec<u8>, index: &mut usize) -> usize {
     }
     return varint;
 }
+pub fn converterRaw(vect:&Vec<u8>,data_type : usize)->Vec<f32>{
+    let mut result = Vec::new();
+    match data_type{
+        1 =>  {//float -> 4 bytes
+            let mut i =0;
+            while i<vect.len(){
+                result.push(f32::from_le_bytes(vect[i..i + 4].try_into().unwrap()));
+                i+=4;
+            }
+        }
+        7=>{
+            let mut i =0;
+            while i<vect.len(){
+                result.push(readVarint(vect, &mut i)as f32);
+                i+=8;
+            }
+        }
+        _=>{
+                panic!("CONVERTER RAW {}",data_type);
+        }
+    }
+    result
+}
 pub fn leggifloats(v: &Vec<u8>) -> Vec<f32> {
     let mut result = Vec::new();
     let mut i = 0;
@@ -202,15 +225,13 @@ fn wireType_two_2(
         ProtoBufMessage::AttributeProto(p) => {
             print!("\t\t\t\"{}\":", *p.fieldNumber.get(field_number).unwrap());
             let val = readVarint(&vettore, index) as usize;
-            // print!("{}] : ", val);
+             print!("{}] : ", val);
             if *field_number == 5 {
                 println!("");
                 let mut tp = ProtoBufMessage::TensorProto(TensorProto::new());
                 proto_buffer_tag_reader(&mut tp, &(vettore[*index..(*index + val)]).to_vec());
 
                 p.tp = TensorProto::try_from(tp).unwrap();
-                print!("Struttura ok [{:?}]", p.tp.dims);
-
                 //HO UN TENSORE COMPLETO
             } else {
                 let word = String::from_utf8(vettore[*index..(*index + val)].to_owned()).unwrap();
@@ -220,10 +241,8 @@ fn wireType_two_2(
                 }
                 if *field_number==4 { //s
                     if let Attribute::Undefined = p.attr{
-                       
                         p.attr=Attribute::String(word.clone());
                     }
-                   
                 }
             }
             (*index) += val;
@@ -234,20 +253,17 @@ fn wireType_two_2(
             } else {
                 panic!("{}", field_number);
             }
-
             let val = readVarint(&vettore, index) as usize;
-            //  print!("val =|{}| : ", val);
-
             if *field_number == 4 {
                 let v = leggifloats(&vettore[*index..*index + val].to_vec());
                 println!(" Vett di {:?} elem", v.len());
                 p.float_data = v;
             } else if *field_number == 9 {
-                //RAW_DATA
-                let v = leggifloats(&vettore[*index..*index + val].to_vec());
+                //RAW_DATA -> leggo bytes poi in base al campo data_type converto nel tipo corretto
+                let v = leggibytes(&vettore[*index..*index + val].to_vec());
                 //let v = leggiraw(&vettore[*index..*index + val].to_vec());
-                println!(" Vett di {:?} elem", v.len());
-                p.float_data = v.iter().map(|x| *x as f32).collect();
+                println!(" Vett di {:?} elem RAW", v.len());
+                p.raw_data = v;
             } else if *field_number == 7 {
                 let v = leggiint64(&vettore[*index..*index + val].to_vec());
                 println!(" Vett di {:?} elem", v.len());
@@ -386,9 +402,12 @@ pub fn wireType_zero_2(
 
                     "f" => {
                         println!("f");
+                        if let Attribute::Undefined = p.attr{
+                            p.attr=Attribute::Float(val as f32);
+                        }
                     }
                     "i" => {
-                        println!("i");
+                       
                         if let Attribute::Undefined = p.attr{
                             p.attr=Attribute::Int(val as isize);
                         }
@@ -418,7 +437,7 @@ pub fn wireType_zero_2(
                     "floats" => {
                         println!("floats");
                     }  
-                    _ => {}
+                    _ => { println!("tipo non gestito {:?}",fieldName.unwrap()); }
                 }
             } else {
                 print!("\t\t\tNON SUPPORTATO val = {}", field_number);
@@ -436,6 +455,9 @@ pub fn wireType_zero_2(
                 if *field_number == 9 {
                     //RAW_DATA
                     print!("\n\n\n\nffdfjdighdsghdi");
+                }
+                if *field_number==2 { //data_type
+                    p.data_type = val;
                 }
             } else {
                 print!("\t\t\t\tNON SUPPORTATO val = {}", field_number);

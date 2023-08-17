@@ -31,6 +31,7 @@ impl Operation {
         if inputs.len() != 2 {
             return Err(onnx_error!("Reshape operation must have 2 inputs."));
         }
+       
 
         let (data, shape) = (inputs[0], inputs[1]);
         if shape.shape().len() != 1 {
