@@ -192,7 +192,6 @@ impl Operation {
     /// Il padding può essere manuale o automatico, in base agli attributi dell'operazione.
     fn get_padding(
         &self,
-        fmaps: usize,
         (data_h, data_w): (usize, usize),
         (kernel_h, kernel_w): (usize, usize),
         (strides_h, strides_w): (usize, usize),
@@ -221,7 +220,7 @@ impl Operation {
                 // Il padding viene distribuito a metà in entrambe le dimensioni. Se le dimensioni sono dispari, il padding aggiuntivo
                 // viene messo all'inizio (UPPER) o alla fine (LOWER) in base all'opzione
                 s @ ("SAME_UPPER" | "SAME_LOWER") => {
-                    let (v_padding, h_padding) = (fmaps*(data_h*(strides_h-1)+kernel_h-strides_h), fmaps*(data_w*(strides_w-1)+kernel_w-strides_w));
+                    let (v_padding, h_padding) = (data_h*(strides_h-1)+kernel_h-strides_h, data_w*(strides_w-1)+kernel_w-strides_w);
                     Ok([
                         if v_padding % 2 == 0 || s.ends_with("UPPER") { v_padding/2 } else { v_padding/2+1 },
                         if h_padding % 2 == 0 || s.ends_with("UPPER") { h_padding/2 } else { h_padding/2+1 },

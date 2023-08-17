@@ -115,7 +115,12 @@ impl Operation {
         };
         
         // Padding: manuale o automatico, indica righe/colonne aggiuntive con valori costanti.
-        let [ pad_n, pad_w, pad_s, pad_e ] = self.get_padding(1, (data_h, data_w), (kernel_h, kernel_w), (strides_h, strides_w))?;
+        let [ pad_n, pad_w, pad_s, pad_e ] =
+            self.get_padding(
+                (data_h, data_w),
+                (kernel_h, kernel_w),
+                (strides_h, strides_w)
+            )?;
 
         // Ceil mode: arrotonda per difetto o per eccesso la dimensione dell'output.
         let ceil_mode = match self.attributes.get("ceil_mode") {

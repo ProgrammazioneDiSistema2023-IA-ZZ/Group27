@@ -1,5 +1,5 @@
 use std::sync::Arc;
-use ndarray::{Array1, Array4, s, Ix2};
+use ndarray::{Array1, Array4, s};
 
 use super::{Operation, OnnxError, onnx_error, Tensor, OperationResult, Attribute};
 
@@ -52,7 +52,7 @@ impl Operation {
         // Estrazione e controlli sulle dimensioni dei due input.
         let (
             [ batches, channels, data_h, data_w ],
-            [ fmaps, channels_w, kernel_h, kernel_w ]
+            [ filters, channels_w, kernel_h, kernel_w ]
         ) = (data_shape, weights_shape);
 
         if channels != channels_w {
@@ -62,7 +62,7 @@ impl Operation {
         // Bias: valori da sommare, unici per ogni canale
         let bias =
             inputs.get(2).map_or_else(
-                || Array1::<f32>::zeros(fmaps).into_dyn(),
+                || Array1::<f32>::zeros(filters).into_dyn(),
                 |b| (*b).clone()
             );
 
@@ -117,7 +117,12 @@ impl Operation {
         };
         
         // Padding: manuale o automatico, indica righe/colonne aggiuntive con valori costanti.
-        let [ pad_n, pad_w, pad_s, pad_e ] = self.get_padding(fmaps, (data_h, data_w), (kernel_h, kernel_w), (strides_h, strides_w))?;
+        let [ pad_n, pad_w, pad_s, pad_e ] =
+            self.get_padding(
+                (data_h, data_w),
+                (kernel_h, kernel_w),
+                (strides_h, strides_w)
+            )?;
 
         /*** CONVOLUZIONE ***/
 
@@ -127,29 +132,23 @@ impl Operation {
         padded_data.slice_mut(s![.., .., pad_n..pad_n+data_h, pad_w..pad_w+data_w]).assign(data);
 
         // Calcola le dimensioni dell'output
-        let (out_h, out_w) = (0..fmaps).fold((padded_h, padded_w), |(p_h, p_w), _| ((p_h-kernel_h)/strides_h+1, (p_w-kernel_w)/strides_w+1));
+        let (out_h, out_w) = ((padded_h-kernel_h)/strides_h+1, (padded_w-kernel_w)/strides_w+1);
         
         // Tensor risultato, inizializzato con tutti zeri
-        let mut result = Array4::<f32>::zeros((batches, channels, out_h, out_w));
+        let mut result = Array4::<f32>::zeros((batches, filters, out_h, out_w));
 
         for (n_batch, batch) in padded_data.outer_iter().enumerate() {
-            for (n_channel, channel) in batch.outer_iter().enumerate() {
-                // Performa tante convoluzioni quante sono le feature maps (valore M nella documentazione)
+            // Performa tante convoluzioni quanti sono i filtri (valore M nella documentazione)
+            for (n_filter, kernel) in weights.outer_iter().enumerate() {
+                let bias_val = bias[n_filter];
                 let output =
-                    (0..fmaps)
-                        .into_iter()
-                        .fold(Ok(channel.to_owned()), |output, fmap| {
-                            let bias_val = bias[fmap];
-                            let kernel = weights.slice(s![fmap, n_channel, .., ..]);
-                            Self::map_windows(
-                                output?.view().into_dyn(),
-                                kernel.shape(),
-                                |window| (&window * &kernel).sum() + bias_val,
-                                &[strides_h, strides_w]
-                            ).and_then(|res| res.into_dimensionality::<Ix2>().map_err(|_| onnx_error!("Could not convert dynamic array into 2D.")))
-                        })?;
-                // Assegna al risultato
-                result.slice_mut(s![n_batch, n_channel, .., ..]).assign(&output);
+                    Self::map_windows(
+                        batch.into_dyn(),
+                        kernel.shape(),
+                        |window| (&window * &kernel).sum() + bias_val,
+                        &[1, strides_h, strides_w]
+                    )?.into_shape((out_h, out_w)).unwrap();
+                result.slice_mut(s![n_batch, n_filter, .., ..]).assign(&output);
             }
         }
 
@@ -160,8 +159,8 @@ impl Operation {
 
 #[cfg(test)]
 mod tests {
-    use std::{sync::Arc, collections::HashMap};
-    use ndarray::{Array, Array1};
+    use std::{sync::Arc, collections::HashMap, iter};
+    use ndarray::{Array, array};
     use crate::operations::{Operation, OpType, Attribute};
 
     #[test]
@@ -169,23 +168,20 @@ mod tests {
         let op = Operation::new(OpType::Conv);
 
         let data =
-            Array::from_iter((1..=16).map(|i| i as f32).cycle().take(2*3*4*4))
-            .into_shape((2,3,4,4))
+            Array::from_iter((0..=24).map(|i| i as f32).cycle().take(1*1*5*5))
+            .into_shape((1,1,5,5))
             .unwrap().into_dyn();
 
         let weights =
-            Array::from_iter((1..=4).map(|i| i as f32).cycle().take(1*3*2*2))
-            .into_shape((1,3,2,2))
+            Array::from_iter(iter::repeat(1. as f32).take(1*1*3*3))
+            .into_shape((1,1,3,3))
             .unwrap().into_dyn();
 
-        let expected_result =
-            Array::from_iter([
-                44.,  54.,  64., 
-                84.,  94.,  104.,
-                124., 134., 144.
-            ].into_iter().cycle().take(2*3*3*3))
-            .into_shape((2,3,3,3))
-            .unwrap().into_dyn();
+        let expected_result = array![
+            54.,  63.,  72., 
+            99.,  108., 117.,
+            144., 153., 162.
+        ].into_shape((1,1,3,3)).unwrap().into_dyn();
     
         let result = op.execute(vec![Arc::new(data), Arc::new(weights)]);
 
@@ -201,23 +197,23 @@ mod tests {
         let op = Operation::with_attributes(OpType::Conv, attributes);
 
         let data =
-            Array::from_iter((1..=4).map(|i| i as f32).cycle().take(2*3*2*2))
-            .into_shape((2,3,2,2))
+            Array::from_iter((0..=24).map(|i| i as f32).cycle().take(1*1*5*5))
+            .into_shape((1,1,5,5))
             .unwrap().into_dyn();
 
         let weights =
-            Array::from_iter((1..=4).map(|i| i as f32).cycle().take(1*3*2*2))
-            .into_shape((1,3,2,2))
+            Array::from_iter(iter::repeat(1. as f32).take(1*1*3*3))
+            .into_shape((1,1,3,3))
             .unwrap().into_dyn();
 
         let expected_result =
-            Array::from_iter([
-                4.,  11., 6.,
-                14., 30., 14.,
-                6.,  11., 4.
-            ].into_iter().cycle().take(2*3*3*3))
-            .into_shape((2,3,3,3))
-            .unwrap().into_dyn();
+            array![
+                12., 21.,  27.,  33.,  24.,
+                33., 54.,  63.,  72.,  51.,
+                63., 99.,  108., 117., 81.,
+                93., 144., 153., 162., 111.,
+                72., 111., 117., 123., 84.,
+            ].into_shape((1,1,5,5)).unwrap().into_dyn();
     
         let result = op.execute(vec![Arc::new(data), Arc::new(weights)]);
 
@@ -233,19 +229,20 @@ mod tests {
         let op = Operation::with_attributes(OpType::Conv, attributes);
 
         let data =
-            Array::from_iter((1..=16).map(|i| i as f32).cycle().take(2*3*4*4))
-            .into_shape((2,3,4,4))
+            Array::from_iter((0..=34).map(|i| i as f32).cycle().take(1*1*7*5))
+            .into_shape((1,1,7,5))
             .unwrap().into_dyn();
 
         let weights =
-            Array::from_iter((1..=4).map(|i| i as f32).cycle().take(1*3*2*2))
-            .into_shape((1,3,2,2))
+            Array::from_iter(iter::repeat(1. as f32).take(1*1*3*3))
+            .into_shape((1,1,3,3))
             .unwrap().into_dyn();
 
-        let expected_result =
-            Array::from_iter([44.,64.,124.,144.].into_iter().cycle().take(2*3*2*2))
-            .into_shape((2,3,2,2))
-            .unwrap().into_dyn();
+        let expected_result = array![
+            54.0, 72.0,
+            144.0, 162.0,
+            234.0, 252.0
+        ].into_shape((1,1,3,2)).unwrap().into_dyn();
     
         let result = op.execute(vec![Arc::new(data), Arc::new(weights)]);
 
@@ -254,23 +251,57 @@ mod tests {
     }
 
     #[test]
-    fn multiple_fmaps() {
+    fn multiple_channels() {
         let op = Operation::new(OpType::Conv);
 
         let data =
-            Array::from_iter((1..=16).map(|i| i as f32).cycle().take(2*3*4*4))
-            .into_shape((2,3,4,4))
+            Array::from_iter((0..=24).map(|i| i as f32).cycle().take(1*2*5*5))
+            .into_shape((1,2,5,5))
             .unwrap().into_dyn();
 
         let weights =
-            Array::from_iter((1..=4).map(|i| i as f32).cycle().take(2*3*2*2))
-            .into_shape((2,3,2,2))
+            Array::from_iter(iter::repeat(1. as f32).take(1*2*3*3))
+            .into_shape((1,2,3,3))
             .unwrap().into_dyn();
 
-        let expected_result =
-            Array::from_iter([780., 880., 1180., 1280.].into_iter().cycle().take(2*3*2*2))
-            .into_shape((2,3,2,2))
+        let expected_result = array![
+            108.,  126.,  144., 
+            198.,  216., 234.,
+            288., 306., 324.
+        ].into_shape((1,1,3,3)).unwrap().into_dyn();
+    
+        let result = op.execute(vec![Arc::new(data), Arc::new(weights)]);
+
+        assert!(result.is_ok(), "{:?}", result.unwrap_err());
+        assert_eq!(result.unwrap(), Arc::new(expected_result));
+    }
+
+    #[test]
+    fn multiple_filters() {
+        let op = Operation::new(OpType::Conv);
+
+        let data =
+            Array::from_iter((0..=24).map(|i| i as f32).cycle().take(1*1*5*5))
+            .into_shape((1,1,5,5))
             .unwrap().into_dyn();
+
+        let weights =
+            Array::from_iter(iter::repeat(1. as f32).take(1*1*3*3).chain(iter::repeat(2. as f32).take(1*1*3*3)))
+            .into_shape((2,1,3,3))
+            .unwrap().into_dyn();
+
+        let expected_result = array![
+            [
+                54.,  63.,  72., 
+                99.,  108., 117.,
+                144., 153., 162.,
+            ],
+            [
+                108.,  126.,  144., 
+                198.,  216., 234.,
+                288., 306., 324.
+            ]
+        ].into_shape((1,2,3,3)).unwrap().into_dyn();
     
         let result = op.execute(vec![Arc::new(data), Arc::new(weights)]);
 
@@ -283,21 +314,22 @@ mod tests {
         let op = Operation::new(OpType::Conv);
 
         let data =
-            Array::from_iter((1..=16).map(|i| i as f32).cycle().take(2*3*4*4))
-            .into_shape((2,3,4,4))
+            Array::from_iter((0..=24).map(|i| i as f32).cycle().take(1*1*5*5))
+            .into_shape((1,1,5,5))
             .unwrap().into_dyn();
 
         let weights =
-            Array::from_iter((1..=4).map(|i| i as f32).cycle().take(2*3*2*2))
-            .into_shape((2,3,2,2))
+            Array::from_iter(iter::repeat(1. as f32).take(1*1*3*3))
+            .into_shape((1,1,3,3))
             .unwrap().into_dyn();
 
-        let bias = Array1::from_iter([1., 2.].into_iter()).into_dyn();
+        let bias = array![1.].into_dyn();
 
-        let expected_result =
-            Array::from_iter([792., 892., 1192., 1292.].into_iter().cycle().take(2*3*2*2))
-            .into_shape((2,3,2,2))
-            .unwrap().into_dyn();
+        let expected_result = array![
+            55.,  64.,  73., 
+            100.,  109., 118.,
+            145., 154., 163.
+        ].into_shape((1,1,3,3)).unwrap().into_dyn();
     
         let result = op.execute(vec![Arc::new(data), Arc::new(weights), Arc::new(bias)]);
 
@@ -306,28 +338,34 @@ mod tests {
     }
 
     #[test]
-    fn auto_pad() {
+    fn autopad() {
         let attributes = HashMap::from([
             ("auto_pad".to_string(), Attribute::String("SAME_LOWER".to_string()))
         ]);
         let op = Operation::with_attributes(OpType::Conv, attributes);
 
         let data =
-            Array::from_iter((1..=16).map(|i| i as f32).cycle().take(2*3*4*4))
-            .into_shape((2,3,4,4))
+            Array::from_iter((0..=24).map(|i| i as f32).cycle().take(1*1*5*5))
+            .into_shape((1,1,5,5))
             .unwrap().into_dyn();
-
-        let data_dim = data.dim();
 
         let weights =
-            Array::from_iter((1..=4).map(|i| i as f32).cycle().take(2*3*3*3))
-            .into_shape((2,3,3,3))
+            Array::from_iter(iter::repeat(1. as f32).take(1*1*3*3))
+            .into_shape((1,1,3,3))
             .unwrap().into_dyn();
+
+        let expected_result = array![
+            12., 21.,  27.,  33.,  24.,
+            33., 54.,  63.,  72.,  51.,
+            63., 99.,  108., 117., 81.,
+            93., 144., 153., 162., 111.,
+            72., 111., 117., 123., 84.,
+        ].into_shape((1,1,5,5)).unwrap().into_dyn();
     
         let result = op.execute(vec![Arc::new(data), Arc::new(weights)]);
 
         assert!(result.is_ok(), "{:?}", result.unwrap_err());
-        assert_eq!(result.unwrap().dim(), data_dim);
+        assert_eq!(result.unwrap(), Arc::new(expected_result));
     }
 
 }
