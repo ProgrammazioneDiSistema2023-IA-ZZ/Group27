@@ -32,9 +32,9 @@ pub fn converterRaw(vect:&Vec<u8>,data_type : usize)->Vec<f32>{
         }
         7=>{
             let mut i =0;
-            while i<vect.len(){
-                result.push(readVarint(vect, &mut i)as f32);
-                i+=8;
+            while i<vect.len(){ 
+                result.push((u64::from_le_bytes(vect[i..i + 8].try_into().unwrap()) as f32));
+                i += 8;
             }
         }
         _=>{
@@ -68,7 +68,7 @@ pub fn leggiint64(v: &Vec<u8>) -> Vec<u64> {
     let mut i = 0;
     while i < v.len() {
         result.push(readVarint(v, &mut i) as u64);
-        //  result.push(u64::from_le_bytes(v[i..i + 8].try_into().unwrap()));
+       //   result.push(u64::from_le_bytes(v[i..i + 8].try_into().unwrap()));
         // i += 8;
     }
     result

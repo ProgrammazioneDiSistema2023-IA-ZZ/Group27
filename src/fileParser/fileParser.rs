@@ -181,11 +181,15 @@ impl OnnxFileParser {
                         &x.dims,
                     )
                     .unwrap();
-                
+                if x.name =="OC2_DUMMY_1"{
+                    println!("{}",val);
+                }
                 let node_init = OnnxGraphNode::Initializer(OnnxGraphInitializer::new(
                     &x.name,
                     val,
                 ));
+
+               
                 let res =building_graph.add_node(node_init);
                 if res.is_err() {
                     self.result = Result::Err("Error while adding initialer node - ".to_string()+ &res.err().unwrap().msg);
