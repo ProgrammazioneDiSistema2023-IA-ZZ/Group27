@@ -270,7 +270,8 @@ impl OnnxFileParser {
         let result = Arc::new(building_graph).infer(input_values);
      println!("\n\n\n{:?}", result);
 
-
+        let r = result.unwrap().get("Plus214_Output_0").unwrap().clone();
+        //r.iter().map(|x| x).for_each(|x|)
 
         return;
     }

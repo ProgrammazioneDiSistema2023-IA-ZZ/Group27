@@ -244,7 +244,7 @@ fn wireType_two_2(
                 p.float_data = v;
             } else if *field_number == 9 {
                 //RAW_DATA
-                let v = leggibytes(&vettore[*index..*index + val].to_vec());
+                let v = leggifloats(&vettore[*index..*index + val].to_vec());
                 //let v = leggiraw(&vettore[*index..*index + val].to_vec());
                 println!(" Vett di {:?} elem", v.len());
                 p.float_data = v.iter().map(|x| *x as f32).collect();
