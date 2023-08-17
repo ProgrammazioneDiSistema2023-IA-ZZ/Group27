@@ -1,5 +1,5 @@
-use std::sync::Arc;
-use ndarray::{Array1, Array4, s};
+use std::sync::{Arc, Mutex};
+use ndarray::{Array1, Array4, s, parallel::prelude::{IntoParallelIterator, IndexedParallelIterator, ParallelIterator}, Array2};
 
 use super::{Operation, OnnxError, onnx_error, Tensor, OperationResult, Attribute};
 
@@ -135,24 +135,42 @@ impl Operation {
         let (out_h, out_w) = ((padded_h-kernel_h)/strides_h+1, (padded_w-kernel_w)/strides_w+1);
         
         // Tensor risultato, inizializzato con tutti zeri
-        let mut result = Array4::<f32>::zeros((batches, filters, out_h, out_w));
+        let result = Mutex::new(Array4::<f32>::zeros((batches, filters, out_h, out_w)));
 
         for (n_batch, batch) in padded_data.outer_iter().enumerate() {
-            // Performa tante convoluzioni quanti sono i filtri (valore M nella documentazione)
-            for (n_filter, kernel) in weights.outer_iter().enumerate() {
-                let bias_val = bias[n_filter];
-                let output =
-                    Self::map_windows(
-                        batch.into_dyn(),
-                        kernel.shape(),
-                        |window| (&window * &kernel).sum() + bias_val,
-                        &[1, strides_h, strides_w]
-                    )?.into_shape((out_h, out_w)).unwrap();
-                result.slice_mut(s![n_batch, n_filter, .., ..]).assign(&output);
-            }
+            weights
+                .outer_iter()
+                .into_par_iter()
+                .enumerate()
+                .map(|(n_filter, kernel)| {
+                    // Performa tante convoluzioni quanti sono i filtri (valore M nella documentazione)
+                    let bias_val = bias[n_filter];
+                    let output =
+                        Self::map_windows(
+                            batch.into_dyn(),
+                            kernel.shape(),
+                            |window| (&window * &kernel).sum() + bias_val,
+                            &[1, strides_h, strides_w]
+                        ).and_then(|res| Ok(res.into_shape((out_h, out_w)).unwrap()))?;
+
+                    let mut result =
+                        result.lock()
+                            .map_err(|_| onnx_error!("A PoisonError occurred while convoluting"))?;
+                    result.slice_mut(s![n_batch, n_filter, .., ..]).assign(&output);
+                    
+                    Ok(())
+                })
+                .collect::<Result<(), OnnxError>>()?;
         }
 
-        Ok(Arc::new(result.into_dyn()))
+        // Estrai risultato dal mutex
+        let result =
+            result
+                .into_inner()
+                .map_err(|_| onnx_error!("A PoisonError occurred while extracting result from Mutex"))?
+                .into_dyn();
+
+        Ok(Arc::new(result))
     }
 
 }

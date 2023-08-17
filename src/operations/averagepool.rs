@@ -1,5 +1,5 @@
-use std::sync::Arc;
-use ndarray::{Array4, s, ArrayViewD, Ix2};
+use std::sync::{Arc, Mutex};
+use ndarray::{Array4, s, ArrayViewD, Ix2, parallel::prelude::{IntoParallelIterator, IndexedParallelIterator, ParallelIterator}};
 
 use super::{Operation, OnnxError, onnx_error, Tensor, OperationResult, Attribute};
 
@@ -151,38 +151,56 @@ impl Operation {
         );
 
         // Tensor risultato, inizializzato con tutti zeri
-        let mut result = Array4::<f32>::zeros((batches, channels, out_h, out_w));
+        let result = Mutex::new(Array4::<f32>::zeros((batches, channels, out_h, out_w)));
 
         for (n_batch, batch) in padded_data.outer_iter().enumerate() {
-            for (n_channel, channel) in batch.outer_iter().enumerate() {
-                let output =
-                    Self::map_windows(
-                        channel.into_dyn(),
-                        &[kernel_h, kernel_w],
-                        |window: ArrayViewD<Option<f32>>| {
-                            let values: Vec<f32> = if count_include_pad == 1 {
-                                // Conta anche il padding (valore 0) nel calcolo del risultato.
-                                window
-                                    .into_iter()
-                                    .map(|&v| v.unwrap_or(0.))
-                                    .collect()
-                            } else {
-                                // Non contare il padding nel calcolo del risultato.
-                                window
-                                    .into_iter()
-                                    .filter_map(|v| *v)
-                                    .collect()
-                            };
+            batch
+                .outer_iter()
+                .into_par_iter()
+                .enumerate()
+                .map(|(n_channel, channel)| {
+                    let output =
+                        Self::map_windows(
+                            channel.into_dyn(),
+                            &[kernel_h, kernel_w],
+                            |window: ArrayViewD<Option<f32>>| {
+                                let values: Vec<f32> = if count_include_pad == 1 {
+                                    // Conta anche il padding (valore 0) nel calcolo del risultato.
+                                    window
+                                        .into_iter()
+                                        .map(|&v| v.unwrap_or(0.))
+                                        .collect()
+                                } else {
+                                    // Non contare il padding nel calcolo del risultato.
+                                    window
+                                        .into_iter()
+                                        .filter_map(|v| *v)
+                                        .collect()
+                                };
 
-                            values.iter().sum::<f32>() / values.len() as f32
-                        },
-                        &[strides_h, strides_w]
-                    )?.into_dimensionality::<Ix2>().map_err(|_| onnx_error!("Could not convert dynamic array into 2D."))?;
-                result.slice_mut(s![n_batch, n_channel, .., ..]).assign(&output);
-            }
+                                values.iter().sum::<f32>() / values.len() as f32
+                            },
+                            &[strides_h, strides_w]
+                        )?.into_dimensionality::<Ix2>().map_err(|_| onnx_error!("Could not convert dynamic array into 2D."))?;
+                    
+                        let mut result =
+                        result.lock()
+                            .map_err(|_| onnx_error!("A PoisonError occurred while convoluting"))?;
+                        result.slice_mut(s![n_batch, n_channel, .., ..]).assign(&output);
+
+                        Ok(())
+                })
+                .collect::<Result<(), OnnxError>>()?;
         }
 
-        Ok(Arc::new(result.into_dyn()))
+        // Estrai risultato dal mutex
+        let result =
+            result
+                .into_inner()
+                .map_err(|_| onnx_error!("A PoisonError occurred while extracting result from Mutex"))?
+                .into_dyn();
+
+        Ok(Arc::new(result))
     }
 
 }

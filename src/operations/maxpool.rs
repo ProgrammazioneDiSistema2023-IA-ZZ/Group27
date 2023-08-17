@@ -1,5 +1,5 @@
-use std::sync::Arc;
-use ndarray::{Array4, s};
+use std::sync::{Arc, Mutex};
+use ndarray::{Array4, s, parallel::prelude::{IntoParallelIterator, IndexedParallelIterator, ParallelIterator}};
 
 use super::{Operation, OnnxError, onnx_error, Tensor, OperationResult, Attribute};
 
@@ -151,22 +151,40 @@ impl Operation {
         );
 
         // Tensor risultato, inizializzato con tutti zeri
-        let mut result = Array4::<f32>::zeros((batches, channels, out_h, out_w));
+        let result = Mutex::new(Array4::<f32>::zeros((batches, channels, out_h, out_w)));
 
         for (n_batch, batch) in padded_data.outer_iter().enumerate() {
-            for (n_channel, channel) in batch.outer_iter().enumerate() {
-                let output =
+            batch
+                .outer_iter()
+                .into_par_iter()
+                .enumerate()
+                .map(|(n_channel, channel)| {
+                    let output =
                     Self::map_windows(
                         channel.into_dyn(),
                          &[kernel_h, kernel_w],
                         |window| *window.into_iter().max_by(|a, b| a.partial_cmp(b).unwrap()).unwrap(),
                         &[strides_h, strides_w]
                     )?;
-                result.slice_mut(s![n_batch, n_channel, .., ..]).assign(&output);
-            }
+
+                    let mut result =
+                        result.lock()
+                            .map_err(|_| onnx_error!("A PoisonError occurred while convoluting"))?;
+                    result.slice_mut(s![n_batch, n_channel, .., ..]).assign(&output);
+
+                    Ok(())
+                })
+                .collect::<Result<(), OnnxError>>()?;
         }
 
-        Ok(Arc::new(result.into_dyn()))
+        // Estrai risultato dal mutex
+        let result =
+            result
+                .into_inner()
+                .map_err(|_| onnx_error!("A PoisonError occurred while extracting result from Mutex"))?
+                .into_dyn();
+
+        Ok(Arc::new(result))
     }
 
 }
