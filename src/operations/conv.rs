@@ -1,5 +1,6 @@
-use std::sync::{Arc, Mutex};
-use ndarray::{Array1, Array4, s, parallel::prelude::{IntoParallelIterator, IndexedParallelIterator, ParallelIterator}, };
+use std::sync::Arc;
+use ndarray::{Array1, Array4, s, Array, Ix1};
+use ndarray_einsum_beta::{ArrayLike, einsum};
 
 use super::{Operation, OnnxError, onnx_error, Tensor, OperationResult, Attribute};
 
@@ -59,12 +60,16 @@ impl Operation {
             return Err(onnx_error!("Input tensors must have the same number of channels, as groups are not supported ({channels} and {channels_w} supplied)."));
         }
 
-        // Bias: valori da sommare, unici per ogni canale
+        // Bias: valori da sommare, unici per ogni filtro
         let bias =
             inputs.get(2).map_or_else(
-                || Array1::<f32>::zeros(filters).into_dyn(),
-                |b| (*b).clone()
-            );
+                || Ok(Array1::<f32>::zeros(filters)),
+                |b| (*b).clone().into_dimensionality::<Ix1>().map_err(|_| onnx_error!("Bias array must be one-dimensional."))
+            )?;
+        
+        if bias.len() != filters {
+            return Err(onnx_error!("Bias input must have the same length as the number of filters."))
+        }
 
         // Attributi
         // Dilation: non gestita
@@ -130,45 +135,42 @@ impl Operation {
         let (padded_h, padded_w) = (data_h + pad_n + pad_s, data_w + pad_e + pad_w);
         let mut padded_data = Array4::<f32>::zeros((batches, channels, padded_h, padded_w));
         padded_data.slice_mut(s![.., .., pad_n..pad_n+data_h, pad_w..pad_w+data_w]).assign(data);
+        
+        let strides = [ strides_h, strides_w ];
+        let window_dim = [ kernel_h, kernel_w ];
+
+        // Ricava le finestre bidimensionali per ogni canale e salvale nel vettore windows_array.
+        // (Il risultato ha dimensioni B x C x Nh x Nw x Kh x Kw)
+        // B: batches; C: channels; Nh,Nw: Numero finestre in altezza/lunghezza; Kh,Kw: dimensioni del kernel.
+        let windows_data =
+            padded_data
+                .outer_iter()
+                .flat_map(|batch| {
+                    batch
+                        .outer_iter()
+                        .flat_map(|channel| {
+                            Self::get_strided_windows(&channel.into_dyn_view(), window_dim.as_slice(), strides.as_slice())
+                                .flat_map(|m| m.to_owned().into_iter())
+                                .collect::<Vec<_>>()
+                        })
+                        .collect::<Vec<_>>()
+                });
 
         // Calcola le dimensioni dell'output
         let (out_h, out_w) = ((padded_h-kernel_h)/strides_h+1, (padded_w-kernel_w)/strides_w+1);
-        
-        // Tensor risultato, inizializzato con tutti zeri
-        let result = Mutex::new(Array4::<f32>::zeros((batches, filters, out_h, out_w)));
 
-        for (n_batch, batch) in padded_data.outer_iter().enumerate() {
-            weights
-                .outer_iter()
-                .into_par_iter()
-                .enumerate()
-                .map(|(n_filter, kernel)| {
-                    // Performa tante convoluzioni quanti sono i filtri (valore M nella documentazione)
-                    let bias_val = bias[n_filter];
-                    let output =
-                        Self::map_windows(
-                            batch.into_dyn(),
-                            kernel.shape(),
-                            |window| (&window * &kernel).sum() + bias_val,
-                            &[1, strides_h, strides_w]
-                        ).and_then(|res| Ok(res.into_shape((out_h, out_w)).unwrap()))?;
+        let windows_array =
+            Array::from_iter(windows_data)
+                .into_shape((batches, channels, out_h, out_w, kernel_h, kernel_w))
+                .unwrap();
 
-                    let mut result =
-                        result.lock()
-                            .map_err(|_| onnx_error!("A PoisonError occurred while convoluting"))?;
-                    result.slice_mut(s![n_batch, n_filter, .., ..]).assign(&output);
-                    
-                    Ok(())
-                })
-                .collect::<Result<(), OnnxError>>()?;
-        }
+        // Ricava il risultato della convoluzione tramite l'operazione Einsum
+        let mut result = 
+            einsum("bchwij,fcij->bfhw", &[ &windows_array, weights ])
+                .map_err(|e| onnx_error!("Einsum failed to produce a result: {e}."))?;
 
-        // Estrai risultato dal mutex
-        let result =
-            result
-                .into_inner()
-                .map_err(|_| onnx_error!("A PoisonError occurred while extracting result from Mutex"))?
-                .into_dyn();
+        // Somma il bias al risultato (ad ogni filtro)
+        result += &bias.into_shape((1, filters, 1, 1)).unwrap();
 
         Ok(Arc::new(result))
     }

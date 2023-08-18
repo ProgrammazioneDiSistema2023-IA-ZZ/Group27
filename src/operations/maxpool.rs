@@ -1,5 +1,7 @@
-use std::sync::{Arc, Mutex};
-use ndarray::{Array4, s, parallel::prelude::{IntoParallelIterator, IndexedParallelIterator, ParallelIterator}};
+use std::sync::Arc;
+use itertools::{iproduct, Itertools};
+use ndarray::{Array4, s, Array};
+use rayon::prelude::{ParallelBridge, ParallelIterator};
 
 use super::{Operation, OnnxError, onnx_error, Tensor, OperationResult, Attribute};
 
@@ -150,39 +152,33 @@ impl Operation {
             if ceil_mode == 1 { f32::ceil((padded_w-kernel_w) as f32/strides_w as f32 + 1.) as usize } else { (padded_w-kernel_w)/strides_w+1 }
         );
 
-        // Tensor risultato, inizializzato con tutti zeri
-        let result = Mutex::new(Array4::<f32>::zeros((batches, channels, out_h, out_w)));
-
-        for (n_batch, batch) in padded_data.outer_iter().enumerate() {
-            batch
-                .outer_iter()
-                .into_par_iter()
-                .enumerate()
-                .map(|(n_channel, channel)| {
-                    let output =
+        // Calcola il valore di ogni cella del risultato in modo parallelo, poi unisci il tutto nel vettore finale result. 
+        // L'iteratore parallelo colleziona i valori in modo disordinato, quindi occorre ancora effettuare un sort in base
+        // all'indice globale di ogni valore.
+        let values =
+            iproduct!(0..batches, 0..channels)
+                .par_bridge()
+                .map(|(n_batch, n_channel)| {
+                    let channel = padded_data.slice(s![n_batch, n_channel, .., ..]);
                     Self::map_windows(
                         channel.into_dyn(),
-                         &[kernel_h, kernel_w],
+                        [kernel_h, kernel_w].as_slice(),
+                        [strides_h, strides_w].as_slice(),
                         |window| *window.into_iter().max_by(|a, b| a.partial_cmp(b).unwrap()).unwrap(),
-                        &[strides_h, strides_w]
-                    )?;
-
-                    let mut result =
-                        result.lock()
-                            .map_err(|_| onnx_error!("A PoisonError occurred while convoluting"))?;
-                    result.slice_mut(s![n_batch, n_channel, .., ..]).assign(&output);
-
-                    Ok(())
+                    ).map(|res| (
+                        n_channel + n_batch * channels, // Indice globale
+                        res // Risultato (array)
+                    ))
                 })
-                .collect::<Result<(), OnnxError>>()?;
-        }
-
-        // Estrai risultato dal mutex
+                .collect::<Result<Vec<(usize, _)>, OnnxError>>()?
+                .into_iter()
+                .sorted_by(|(i1, _), (|i2, _)| i1.cmp(i2))
+                .flat_map(|(_, v)| v)
+                .collect::<Vec<f32>>();
+        
         let result =
-            result
-                .into_inner()
-                .map_err(|_| onnx_error!("A PoisonError occurred while extracting result from Mutex"))?
-                .into_dyn();
+            Array::from_shape_vec((batches, channels, out_h, out_w), values)
+            .unwrap().into_dyn();
 
         Ok(Arc::new(result))
     }

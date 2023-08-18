@@ -1,5 +1,7 @@
-use std::sync::{Arc, Mutex};
-use ndarray::{Array4, s, ArrayViewD, Ix2, parallel::prelude::{IntoParallelIterator, IndexedParallelIterator, ParallelIterator}};
+use std::sync::Arc;
+use itertools::{iproduct, Itertools};
+use ndarray::{Array4, s, ArrayViewD, Array};
+use rayon::prelude::{ParallelBridge, ParallelIterator};
 
 use super::{Operation, OnnxError, onnx_error, Tensor, OperationResult, Attribute};
 
@@ -150,55 +152,49 @@ impl Operation {
             if ceil_mode == 1 { f32::ceil((padded_w-kernel_w) as f32/strides_w as f32 + 1.) as usize } else { (padded_w-kernel_w)/strides_w+1 }
         );
 
-        // Tensor risultato, inizializzato con tutti zeri
-        let result = Mutex::new(Array4::<f32>::zeros((batches, channels, out_h, out_w)));
+        // Calcola il valore di ogni cella del risultato in modo parallelo, poi unisci il tutto nel vettore finale result. 
+        // L'iteratore parallelo colleziona i valori in modo disordinato, quindi occorre ancora effettuare un sort in base
+        // all'indice globale di ogni valore.
+        let values =
+            iproduct!(0..batches, 0..channels)
+                .par_bridge()
+                .map(|(n_batch, n_channel)| {
+                    let channel = padded_data.slice(s![n_batch, n_channel, .., ..]);
+                    Self::map_windows(
+                        channel.into_dyn(),
+                        [kernel_h, kernel_w].as_slice(),
+                        [strides_h, strides_w].as_slice(),
+                        |window: ArrayViewD<Option<f32>>| {
+                            let values: Vec<f32> = if count_include_pad == 1 {
+                                // Conta anche il padding (valore 0) nel calcolo del risultato.
+                                window
+                                    .into_iter()
+                                    .map(|&v| v.unwrap_or(0.))
+                                    .collect()
+                            } else {
+                                // Non contare il padding nel calcolo del risultato.
+                                window
+                                    .into_iter()
+                                    .filter_map(|v| *v)
+                                    .collect()
+                            };
 
-        for (n_batch, batch) in padded_data.outer_iter().enumerate() {
-            batch
-                .outer_iter()
-                .into_par_iter()
-                .enumerate()
-                .map(|(n_channel, channel)| {
-                    let output =
-                        Self::map_windows(
-                            channel.into_dyn(),
-                            &[kernel_h, kernel_w],
-                            |window: ArrayViewD<Option<f32>>| {
-                                let values: Vec<f32> = if count_include_pad == 1 {
-                                    // Conta anche il padding (valore 0) nel calcolo del risultato.
-                                    window
-                                        .into_iter()
-                                        .map(|&v| v.unwrap_or(0.))
-                                        .collect()
-                                } else {
-                                    // Non contare il padding nel calcolo del risultato.
-                                    window
-                                        .into_iter()
-                                        .filter_map(|v| *v)
-                                        .collect()
-                                };
-
-                                values.iter().sum::<f32>() / values.len() as f32
-                            },
-                            &[strides_h, strides_w]
-                        )?.into_dimensionality::<Ix2>().map_err(|_| onnx_error!("Could not convert dynamic array into 2D."))?;
-                    
-                        let mut result =
-                        result.lock()
-                            .map_err(|_| onnx_error!("A PoisonError occurred while convoluting"))?;
-                        result.slice_mut(s![n_batch, n_channel, .., ..]).assign(&output);
-
-                        Ok(())
+                            values.iter().sum::<f32>() / values.len() as f32
+                        }
+                    ).map(|res| (
+                        n_channel + n_batch * channels, // Indice globale
+                        res // Risultato (array)
+                    ))
                 })
-                .collect::<Result<(), OnnxError>>()?;
-        }
+                .collect::<Result<Vec<(usize, _)>, OnnxError>>()?
+                .into_iter()
+                .sorted_by(|(i1, _), (|i2, _)| i1.cmp(i2))
+                .flat_map(|(_, v)| v)
+                .collect::<Vec<f32>>();
 
-        // Estrai risultato dal mutex
         let result =
-            result
-                .into_inner()
-                .map_err(|_| onnx_error!("A PoisonError occurred while extracting result from Mutex"))?
-                .into_dyn();
+            Array::from_shape_vec((batches, channels, out_h, out_w), values)
+            .unwrap().into_dyn();
 
         Ok(Arc::new(result))
     }

@@ -1,7 +1,7 @@
 extern crate ndarray;
 
 use std::{sync::Arc, collections::HashMap};
-use ndarray::{ArrayD, Array1, ArrayViewD, Zip};
+use ndarray::{ArrayD, Array1, ArrayViewD, Zip, IntoDimension, Dimension, IxDyn};
 use crate::{error::OnnxError, onnx_error};
 
 mod add;
@@ -251,36 +251,30 @@ impl Operation {
         }
     }
 
-    /// Divide un [`Tensor`] di dimensioni generiche in finestre di dimensioni `window_dim` e applica la funzione `f` ad ognuna.
+    /// Ricava le finestre di dimensioni `window_dim` dell'array `data`
     /// 
-    /// Il risultato di ogni chiamata di `f` viene salvato in un nuovo array multidimensionale generico, avente forma che
-    /// dipende da `data`, `window_dim` e dalle `strides` (finestre saltate sia in lunghezza che in altezza).
-    /// 
-    /// # Errore
-    /// Se le dimensioni della finestra non sono compatibili con il numero di risultati calcolati.
-    fn map_windows<I, O>(
-        data: ArrayViewD<I>,
-        window_dim: &[usize],
-        f: impl FnMut(ArrayViewD<I>) -> O,
-        strides: &[usize]
-    ) -> Result<ArrayD<O>, OnnxError> {
+    /// # Ritorno
+    /// Iteratore sulle finestre
+    fn get_strided_windows<'a, I, D: IntoDimension<Dim = IxDyn>>(
+        data: &'a ArrayViewD<I>,
+        window_dim: D,
+        strides: D
+    ) -> impl Iterator<Item = ArrayViewD<'a, I>>
+    {
+        let window_dim = window_dim.into_dimension();
+        let strides_dim = strides.into_dimension();
+
         // Numero totale delle finestre, per ogni dimensione
         let window_amounts =
-            Zip::from(data.shape()).and(window_dim)
+            Zip::from(data.shape()).and(window_dim.as_array_view())
                 .map_collect(|data_len, window_len| data_len - window_len + 1)
-                .to_vec();
-
-        // Dimensioni dell'output
-        let out_shape = 
-            Zip::from(data.shape()).and(window_dim).and(strides)
-                .map_collect(|data_len, window_len, strides_len| (data_len-window_len)/strides_len+1)
                 .to_vec();
 
         data
             .windows(window_dim)
             .into_iter()
             .enumerate()
-            .filter_map(|(mut i, window)| {
+            .filter_map(move |(mut i, window)| {
                 // Determina posizione corrente
                 let mut position = Vec::with_capacity(window_amounts.len());
                 for w_i in 0..window_amounts.len() {
@@ -290,12 +284,37 @@ impl Operation {
                 }
 
                 // Determina se la posizione corrente è da saltare in base alle strides.
-                if Zip::from(&position).and(strides).all(|&pos, &stride| pos % stride == 0) {
+                if Zip::from(&position).and(strides_dim.as_array_view()).all(|&pos, &stride| pos % stride == 0) {
                     Some(window)
                 } else {
                     None
                 }
             })
+    }
+
+    /// Divide un [`Tensor`] di dimensioni generiche in finestre di dimensioni `window_dim` e applica la funzione `f` ad ognuna.
+    /// 
+    /// Il risultato di ogni chiamata di `f` viene salvato in un nuovo array multidimensionale generico, avente forma che
+    /// dipende da `data`, `window_dim` e dalle `strides` (finestre saltate sia in lunghezza che in altezza).
+    /// 
+    /// # Errore
+    /// Se le dimensioni della finestra non sono compatibili con il numero di risultati calcolati.
+    fn map_windows<I, O, D: IntoDimension<Dim = IxDyn>>(
+        data: ArrayViewD<I>,
+        window_dim: D,
+        strides: D,
+        f: impl FnMut(ArrayViewD<I>) -> O
+    ) -> Result<ArrayD<O>, OnnxError> {
+        let window_dim = window_dim.into_dimension();
+        let strides_dim = strides.into_dimension();
+
+        // Dimensioni dell'output
+        let out_shape = 
+            Zip::from(data.shape()).and(window_dim.as_array_view()).and(strides_dim.as_array_view())
+                .map_collect(|data_len, window_len, strides_len| (data_len-window_len)/strides_len+1)
+                .to_vec();
+
+        Self::get_strided_windows(&data, window_dim, strides_dim)
             .map(f)
             .collect::<Array1<O>>()
             .into_shape(out_shape.clone())

@@ -1,5 +1,7 @@
-use std::sync::{Arc, Mutex};
-use ndarray::{Array1, s, Array4, parallel::prelude::{IntoParallelIterator, IndexedParallelIterator, ParallelIterator}};
+use std::sync::Arc;
+use itertools::{iproduct, Itertools};
+use ndarray::{s, Array};
+use rayon::prelude::{ParallelBridge, ParallelIterator};
 
 use super::{Operation, OnnxError, onnx_error, Tensor, OperationResult, Attribute};
 
@@ -65,45 +67,33 @@ impl Operation {
         };
 
         /*** LRN ***/
-        let result = Mutex::new(Array4::<f32>::zeros((batches, channels, data_h, data_w)));
 
-        for (n_batch, batch) in data.outer_iter().enumerate() {
-            batch
-                .outer_iter()
-                .into_par_iter()
-                .enumerate()
-                .map(|(n_channel, channel)| {
+        // Calcola il valore di ogni cella del risultato in modo parallelo, poi unisci il tutto nel vettore finale result. 
+        // L'iteratore parallelo colleziona i valori in modo disordinato, quindi occorre ancora effettuare un sort in base
+        // all'indice globale di ogni valore.
+        let values =
+            iproduct!(0..batches, 0..channels, 0..data_h, 0..data_w)
+                .par_bridge()
+                .map(|(n_batch, n_channel, i, j)| {
                     let ch_from = usize::checked_sub(n_channel, (size-1)/2).unwrap_or(0);
                     let ch_to = usize::min(channels-1, n_channel + f32::ceil((size-1) as f32/2.) as usize);
 
-                    let normalized = 
-                        channel
-                            .indexed_iter()
-                            .map(|(dim, val)| {
-                                let quadratic_sum = batch.slice(s![ch_from..=ch_to, dim[0], dim[1]]).mapv(|v| v.powi(2)).sum();
-                                *val / (bias + (alpha / size as f32) * quadratic_sum).powf(beta) // NOTA: la formula potrebbe essere sbagliata
-                            })
-                            .collect::<Array1<f32>>()
-                            .to_shape(channel.dim())
-                            .unwrap()
-                            .to_owned();
-
-                    let mut result =
-                    result.lock()
-                        .map_err(|_| onnx_error!("A PoisonError occurred while convoluting"))?;
-                    result.slice_mut(s![n_batch, n_channel, .., ..]).assign(&normalized);
-
-                    Ok(())
+                    let square_sum = data.slice(s![n_batch, ch_from..=ch_to, i, j]).mapv(|v| v.powi(2)).sum();
+                    let res = data[[n_batch, n_channel, i, j]] / (bias + (alpha / size as f32) * square_sum).powf(beta);
+                    (
+                        j + i * data_w + n_channel * data_w * data_h + n_batch * data_w * data_h * channels, // Indice globale
+                        res // Risultato
+                    )
                 })
-                .collect::<Result<(), OnnxError>>()?;
-        }
+                .collect::<Vec<(usize, f32)>>()
+                .into_iter()
+                .sorted_by(|(i1, _), (|i2, _)| i1.cmp(i2))
+                .map(|(_, v)| v)
+                .collect::<Vec<f32>>();
 
-        // Estrai risultato dal mutex
         let result =
-            result
-                .into_inner()
-                .map_err(|_| onnx_error!("A PoisonError occurred while extracting result from Mutex"))?
-                .into_dyn();
+            Array::from_shape_vec((batches, channels, data_h, data_w), values)
+            .unwrap().into_dyn();
 
         Ok(Arc::new(result))
     }
