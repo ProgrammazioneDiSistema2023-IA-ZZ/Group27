@@ -1,8 +1,11 @@
-use std:: sync::Arc;
+use std::{sync::Arc, env};
 
 use onnx_rust::fileparser::fileparser::OnnxFileParser;
 
 fn main() {
+    env::set_var("RUST_LOG", "debug");
+    env_logger::init();
+
     /* GOOGLENET */
 
     //let graph= OnnxFileParser::parse_model("./onnxFile/googlenet-12/googlenet-12.onnx");
