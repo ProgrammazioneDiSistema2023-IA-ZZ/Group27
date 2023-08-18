@@ -1,20 +1,19 @@
 use std::collections::HashSet;
 
-/// Nodo intermedio all'interno di un grafo. Si riferisce ai nodi non espressamente dichiarati ma usati come input/output ad
-/// altri nodi.
+/// Intermediate node of a graph. Intermediate nodes are not expressly declared, but they're used as inputs/outputs to other nodes.
 pub struct OnnxGraphIntermediate {
-    /// Nome del nodo.
+    /// Name of the node.
     pub name: String,
 
-    /// Nome del nodo entrante. Può essere impostato in un secondo momento dopo la creazione.
+    /// Name of the node that is an input to this node.
     pub input: String,
 
-    /// Nomi dei nodi uscenti.
+    /// Names of the nodes that are outputs to this node.
     pub outputs: HashSet<String>
 }
 
 impl OnnxGraphIntermediate {
-    /// Crea un nuovo nodo intemedio vuoto.
+    /// Creates a new empty intermediate node.
     pub fn new<S, O>(name: impl ToString, input: impl ToString, outputs: O) -> Self
     where
         S: ToString,

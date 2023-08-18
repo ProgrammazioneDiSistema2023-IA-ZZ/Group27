@@ -3,8 +3,8 @@ use super::{Operation, OnnxError, onnx_error, Tensor, OperationResult};
 
 impl Operation {
 
-    /// Dropout è un'operazione utile solo per la fase di training, che non è lo scopo di questa libreria. L'operazione si
-    /// limita a restituire il primo input come output.
+    /// Dropout is only useful for the training phase, which is not the point of this library. The operation limits to returning
+    /// the first input as the only output.
     pub(super) fn execute_dropout(&self, inputs: Vec<Arc<Tensor>>) -> OperationResult {
         inputs
             .get(0)

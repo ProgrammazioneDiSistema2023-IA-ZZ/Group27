@@ -2,17 +2,17 @@ use std::sync::Arc;
 
 use crate::operations::Tensor;
 
-/// Nodo "inizializzatore" (input costante) all'interno di un grafo.
+/// Initializer node of a graph.
 pub struct OnnxGraphInitializer {
-    /// Nome del nodo.
+    /// Name of the node.
     pub(super) name: String,
 
-    /// Valore dell'input.
+    /// Input value.
     pub(super) data: Arc<Tensor>
 }
 
 impl OnnxGraphInitializer {
-    /// Crea un nuovo nodo initializer.
+    /// Creates a new initializer node with data.
     pub fn new(name: impl ToString, data: Tensor) -> Self {
         Self {
             name: name.to_string(),

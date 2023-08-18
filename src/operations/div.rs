@@ -18,7 +18,7 @@ impl Operation {
     /// # Outputs
     /// * **C** (heterogeneous) - `T`: Result, has same element type as two inputs
     pub(super) fn execute_div(&self, inputs: Vec<&Tensor>) -> OperationResult {
-        // Input
+        // Inputs
         if inputs.len() != 2 {
             return Err(onnx_error!("Div Operation requires 2 inputs."));
         }

@@ -22,7 +22,7 @@ impl Operation {
     /// # Outputs
     /// * **concat_result** (heterogeneous) - `T`: Concatenated tensor
     pub(super) fn execute_concat(&self, inputs: Vec<&Tensor>) -> OperationResult {
-        // Attributi
+        // Attributes
         let axis: usize = match self.attributes.get("axis") {
             Some(Attribute::Int(val)) if *val >= 0 => (*val).try_into().unwrap(),
             Some(Attribute::Int(val)) if *val < 0 => {

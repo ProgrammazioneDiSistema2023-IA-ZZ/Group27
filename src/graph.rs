@@ -10,7 +10,7 @@ pub mod output;
 pub mod initializer;
 pub mod intermediate;
 
-/// Rappresenta in modo generico il nodo di un grafo.
+/// Generic node of a graph.
 pub enum OnnxGraphNode {
     Initializer(OnnxGraphInitializer),
     Input(OnnxGraphInput),
@@ -20,7 +20,7 @@ pub enum OnnxGraphNode {
 }
 
 impl OnnxGraphNode {
-    /// Restituisce il nome del nodo, indipendentemente dal suo tipo.
+    /// Returns the name of this node, independently of its type.
     pub fn name(&self) -> &String {
         match self {
             OnnxGraphNode::Initializer(node) => &node.name,
@@ -31,10 +31,10 @@ impl OnnxGraphNode {
         }
     }
 
-    /// Estrae un riferimento alla [`OnnxGraphOperation`] relativa al nodo corrente.
+    /// Gets a reference to an [`OnnxGraphOperation`] with respect to the current node.
     /// 
-    /// # Errore
-    /// Se il nodo corrente non è un nodo operazione.
+    /// # Error
+    /// If the current node is not an operation.
     pub fn ref_operation(&self) -> Result<&OnnxGraphOperation, OnnxError> {
         match self {
             OnnxGraphNode::Operation(node) => Ok(node),
@@ -67,54 +67,52 @@ impl Hash for OnnxGraphNode {
     }
 }
 
-/// Identificativo dell'inferenza all'interno del processo corrente.
+/// ID of an inference, internal to the current process.
 #[derive(Hash, PartialEq, Eq, Clone, Copy, Debug)]
 struct InferenceID(usize);
 
-/// Grafo che rappresenta una rete neurale.
+/// Graph that represents a neural network.
 pub struct OnnxGraph {
-    /// Nome del grafo
+    /// Name of the graph.
     pub name: String,
 
-    /// Nomi dei nodi initializer del grafo.
+    /// Names of initializer nodes inside the graph.
     initializers: HashSet<String>,
 
-    /// Nomi dei nodi input del grafo.
+    /// Names of input nodes inside the graph.
     inputs: HashSet<String>,
 
-    /// Nomi dei nodi output del grafo.
+    /// Names of output nodes inside the graph.
     outputs: HashSet<String>,
 
-    /// Nomi dei nodi operazione del grafo.
+    /// Names of operazione nodes inside the graph.
     operations: HashSet<String>,
 
-    /// [`HashMap`] che mappa il nome del nodo alla struttura [`OnnxGraphNode`] corrispondente.
+    /// [`HashMap`] that maps the name of the node to the corresponding [`OnnxGraphNode`] enum.
     /// 
-    /// Questo valore viene utilizzato da più thread contemporaneamente.
+    /// This structure can be used by more threads concurrently.
     /// 
-    /// Le operazioni di scrittura (ad esempio l'aggiunta di un nodo) avviene solitamente prima di un'inferenza, mentre
-    /// l'inferenza in sé richiede solo operazioni di lettura. Per questo motivo, è stato usato un [`RwLock`] anziché un
-    /// [`Mutex`].
+    /// Writing operations (such as adding a node) usually take place before an inference, while the inference itself requires
+    /// only reading operations. For this reason, a [`RwLock`] is used instead of a [`Mutex`].
     nodes: RwLock<HashMap<String, OnnxGraphNode>>,
 
-    /// Numero di inferenze attualmente in corso.
+    /// Number of inferences currently in progress.
     inferences_in_progress: AtomicUsize,
 
-    /// Memorizza l'ultimo ID di inferenza utilizzato. Viene incrementato ogni volta che viene avviata un'inferenza nello stesso
-    /// processo.
+    /// Contains the last inference ID used. It's incremented everytime a new inference is started in the same process.
     last_inference_id: Mutex<InferenceID>
 }
 
-/// Risultato della creazione del grafo, se questa prevede degli errori (ad esempio, a partire da un file).
+/// Result of the graph's creation, if errors may occur (for instance, starting from a file).
 pub type OnnxGraphResult = Result<OnnxGraph, OnnxError>;
 
-/// Risultato dell'inferenza.
+/// Result of the inference.
 /// 
-/// Se l'operazione ha successo, [`Ok`] contiene una [`HashMap`] che mappa il nome dell'output al valore corrispondente.
+/// If the operation is successful, [`Ok`] contains a [`HashMap`] that maps the name of output to the corresponding value.
 pub type OnnxInferenceResult = Result<HashMap<String, Tensor>, OnnxError>;
 
 impl OnnxGraph {
-    /// Crea un nuovo grafo vuoto.
+    /// Creates a new empty graph.
     pub fn new() -> Self {
         Self {
             name: String::default(),
@@ -128,7 +126,7 @@ impl OnnxGraph {
         }
     }
 
-    /// Crea un nuovo grafo a partire da un file (dato il suo percorso). 
+    /// Creates a new graph starting from a file, given its path.
     pub fn from_file(path: &str) -> OnnxGraphResult {
         // TODO: Lettura file più efficiente con BufReader (per ora immagazzina l'intero file in una stringa.)
         Self::from_str(
@@ -136,29 +134,29 @@ impl OnnxGraph {
         )
     }
 
-    /// Aggiunge un nodo esistente al grafo.
+    /// Adds an existing node to the graph.
     pub fn add_node(&mut self, node: OnnxGraphNode) -> Result<(), OnnxError> {
-        // Evita che vengano effettuate modifiche ai nodi mentre ci sono delle inferenze in corso.
+        // Prevent adding nodes while there are inferences in progress.
         if *self.inferences_in_progress.get_mut() > 0 {
             return Err(onnx_error!("Cannot add nodes while there are inferences in progress."));
         }
 
-        // Lock delle risorse
+        // Lock resources
         let mut nodes =
             self.nodes.write()
                 .map_err(|_| onnx_error!("PoisonError occurred while locking nodes for write (adding node {}).", node.name()))?;
         
         let name = node.name().clone();
 
-        // Inserisci nome del nodo nel vettore adatto della struttura.
+        // Add name of the node to the appropriate array of this structure.
         match node {
             OnnxGraphNode::Initializer(_) => self.initializers.insert(name.clone()),
             OnnxGraphNode::Input(_) => self.inputs.insert(name.clone()),
             OnnxGraphNode::Output(_) => self.outputs.insert(name.clone()),
             OnnxGraphNode::Operation(_) => self.operations.insert(name.clone()),
             OnnxGraphNode::Intermediate(interm_node) => {
-                // Dato il nodo entrante E al nodo intermedio I, aggiungi i nodi uscenti di I ai nodi uscenti di E e rimuovi I dalla
-                // stessa collezione.
+                // For each entering node E to the intermediate node I, add the exiting nodes of I to the exiting nodes of E, and
+                // remove I from that collection.
                 let interm_input_node =
                     nodes.get_mut(&interm_node.input)
                          .ok_or_else(|| onnx_error!("[{}] Input node {} does not exist.", interm_node.name, interm_node.input))?;
@@ -167,8 +165,8 @@ impl OnnxGraph {
                     op_node.outputs.extend(interm_node.outputs.clone());
                 }
 
-                // Per ogni nodo uscente U dal nodo intermedio I, sostituisci il nome di I dai nodi entranti di U con il nodo
-                // entrante di I.
+                // For each exiting node O from the intermediate node I, replace the name of I from the entering nodeodes of O with
+                // the entering node of I.
                 for interm_output_name in interm_node.outputs {
                     let interm_output_node =
                         nodes.get_mut(&interm_output_name)
@@ -183,26 +181,26 @@ impl OnnxGraph {
                     }
                 }
 
-                // Non seve aggiungere il nodo intermedio alla collezione
+                // No need to add the intermediate node to the collection.
                 return Ok(())
             }
         };
 
-        // Aggiungi nodo alla collezione
+        // Add node to the collection.
         if let Some(old_node) = nodes.insert(name.clone(), node) {
-            // Trovato nodo duplicato: rimuovi dall'HashMap
+            // Found duplicate node: remove from HashMap
             let new_node = nodes.remove(&name).unwrap();
 
             match (old_node, new_node) {
                 (OnnxGraphNode::Input(mut in_node), OnnxGraphNode::Initializer(init_node)) |
                 (OnnxGraphNode::Initializer(init_node), OnnxGraphNode::Input(mut in_node)) => {
-                    // I due nodi con lo stesso nome sono un input ed un initializer (in qualsiasi ordine):
-                    // aggiorna il nodo di input in modo che abbia il valore dell'initializer come default
+                    // The two nodes with the same name are an input and an initializer (in any order): update the input node so
+                    // that it has the initializer value as its default.
                     in_node.default_value = Some(init_node.data);
                     nodes.insert(name, OnnxGraphNode::Input(in_node));
                 },
                 (old_node, _) => {
-                    // Re-inserisci il nodo di input nella HashMap e termina con un errore.
+                    // Re-insert the input node in the HashMap and terminate with an error.
                     nodes.insert(name.clone(), old_node);
                     return Err(onnx_error!("Node {name} already exists."))
                 }
@@ -212,11 +210,11 @@ impl OnnxGraph {
         Ok(())
     }
 
-    /// Estrae il valore di un nodo input da `inputs` o, se assente, il suo valore di default.
+    /// Gets the value of an input node from `input` or, if absent, its default value.
     /// 
     /// # Return
-    /// [`Some(t)`] se il valore `t` è stato trovato ed è valido. [`None`] se questo non è stato trovato e non ha un valore di
-    /// default, oppure se è stato trovato ma non ha una forma valida.
+    /// [`Some`]`(t)` if a valid value `t` was found. [`None`] if it was not found and it doesn't have a default value, or if it
+    /// was found but with an invalid shape.
     fn get_input_value(
         &self,
         node: &OnnxGraphInput,
@@ -233,40 +231,41 @@ impl OnnxGraph {
             None
         }
     }
-
-    /// Esegue il procedimento generale di calcolo per un nodo operazione del grafo. Questo consiste nel
-    /// 1. collezionare i valori di tutti i nodi in entrata, attendendo se necessario.
-    /// 2. eseguire l'effettiva operazione.
-    /// 3. al termine, propaga il risultato ai nodi in uscita.
-    ///     * Se il nodo in uscita è un'operazione, questa viene avviata nel thread corrente o in un altro thread, in base alla
-    ///       necessità (ad esempio, se l'unico nodo in uscita è un'operazione non serve avviare un thread apposta).
+ 
+    /// Runs through the general process of executing the operation of an operation node. This consists in:
+    /// 1. collecting the value of all entering nodes, waiting if necessary.
+    /// 2. executing the operation
+    /// 3. when finished, propagating the result to its exiting nodes.
+    ///     * If the exiting node is an operation, this function will be called again but for that node, either in this thread
+    ///       or another based on the number of exiting nodes (see [`execute_node_operations`][Self::execute_node_operations]).
     /// 
-    /// # Parametri
-    /// * `infer_id`: ID dell'inferenza
-    /// * `opnode_name`: Nome del nodo operazione di cui eseguire il procedimento
-    /// * `graph_inputs`: [`HashMap`] che mappa il nome dell'input del grafo con il valore corrispondente
+    /// # Parameters
+    /// * `infer_id`: inference ID
+    /// * `opnode_name`: Name of the operation node of which to execute the procedure.
+    /// * `graph_inputs`: [`HashMap`] which maps the name of the graph input with the corresponding value.
     /// 
-    /// # Return
-    /// In assenza di errori, la funzione ritorna un'[`HashMap`] che mappa il nome degli output al valore corrispondente.
+    /// # Return 
+    /// If no error occurs, a [`HashMap`] which maps the name of the outputs with the corresponding value.
     /// 
-    /// Questo riguarda solo **una parte** degli output; il tutto verrà riunito nella funzione [`OnnxGraph::infer`].
+    /// Note that this only contains *part* of the outputs. The final value with all outputs will be available at the end of
+    /// [`OnnxGraph::infer`].
     /// 
-    /// # Errori
-    /// * Se le operazioni di lock non vanno a buon fine.
-    /// * Se uno qualsiasi dei nodi di input è assente o non valido.
-    /// * Se il nodo operazione identificato da `opnode_name` non esiste.
-    /// * Se il risultato dell'operazione del nodo corrente o di uno qualsiasi dei nodi entranti contiene un errore.
-    /// * Se sono presenti anomalie con i nodi (ad esempio, un nodo input contiene dei nodi entranti.)
+    /// # Errors
+    /// * Is any lock operation fails.
+    /// * If any input node is absent or invalid.
+    /// * If the operation node identified by `opnode_name` is unavailable.
+    /// * If the result of the current node or any entering node's operation contains an error.
+    /// * If any anomalies with nodes (such as an input node having entering nodes) are detected.
     /// 
-    /// # Panico
-    /// Se si verifica un errore e non è possibile notificare i thread in attesa di ciò. 
+    /// # Panics
+    /// If an error occurs and this thread fails to notify others of this. 
     fn compute_operation_node(
         self: Arc<Self>,
         infer_id: InferenceID,
         opnode_name: String,
         graph_inputs: Arc<HashMap<String, Arc<Tensor>>>
     ) -> Result<HashMap<String, Arc<Tensor>>, OnnxError> {
-        // Lock delle risorse
+        // Lock resources
         let nodes =
             self.nodes.read()
                 .map_err(|_| onnx_error!("[{infer_id:?}, {opnode_name}] An error occurred while trying to lock nodes HashMap for read."))?;
@@ -276,28 +275,28 @@ impl OnnxGraph {
                  .ok_or(onnx_error!("[{infer_id:?}, {opnode_name}] Node is not in the graph."))?
                  .ref_operation()?;
         
-        // Colleziona valori in entrata (punto 1)
+        // Collect input values (point 1)
         let input_values: Vec<Arc<Tensor>> =
             this_opnode.inputs.iter()
             .map(|input_name| {
-                // Estrai il valore in base al tipo di nodo di input.
+                // Get the value based on the type of entering node.
                 match nodes.get(input_name) {
                     Some(OnnxGraphNode::Operation(op_node)) => {
-                        // Nodo operazione: vedi get_result.
+                        // Operation node: see get_result.
                         log::debug!("[{infer_id:?}, {opnode_name}] Trying to get result from {}...", op_node.name);
                         let res = op_node.get_result(infer_id);
                         log::debug!("[{infer_id:?}, {opnode_name}] Got result from {}!", op_node.name);
                         res
                     },
                     Some(OnnxGraphNode::Input(in_node)) => {
-                        // Nodo input: vedi get_input_value.
+                        // Input node: see get_input_value.
                         Ok(
                             self.get_input_value(in_node, &graph_inputs)
                                 .ok_or(onnx_error!("[{infer_id:?}, {opnode_name}] Node {} is missing or invalid.", in_node.name))?
                         )
                     },
                     Some(OnnxGraphNode::Initializer(init_node)) => {
-                        // Nodo initializer: il valore è costante.
+                        // Initializer node: the value is constant.
                         Ok(init_node.data.clone())
                     },
                     Some(_) => return Err(onnx_error!("[{infer_id:?}, {opnode_name}] Node {input_name} cannot be used an an input to this node.")),
@@ -306,53 +305,53 @@ impl OnnxGraph {
             })
             .collect::<Result<_, OnnxError>>()
             .map_err(|e| {
-                // I nodi in attesa di questa operazione devono essere notificati dell'errore
+                // Waiting nodes have to be notified of the error.
                 this_opnode.end_operation_with_error(infer_id, e.clone()).expect("Failed to force-end operation.");
                 e
             })?;
         
-        // Esegui operazione effettiva (punto 2)
+        // Execute operation (point 2)
         log::info!("[{infer_id:?}] Starting operation {opnode_name}...");
         let result =
             this_opnode.execute_operation(infer_id, input_values)
                 .map_err(|e| onnx_error!("[{infer_id:?}, {opnode_name}] {}", e.msg))?;
         log::info!("[{infer_id:?}] Operation {opnode_name} finished!");
 
-        // Propaga il risultato ai nodi in uscita (punto 3)
+        // Propagate the result to exiting nodes (point 3)
         let mut out_hashmap: HashMap<String, Arc<Tensor>> = HashMap::new();
         let mut output_opnodes: Vec<&OnnxGraphOperation> = Vec::new();
         for output_name in &this_opnode.outputs {
-            // Tratta il risultato in modo diverso in base al tipo di nodo in uscita
+            // Treat the result differently based on the type of exiting node
             match nodes.get(output_name) {
                 Some(OnnxGraphNode::Output(out_node)) => {
-                    // Nodo output: inserisci il risultato nella HashMap da restituire
-                    // Se l'output non ha una forma corretta, termina con un errore.
+                    // Output node: insert result inside the return HashMap.
+                    // If the output has an invalid shape, terminate with an error.
                     if out_node.valid_shape(result.shape()) {
                         out_hashmap.insert(out_node.name.clone(), result.clone());
                     } else {
-                        // I nodi in attesa di questa operazione devono essere notificati dell'errore
+                        // Waiting nodes have to be notified of the error.
                         let e = onnx_error!("[{infer_id:?}, {opnode_name}] Output {} has an invalid shape.", out_node.name);
                         this_opnode.end_operation_with_error(infer_id, e.clone()).expect("Failed to force-end operation.");
                         return Err(e);
                     }
 
-                    // Il valore è stato passato al nodo output: serve incrementare il numero di notifiche al nodo corrente
+                    // The value has been passed to the output node: we need to increment the number of notified nodes
                     this_opnode
                         .increment_notified_count(infer_id)
                         .map_err(|e| {
-                            // I nodi in attesa di questa operazione devono essere notificati dell'errore
+                            // Waiting nodes have to be notified of the error.
                             this_opnode.end_operation_with_error(infer_id, e.clone()).expect("Failed to force-end operation.");
                             e
                         })?;
                 },
                 Some(OnnxGraphNode::Operation(op_node)) => {
-                    // Nodo operazione: marca l'operazione come avviata. Se l'operazione non è già stata avviata in precedenza
-                    // (start_operation ritorna true), aggiungi nel vettore di operazioni da avviare (output_opnodes).
+                    // Operation node: mark the operation as started. If the operation hasn't been started before
+                    // (start_operation returns true), add into the array of operations to start (output_opnodes).
                     let start_operation_res = 
                         op_node
                             .start_operation(infer_id)
                             .map_err(|e| {
-                                // I nodi in attesa di questa operazione devono essere notificati dell'errore
+                                // Waiting nodes have to be notified of the error.
                                 this_opnode.end_operation_with_error(infer_id, e.clone()).expect("Failed to force-end operation.");
                                 e
                             })?;
@@ -361,14 +360,14 @@ impl OnnxGraph {
                     }
                 },
                 Some(_) => {
-                    // Altri nodi: gli input/initializer non possono essere nodi in uscita.
-                    // I nodi in attesa di questa operazione devono essere notificati dell'errore
+                    // Other nodes: inputs/initializers can't be exiting nodes.
+                    // Waiting nodes have to be notified of the error.
                     let e = onnx_error!("[{infer_id:?}, {opnode_name}] Expected operation or output node, but {} is an input/initializer.", output_name);
                     this_opnode.end_operation_with_error(infer_id, e.clone()).expect("Failed to force-end operation.");
                     return Err(e);
                 },
                 None => {
-                    // I nodi in attesa di questa operazione devono essere notificati dell'errore
+                    // Waiting nodes have to be notified of the error.
                     let e = onnx_error!("[{infer_id:?}, {opnode_name}] Node {output_name} is not an output to this node.");
                     this_opnode.end_operation_with_error(infer_id, e.clone()).expect("Failed to force-end operation.");
                     return Err(e);
@@ -376,36 +375,40 @@ impl OnnxGraph {
             };
         }
 
-        // Avvia le operazioni identificate in output_opnodes, se presenti (punto "3.1")
+        // Start operations saved inside output_opnodes, if present (point "3.1")
+        // See execute_node_operations
         out_hashmap.extend(self.clone().execute_node_operations(infer_id, output_opnodes, graph_inputs, opnode_name)?);
 
         Ok(out_hashmap)
     }
-
-    /// Esegue [`compute_operation_node`][`OnnxGraph::compute_operation_node`] per tutti i nodi passati per parametro (contenuti in `op_nodes`).
+ 
+    /// Executes [`compute_operation_node`][`OnnxGraph::compute_operation_node`] for all given nodes (contained in `op_nodes`).
     /// 
-    /// L'esecuzione sarà diversa in base al numero di nodi operazione passati come parametro (`op_nodes.len()`):
-    /// * Se == 1, ci sarà una sola operazione da eseguire, per cui non serve un thread apposta: l'operazione viene eseguita nel
-    ///   thread corrente.
-    /// * Se > 1, verranno creati tanti thread quanti sono le operazioni da eseguire. Il thread corrente si occuperà di eseguire
-    ///   la join ed unire i vari risultati in uno unico.
+    /// The execution will depend based on the number of given nodes (length of `op_nodes`):
+    /// * If `==1`, there will only be one operation to execute, so there is no real need to start a new thread as the current
+    ///   one would just be stuck waiting: the operation is instead executed in the same thread.
+    /// * If `>1`, there are more operations to execute. This thread will be responsible of creating one thread per operation
+    ///   and waiting for the result.
+    /// * If `==0`, there is no operation to execute: the function immediately returns.
     /// 
-    /// # Parametri
-    /// * `infer_id`: ID dell'inferenza interno al processo.
-    /// * `op_nodes`: Vettore di nodi operazione da eseguire.
-    /// * `graph_inputs`: [HashMap] che mappa il nome del nodo input al valore corrispondente.
+    /// # Parameters
+    /// * `infer_id`: inference ID
+    /// * `opnode_name`: Name of the operation node of which to execute the procedure.
+    /// * `graph_inputs`: [`HashMap`] which maps the name of the graph input with the corresponding value.
+    /// * `parent_name`: Name of the node which called this function. Used for logging purposes only.
     /// 
-    /// # Return
-    /// In assenza di errori, la funzione ritorna un'[`HashMap`] che mappa il nome degli output al valore corrispondente.
+    /// # Return 
+    /// If no error occurs, a [`HashMap`] which maps the name of the outputs with the corresponding value.
     /// 
-    /// Questo riguarda solo **una parte** degli output; il tutto verrà riunito nella funzione [`OnnxGraph::infer`].
+    /// Note that this only contains *part* of the outputs. The final value with all outputs will be available at the end of
+    /// [`OnnxGraph::infer`].
     /// 
-    /// # Errore
-    /// * Se non è possibile effettuare la [`join`][`JoinHandle::join`].
-    /// * Se una qualsiasi delle operazioni eseguite termina con un errore.
+    /// # Error
+    /// * If the [`join`][`JoinHandle::join`] operation fails.
+    /// * If any "child" operation fails.
     /// 
-    /// # Panico
-    /// Se si verifica un errore e non è possibile notificare i thread in attesa di ciò.
+    /// # Panics
+    /// If an error occurs and this (or any child) thread fails to notify others of this. 
     fn execute_node_operations(
         self: Arc<Self>,
         infer_id: InferenceID,
@@ -414,12 +417,12 @@ impl OnnxGraph {
         parent_name: String
     ) -> Result<HashMap<String, Arc<Tensor>>, OnnxError> {
         if op_nodes.len() == 1 {
-            // Una operazione: calcola il risultato nel thread corrente.
+            // One operation: execute operation in this thread.
             let op_node = op_nodes[0];
             log::debug!("[{infer_id:?}, {parent_name}] Executing {} in the same thread...", op_node.name);
             self.compute_operation_node(infer_id, op_node.name.clone(), graph_inputs.clone())
         } else if op_nodes.len() > 1 {
-            // Più operazioni: crea tanti thread quante sono le operazioni.
+            // More operations: create as many threads as operations to execute.
             let threads: Vec<(&OnnxGraphOperation, JoinHandle<_>)> = 
                 op_nodes
                     .into_iter()
@@ -432,14 +435,14 @@ impl OnnxGraph {
                     })
                     .collect();
 
-            // Joina thread
+            // Join threads
             let out_hashmaps: Vec<HashMap<String, Arc<Tensor>>> =
                 threads
                     .into_iter()
                     .map(|(node, t)| {
                         Ok(
                             t.join().map_err(|_| {
-                                // I nodi in attesa di questa operazione devono essere notificati dell'errore
+                                // Waiting nodes have to be notified of the error.
                                 let e = onnx_error!("[{}] Failed to join thread for this node.", node.name);
                                 node.end_operation_with_error(infer_id, e.clone()).expect("Failed to force-end operation.");
                                 e
@@ -448,7 +451,7 @@ impl OnnxGraph {
                     })
                     .collect::<Result<_, OnnxError>>()?;
 
-            // Unisci i risultati in un'unica HashMap.
+            // Merge all results in a HashMap.
             let out_hashmap: HashMap<String, Arc<Tensor>> =
                 out_hashmaps
                     .into_iter()
@@ -457,13 +460,12 @@ impl OnnxGraph {
 
             Ok(out_hashmap)
         } else {
-            // Nessuna operazione: restituisci HashMap vuota.
+            // No operation: return empty HashMap.
             Ok(HashMap::new())
         }
     }
 
-    /// Restituisce il nome dei nodi operazione di "primo livello", cioè quelli che contengono *solo* nodi input o initializer come
-    /// nodi entranti. 
+    /// Returns the name of all "first layer nodes", i.e nodes that contain *only* input and initializer nodes as entering nodes.
     fn get_first_layer_nodes<'a>(&self, nodes: &'a RwLockReadGuard<'a, HashMap<String, OnnxGraphNode>>) -> HashSet<&'a OnnxGraphNode> {
         nodes
             .values()
@@ -477,7 +479,7 @@ impl OnnxGraph {
             .collect()
     }
 
-    /// Restituisce l'ID dell'inferenza attuale e aggiorna l'ID più recente.
+    /// Generates the ID for a new inference, and updates the last used ID.
     fn generate_inference_id(&self) -> Result<InferenceID, PoisonError<MutexGuard<InferenceID>>> {
         let mut last_inference_id = self.last_inference_id.lock()?;
         let InferenceID(current)= *last_inference_id;
@@ -490,19 +492,22 @@ impl OnnxGraph {
     /// relative operazioni in modo parallelo e, al termine di ognuna, avvia le operazioni relative ai nodi uscenti finché tutti
     /// gli output non sono disponibili.
     /// 
-    /// L'operazione richiede che il metodo possa essere chiamato da più thread contemporaneamente, quindi occorre che [`Self`]
-    /// sia contenuto in un Arc.
+    /// Executes an inference with the given inputs based on the current graph's state, following a top-down approach: from each
+    /// input node, execute all exiting operations (in parallel if possible) and, after each one finishes, execute their exiting
+    /// operations and so on, until all outputs are available of if an error occurs at any point.
     /// 
-    /// # Parametri
-    /// * `inputs`: [HashMap] che mappa il nome dei nodi input al valore corrispondente.
+    /// This operation requires that this structure be passed between threads, so [`Self`] must be contained in an [`Arc`].
     /// 
-    /// # Errori
-    /// * Se le operazioni di lock non vanno a buon fine.
-    /// * Se si verifica un errore durante qualsiasi delle operazioni parte del grafo.
+    /// # Parameters
+    /// * `inputs`: [HashMap] that maps the name of each input with its corresponding value.
+    /// 
+    /// # Error
+    /// * If any lock operation fails.
+    /// * If any error occurs during the execution of any operation inside the graph.
     pub fn infer(self: Arc<Self>, inputs: HashMap<String, Tensor>) -> OnnxInferenceResult {
-        // Circonda la mappa passata per parametro e ogni suo valore in un Arc, in modo da poter condividere i dati tra più
-        // thread. Inoltre, Arc<Tensor> rende possibile salvare i dati del Tensor una sola volta in memoria, anziché doverli
-        // clonare ogni volta che un thread ne ha bisogno (viene clonato solo il puntatore).
+
+        // Surround each input value in an Arc, so that it can be shared between threads. Moreover, Arc allows saving each input
+        // data in memory only once, without having to clone everytime it's needed by another thread (heavy operation).
         let inputs = Arc::new(
             inputs
                 .into_iter()
@@ -510,7 +515,7 @@ impl OnnxGraph {
                 .collect()
         );
 
-        // Lock delle risorse
+        // Lock resources
         let infer_id =
             self.generate_inference_id()
                 .map_err(|_| onnx_error!("[Initial] PoisonError occurred while locking inference ID."))?;
@@ -521,22 +526,22 @@ impl OnnxGraph {
             self.nodes.read()
                 .map_err(|_| onnx_error!("[Initial] An error occurred while trying to lock nodes HashMap for read."))?;
                 
-        // Incrementa numero di inferenze in corso.
+        // Increment number of inferences in progress.
         self.inferences_in_progress.fetch_add(1, Ordering::Relaxed);
 
-        // Ricava i nodi di "primo livello", i.e. quelli che hanno solo input/initializer tra i nodi entranti.
+        // Get "first layer nodes", i.e those that only have inputs/initializers as entering nodes.
         let first_layer_nodes: Vec<&OnnxGraphOperation> =
             self.get_first_layer_nodes(&nodes)
                 .into_iter()
                 .map(|node| node.ref_operation())
                 .collect::<Result<Vec<_>, OnnxError>>()?;
 
-        // Marca l'operazione come avviata per ogni nodo trovato.
+        // Mark operation as started for each node found.
         for node in first_layer_nodes.iter() {
             assert!(node.start_operation(infer_id)?)
         }
 
-        // Esegui in modo ricorsivo tutte le operazioni relative ai nodi trovati
+        // Execute operations of nodes found recursively.
         let out_hashmap: HashMap<String, Arc<Tensor>> =
             self.clone().execute_node_operations(
                 infer_id, 
@@ -547,10 +552,11 @@ impl OnnxGraph {
 
         log::info!("Finished inference {infer_id:?}!");
 
-        // Decrementa numero di inferenze in corso.
+        // Decrement number of inferences in progress.
         self.inferences_in_progress.fetch_sub(1, Ordering::Relaxed);
 
-        // A questo punto, tutti gli Arc dentro out_hashmap dovrebbero avere un solo riferimento, quindi si può estrarre ogni valore puntato tramite Arc::try_unwrap
+        // At this point, all Arcs inside out_hashmap should only have one reference, so we can consume the Arc and extract its
+        // value by using Arc::try_unwrap
         let final_hashmap: HashMap<String, Tensor> =
             out_hashmap
                 .into_iter()

@@ -4,7 +4,7 @@ use super::{Operation, OnnxError, onnx_error, Tensor, OperationResult, Attribute
 impl Operation {
 
     pub(super) fn execute_constant(&self, _inputs: Vec<&Tensor>) -> OperationResult {        
-        // L'output è l'attributo "value"
+        // Output is the "value" attribute
         match self.attributes.get("value") {
             Some(Attribute::Tensor(val)) => Ok(Arc::new(val.clone())),
             None => Err(onnx_error!("Value attribute not specified.")),

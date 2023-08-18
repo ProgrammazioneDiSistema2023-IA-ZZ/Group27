@@ -42,15 +42,14 @@ impl Operation {
     /// * **Y** (heterogeneous) - `T`: Output data tensor that contains the result of the convolution. The output dimensions are
     ///   functions of the kernel size, stride size, and pad lengths.
     pub(super) fn execute_conv(&self, inputs: Vec<&Tensor>) -> OperationResult {
-        // Input
+        // Inputs
         let data = *inputs.get(0).ok_or(onnx_error!("Missing data input from Conv operation"))?;
         let weights = *inputs.get(1).ok_or(onnx_error!("Missing weights input from Conv operation"))?;
         
-        // Per ora, solo gli input a 4 dimensioni sono supportati
         let data_shape: [usize; 4] = data.shape().try_into().map_err(|_| onnx_error!("Only 2D (image) convolution is supported at the moment."))?;
         let weights_shape: [usize; 4] = weights.shape().try_into().map_err(|_| onnx_error!("Only 2D (image) convolution is supported at the moment."))?;
 
-        // Estrazione e controlli sulle dimensioni dei due input.
+        // Destructure and check input dimensions.
         let (
             [ batches, channels, data_h, data_w ],
             [ filters, channels_w, kernel_h, kernel_w ]
@@ -60,7 +59,7 @@ impl Operation {
             return Err(onnx_error!("Input tensors must have the same number of channels, as groups are not supported ({channels} and {channels_w} supplied)."));
         }
 
-        // Bias: valori da sommare, unici per ogni filtro
+        // Bias: values to sum, unique for each filter.
         let bias =
             inputs.get(2).map_or_else(
                 || Ok(Array1::<f32>::zeros(filters)),
@@ -71,8 +70,8 @@ impl Operation {
             return Err(onnx_error!("Bias input must have the same length as the number of filters."))
         }
 
-        // Attributi
-        // Dilation: non gestita
+        // Attributes
+        // Dilation: unhandled
         let [ dilation_h, dilation_w ] = match self.attributes.get("dilations") {
             Some(Attribute::Ints(val)) => val.as_slice().try_into().map_err(|_| onnx_error!("Dilation should contain two dimensions."))?,
             None => [1, 1],
@@ -83,9 +82,9 @@ impl Operation {
             return Err(onnx_error!("Dilated convolutions are not supported."))
         }
         
-        // Dimensioni del kernel
+        // Kernel shape
         let [ kernel_h, kernel_w ] = match self.attributes.get("kernel_shape") {
-            // Converti Vec<&isize> a [usize; 2]
+            // Vec<&isize> -> [usize; 2]
             Some(Attribute::Ints(val)) => {
                 val.into_iter()
                    .map(|v| usize::try_from(*v))
@@ -98,7 +97,7 @@ impl Operation {
             _ => return Err(onnx_error!("kernel_shape attribute has an invalid value type"))
         };
 
-        // Gruppi: non gestiti
+        // Gruppi: unhandled
         let _groups = match self.attributes.get("groups") {
             Some(Attribute::Int(1)) => 1usize,
             Some(Attribute::Int(_)) => return Err(onnx_error!("Grouped convolutions are not supported.")),
@@ -106,10 +105,10 @@ impl Operation {
             _ => return Err(onnx_error!("groups attribute has an invalid value type"))
         };
 
-        // Strides: finestre saltate in lunghezza/altezza
+        // Strides: windows skipped in length/height
         let [strides_h, strides_w] = match self.attributes.get("strides") {
             Some(Attribute::Ints(val)) => {
-                // Converti Vec<&isize> a [usize; 2]
+                // Vec<&isize> -> [usize; 2]
                 val.into_iter()
                    .map(|v| usize::try_from(*v))
                    .collect::<Result<Vec<_>, _>>()
@@ -121,7 +120,7 @@ impl Operation {
             _ => return Err(onnx_error!("groups attribute has an invalid value type"))
         };
         
-        // Padding: manuale o automatico, indica righe/colonne aggiuntive con valori costanti.
+        // Padding: manual or automatic, describes amount of added rows/columns with constant values.
         let [ pad_n, pad_w, pad_s, pad_e ] =
             self.get_padding(
                 (data_h, data_w),
@@ -129,9 +128,9 @@ impl Operation {
                 (strides_h, strides_w)
             )?;
 
-        /*** CONVOLUZIONE ***/
+        /*** CONVOLUTION ***/
 
-        // Clona l'input, con eventuale padding aggiunto.
+        // Clone the input, eventually with added padding.
         let (padded_h, padded_w) = (data_h + pad_n + pad_s, data_w + pad_e + pad_w);
         let mut padded_data = Array4::<f32>::zeros((batches, channels, padded_h, padded_w));
         padded_data.slice_mut(s![.., .., pad_n..pad_n+data_h, pad_w..pad_w+data_w]).assign(data);
@@ -139,9 +138,9 @@ impl Operation {
         let strides = [ strides_h, strides_w ];
         let window_dim = [ kernel_h, kernel_w ];
 
-        // Ricava le finestre bidimensionali per ogni canale e salvale nel vettore windows_array.
-        // (Il risultato ha dimensioni B x C x Nh x Nw x Kh x Kw)
-        // B: batches; C: channels; Nh,Nw: Numero finestre in altezza/lunghezza; Kh,Kw: dimensioni del kernel.
+        // Obtain all two-dimensional windows for each channel and save them in windows_array.
+        // (The result has shape B x C x Nh x Nw x Kh x Kw)
+        // B: batches; C: channels; Nh,Nw: Number of windows in height/length; Kh,Kw: kernel shape.
         let windows_data =
             padded_data
                 .outer_iter()
@@ -156,7 +155,7 @@ impl Operation {
                         .collect::<Vec<_>>()
                 });
 
-        // Calcola le dimensioni dell'output
+        // Calculate output dimensions
         let (out_h, out_w) = ((padded_h-kernel_h)/strides_h+1, (padded_w-kernel_w)/strides_w+1);
 
         let windows_array =
@@ -164,12 +163,12 @@ impl Operation {
                 .into_shape((batches, channels, out_h, out_w, kernel_h, kernel_w))
                 .unwrap();
 
-        // Ricava il risultato della convoluzione tramite l'operazione Einsum
+        // Compute the result of the convolution via the Einsum operation.
         let mut result = 
             einsum("bchwij,fcij->bfhw", &[ &windows_array, weights ])
                 .map_err(|e| onnx_error!("Einsum failed to produce a result: {e}."))?;
 
-        // Somma il bias al risultato (ad ogni filtro)
+        // Add bias to the result
         result += &bias.into_shape((1, filters, 1, 1)).unwrap();
 
         Ok(Arc::new(result))

@@ -19,31 +19,31 @@ mod relu;
 mod reshape;
 mod softmax;
 
-/// Generico array multidimensionale contenente dei float ([`f32`]).
+/// Generic multidimensional array containing floats ([`f32`]).
 pub type Tensor = ArrayD<f32>;
 
-/// Tipo di operazione
+/// Operation type
 #[derive(Clone)]
 pub enum OpType {
-    /// Addizione tra due input.
+    /// Addition.
     Add,
 
-    /// Simile alla convoluzione, ma per ogni finestra calcola la media.
+    /// For each window, calculates the average.
     AveragePool,
 
-    /// Concatenazione su un asse.
+    /// Concatenation on one axis.
     Concat,
 
-    /// Costante definita negli attributi.
+    /// Output is a constant defined as an attribute.
     Constant,
 
-    /// Convoluzione.
+    /// Convolution.
     Conv,
 
-    // Divisione tra due input.
+    // Division.
     Div,
 
-    /// Operazione usata durante il training, in questo contesto non fa nulla.
+    /// Operation used during training phase, does nothing in this context.
     Dropout,
 
     // General Matrix Multiplication.
@@ -52,16 +52,16 @@ pub enum OpType {
     /// Local Response Normalization.
     LRN,
 
-    /// Moltiplicazione tra due matrici.
+    /// Matrix multiplication.
     MatMul,
 
-    /// Simile alla convoluzione, ma per ogni finestra sceglie il massimo.
+    /// For each window, choose the maximum value.
     MaxPool,
 
     /// Y = max(0, X).
     Relu,
 
-    /// Cambio forma.
+    // Change the shape of the input.
     Reshape,
 
     /// Softmax(input, axis) = Exp(input) / ReduceSum(Exp(input), axis=axis, keepdims=1)
@@ -91,7 +91,7 @@ impl TryFrom<&str> for OpType {
     }
 }
 
-/// Valore di un attributo, che può essere di un qualunque tipo.
+/// Value of an attribute, which can vary in type.
 #[derive(Clone,Debug)]
 pub enum Attribute {
     Undefined,
@@ -99,48 +99,52 @@ pub enum Attribute {
     Int(isize),
     String(String),
     Tensor(Tensor),
-    /// Non gestito
+    /// Unhandled
     Graph(()),
     Floats(Vec<f32>),
     Ints(Vec<isize>),
     Strings(Vec<String>),
     Tensors(Vec<Tensor>),
-    /// Non gestito
+    /// Unhandled
     Graphs(()),
-    /// Non gestito
+    /// Unhandled
     SparseTensor(()),
-    /// Non gestito
+    /// Unhandled
     SparseTensors(()),
-    /// Non gestito
+    /// Unhandled
     TypeProto(()),
-    /// Non gestito
+    /// Unhandled
     TypeProtos(())
 }
 
-/// Operazione con stato e attributi.
+/// Operation with attributes.
 pub struct Operation {
-    /// Tipo dell'operazione.
+    /// Type of this operation.
     op_type: OpType,
 
-    /// [`HashMap`] che mappa il nome dell'attributo con il valore corrispondente.
+    /// [`HashMap`] that maps the name of the attribute with the corresponding value.
     attributes: HashMap<String, Attribute>,
 
-    /// Eventuali dimensioni attese del risultato dell'operazione
+    /// Optional expected shape of the result (length of every dimension).
     /// 
-    /// Se [`None`], verranno accettati risultati con qualsiasi dimensione.
+    /// For instance, the shape `[1, 2, 3, 4]` relates to an array with 4 dimensions, where the dimensions of the axes are
+    /// 1, 2, 3 and 4 respectively.
+    /// 
+    /// If [`None`], inputs of any shape will be accepted.
     expected_result_shape: Option<Box<[usize]>>,
 }
 
+/// Result of an operation. Since it can be shared between multiple threads, the value is already encapsulated in an Arc.
 pub(crate) type OperationResult = Result<Arc<Tensor>, OnnxError>;
 
 impl Operation {
 
-    /// Crea una nuova operazione da avviare.
+    /// Creates a new operation to start.
     pub fn new(op_type: OpType) -> Self {
         Self::with_attributes(op_type, HashMap::new())
     }
 
-    /// Crea una nuova operazione da avviare con attributi.
+    /// Creates a new operation to start, with attributes.
     pub fn with_attributes(op_type: OpType, mut attributes: HashMap<String, Attribute>) -> Self {
        
        /*LRN ha dei valori di default per alcuni parametri, nel file .onnx sono presenti i parametri alpha,beta,bias ma non sono valorizzati 
@@ -166,9 +170,9 @@ impl Operation {
         }
     }
 
-    /// Esegue l'operazione, dato un vettore di input.
+    /// Executes the operation, given an input [`Tensor`].
     /// 
-    /// Nel caso di più input, l'ordine è lo stesso specificato nella [documentazione delle operazioni ONNX][<https://onnx.ai/onnx/operators/>].
+    /// In case of more inputs, the order is the same as specified in the [ONNX operators documentation][<https://onnx.ai/onnx/operators/>].
     pub(crate) fn execute(&self, inputs: Vec<Arc<Tensor>>) -> OperationResult {
         let inputs_pointers: Vec<&Tensor> = inputs.iter().map(|f| f.as_ref()).collect();
         
@@ -189,7 +193,7 @@ impl Operation {
             OpType::Softmax => self.execute_softmax(inputs_pointers)
         };
 
-        // Controllo forma del risultato
+        // Check shape of the result, if present.
         if let (Ok(res_val), Some(expected_shape)) = (&result, &self.expected_result_shape) {
             let res_shape = res_val.shape();
             if res_shape != expected_shape.as_ref() {
@@ -200,13 +204,12 @@ impl Operation {
         result
     }
 
-    /// Calcola le dimensioni del padding necessario. Questo dipende dal: 
-    /// * Numero di feature maps (`fmaps`)
-    /// * Dimensioni dei dati (`data_w`, `data_w`)
-    /// * Dimensioni del kernel (`kernel_h`, `kernel_w`)
+    /// Calculate the length of the padding needed for each direction. This depends on:
+    /// * Shape of the data (`data_w`, `data_w`)
+    /// * Shape of the kernel (`kernel_h`, `kernel_w`)
     /// * Strides (`strides_h`, `strides_w`)
     /// 
-    /// Il padding può essere manuale o automatico, in base agli attributi dell'operazione.
+    /// Padding may be manual or automatic, based on the operation attributes.
     fn get_padding(
         &self,
         (data_h, data_w): (usize, usize),
@@ -215,10 +218,10 @@ impl Operation {
     ) -> Result<[usize; 4], OnnxError> {
         match self.attributes.get("auto_pad").or(Some(&Attribute::String("NOTSET".to_string()))) {
             Some(Attribute::String(auto_pad)) => match auto_pad.as_str() {
-                // Padding manuale
+                // Manual padding
                 "NOTSET" => match self.attributes.get("pads") {
                     Some(Attribute::Ints(val)) => Ok(
-                        // Converti Vec<&isize> a [usize; 4]
+                        // Vec<&isize> -> [usize; 4]
                         val.into_iter()
                            .map(|v| usize::try_from(*v))
                            .collect::<Result<Vec<_>, _>>()
@@ -230,12 +233,12 @@ impl Operation {
                     _ => return Err(onnx_error!("pads attribute has an invalid value type"))
                 },
 
-                // Dimensioni valide, senza padding.
+                // Given dimensions are supposed to be valid, without any padding.
                 "VALID" => Ok([0,0,0,0]),
 
-                // Padding automatico: le dimensioni del padding sono tali che l'output abbia dimensioni uguali all'input senza padding.
-                // Il padding viene distribuito a metà in entrambe le dimensioni. Se le dimensioni sono dispari, il padding aggiuntivo
-                // viene messo all'inizio (UPPER) o alla fine (LOWER) in base all'opzione
+                // Automatic padding: the shape of the padding are such that the output has the same shape of the input without
+                // the padding. The padding is split in half across both directions. If the padding shape is odd, the extra
+                // padding is added at the beginning (UPPER) or at the end (LOWER) based on the attribute. 
                 s @ ("SAME_UPPER" | "SAME_LOWER") => {
                     let (v_padding, h_padding) = (data_h*(strides_h-1)+kernel_h-strides_h, data_w*(strides_w-1)+kernel_w-strides_w);
                     Ok([
@@ -251,10 +254,10 @@ impl Operation {
         }
     }
 
-    /// Ricava le finestre di dimensioni `window_dim` dell'array `data`
+    /// Obtains the windows of shape `window_dim` of the `data` array.
     /// 
-    /// # Ritorno
-    /// Iteratore sulle finestre
+    /// # Return
+    /// Iterator over the windows.
     fn get_strided_windows<'a, I, D: IntoDimension<Dim = IxDyn>>(
         data: &'a ArrayViewD<I>,
         window_dim: D,
@@ -264,7 +267,7 @@ impl Operation {
         let window_dim = window_dim.into_dimension();
         let strides_dim = strides.into_dimension();
 
-        // Numero totale delle finestre, per ogni dimensione
+        // Amount of windows, for each dimension.
         let window_amounts =
             Zip::from(data.shape()).and(window_dim.as_array_view())
                 .map_collect(|data_len, window_len| data_len - window_len + 1)
@@ -275,7 +278,7 @@ impl Operation {
             .into_iter()
             .enumerate()
             .filter_map(move |(mut i, window)| {
-                // Determina posizione corrente
+                // Get current position
                 let mut position = Vec::with_capacity(window_amounts.len());
                 for w_i in 0..window_amounts.len() {
                     let product: usize = window_amounts.iter().skip(w_i+1).map(|v| *v).product();
@@ -283,7 +286,7 @@ impl Operation {
                     i %= product;
                 }
 
-                // Determina se la posizione corrente è da saltare in base alle strides.
+                // Determine if current position is to skip based on the strides.
                 if Zip::from(&position).and(strides_dim.as_array_view()).all(|&pos, &stride| pos % stride == 0) {
                     Some(window)
                 } else {
@@ -292,13 +295,13 @@ impl Operation {
             })
     }
 
-    /// Divide un [`Tensor`] di dimensioni generiche in finestre di dimensioni `window_dim` e applica la funzione `f` ad ognuna.
+    /// Obtains the windows of shape `window_dim` of the `data` array, then applies the function `f` to each.
     /// 
-    /// Il risultato di ogni chiamata di `f` viene salvato in un nuovo array multidimensionale generico, avente forma che
-    /// dipende da `data`, `window_dim` e dalle `strides` (finestre saltate sia in lunghezza che in altezza).
+    /// The result of each call to `f` is saved in a new multidimensional array, with shape depending on `data`, `window_dim`
+    /// and `strides`.
     /// 
-    /// # Errore
-    /// Se le dimensioni della finestra non sono compatibili con il numero di risultati calcolati.
+    /// # Error
+    /// If the shape of the final array is not compatible with the number of results.
     fn map_windows<I, O, D: IntoDimension<Dim = IxDyn>>(
         data: ArrayViewD<I>,
         window_dim: D,
@@ -308,7 +311,7 @@ impl Operation {
         let window_dim = window_dim.into_dimension();
         let strides_dim = strides.into_dimension();
 
-        // Dimensioni dell'output
+        // Compute output shapes
         let out_shape = 
             Zip::from(data.shape()).and(window_dim.as_array_view()).and(strides_dim.as_array_view())
                 .map_collect(|data_len, window_len, strides_len| (data_len-window_len)/strides_len+1)

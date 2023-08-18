@@ -34,14 +34,14 @@ impl Operation {
     /// # Outputs
     /// * **Y** (heterogeneous) - `T`: Output tensor, which has the shape and type as input tensor
     pub(super) fn execute_lrn(&self, inputs: Vec<&Tensor>) -> OperationResult {
-        // Input
+        // Inputs
         let data = *inputs.get(0).ok_or(onnx_error!("Missing input data from LRN operation."))?;
         
         // Per ora, solo gli input a 4 dimensioni sono supportati
         let data_shape: [usize; 4] = data.shape().try_into().map_err(|_| onnx_error!("Only 2D (image) LRN is supported at the moment."))?;
         let [ batches, channels, data_h, data_w ] = data_shape;
         
-        // Attributi
+        // Attributes
         let alpha = match self.attributes.get("alpha") {
             Some(Attribute::Float(val)) => *val,
             None => 1e-4,
@@ -68,9 +68,8 @@ impl Operation {
 
         /*** LRN ***/
 
-        // Calcola il valore di ogni cella del risultato in modo parallelo, poi unisci il tutto nel vettore finale result. 
-        // L'iteratore parallelo colleziona i valori in modo disordinato, quindi occorre ancora effettuare un sort in base
-        // all'indice globale di ogni valore.
+        // Calculate value of each cell of the result in parallel, then insert all values into the result array. The parallel
+        // iterator collects values in a random fashion, so we also need to sort by the global index of each value
         let values =
             iproduct!(0..batches, 0..channels, 0..data_h, 0..data_w)
                 .par_bridge()
@@ -81,8 +80,8 @@ impl Operation {
                     let square_sum = data.slice(s![n_batch, ch_from..=ch_to, i, j]).mapv(|v| v.powi(2)).sum();
                     let res = data[[n_batch, n_channel, i, j]] / (bias + (alpha / size as f32) * square_sum).powf(beta);
                     (
-                        j + i * data_w + n_channel * data_w * data_h + n_batch * data_w * data_h * channels, // Indice globale
-                        res // Risultato
+                        j + i * data_w + n_channel * data_w * data_h + n_batch * data_w * data_h * channels, // Global index
+                        res // Result
                     )
                 })
                 .collect::<Vec<(usize, f32)>>()

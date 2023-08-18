@@ -35,7 +35,7 @@ impl Operation {
     /// # Outputs
     /// * **Y** (heterogeneous) - `T`: Output tensor of shape `(M, N)`.
     pub(super) fn execute_gemm(&self, inputs: Vec<&Tensor>) -> OperationResult {
-        // Input
+        // Inputs
         if ![2,3].contains(&inputs.len()) {
             return Err(onnx_error!("Gemm operation must contain 2 or 3 inputs."));
         }
@@ -44,7 +44,7 @@ impl Operation {
         let b = inputs[1];
         let c = inputs.get(2);
 
-        // Attributi
+        // Attributes
         let alpha = match self.attributes.get("alpha") {
             Some(Attribute::Float(val)) => *val,
             None => 1.,
@@ -69,7 +69,7 @@ impl Operation {
             _ => return Err(onnx_error!("alpha attribute has an invalid value type"))
         };
 
-        // Calcolo
+        // Compute A' and B'
         let a_prime =
             if trans_a == 1 { a.t() } else { a.view() }
                 .into_dimensionality::<Ix2>().map_err(|_| onnx_error!("Only two-dimensional products are supported. Matrix A was found to have {} dimension(s).", a.shape().len()))?;
@@ -78,6 +78,7 @@ impl Operation {
             if trans_b == 1 { b.t() } else { b.view() }
                 .into_dimensionality::<Ix2>().map_err(|_| onnx_error!("Only two-dimensional products are supported. Matrix B was found to have {} dimension(s).", b.shape().len()))?;
 
+        // result = alpha * A' * B' (+ beta * C)
         let mut result = alpha * a_prime.dot(&b_prime);
 
         if let Some(c) = c {

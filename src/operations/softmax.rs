@@ -25,10 +25,10 @@ impl Operation {
     /// # Outputs
     /// * **output** (heterogeneous) - `T`: The output values with the same shape as the input tensor.
     pub(super) fn execute_softmax(&self, inputs: Vec<&Tensor>) -> OperationResult {
-        // Input
+        // Inputs
         let input = *inputs.get(0).ok_or(onnx_error!("Softmax must have 1 input."))?;
 
-        // Attributi
+        // Attributes
         let axis: usize = match self.attributes.get("axis") {
             Some(Attribute::Int(val)) if *val >= 0 => (*val).try_into().unwrap(),
             Some(Attribute::Int(val)) if *val < 0 => {
@@ -42,8 +42,8 @@ impl Operation {
         // input_exp = e^input
         let input_exp = input.mapv(|v| E.powf(v));
         
-        // Somma i valori di input_exp lungo l'asse (questo genera un array con una dimensione minore rispetto all'input), poi
-        // effettua il broadcast in modo da mantenere la stessa forma dell'input.
+        // Sum values of input_exp over the axis (this generates a new array with one less dimension as the input), then
+        // broadcast the result back to the same shape of the input.
         let axis_sums =
             input_exp
                 .sum_axis(Axis(axis))

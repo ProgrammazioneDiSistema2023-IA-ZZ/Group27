@@ -4,24 +4,21 @@ use crate::{operations::{Operation, OperationResult, Tensor}, helper::InnerMutex
 
 use super::InferenceID;
 
-/// Stato di esecuzione dell'operazione
+/// Status of execution of an operation.
 pub(super) enum OpStatus {
-    /// Da avviare.
     ToStart,
 
-    /// Avviata.
     Started,
 
-    /// Terminata, con dati sul risultato.
+    /// Finished, with the saved value of the result.
     Finished(OperationResult),
 
-    /// Terminata, dati sul risultato liberati perché non più necessari.
+    /// Finished, value of the result is no longer owned by the operation as it's already been passed to all its outputs.
     Cleared
 }
 
 impl OpStatus {
 
-    /// Indica se lo stato corrente è operazione terminata.
     pub(super) fn is_finished(&self) -> bool {
         match self {
             Self::Finished(_) => true,
@@ -29,7 +26,6 @@ impl OpStatus {
         }
     }
 
-    /// Indica se lo stato corrente è operazione avviata.
     pub(super) fn is_started(&self) -> bool {
         match self {
             Self::Started => true,
@@ -37,7 +33,6 @@ impl OpStatus {
         }
     }
 
-    /// Indica se lo stato corrente è operazione da avviare.
     pub(super) fn is_to_start(&self) -> bool {
         match self {
             Self::ToStart => true,
@@ -46,41 +41,46 @@ impl OpStatus {
     }
 }
 
-/// Nodo operazione all'interno di un grafo.
+/// Operation node of a graph.
 pub struct OnnxGraphOperation {
     /// Nome del nodo.
     pub(super) name: String,
     
-    /// Nomi dei nodi in entrata nel nodo operazione.
+    /// Names of the nodes that are inputs to this node.
     /// 
-    /// È un Vec e non un HashSet perchè l'ordine degli input è importante.
+    /// It's a Vec instead of a HashSet because the input order is important.
     pub(super) inputs: Vec<String>,
 
-    /// Nomi dei nodi in uscita dal nodo operazione.
+    /// Names of the nodes that are outputs to this node.
     pub(super) outputs: HashSet<String>,
 
-    /// Operazione da eseguire nel nodo.
+    /// Data related to the operation of this node.
     operation: Operation,
 
-    /// [`HashMap`] che mappa l'identificativo dell'inferenza con i corrispondenti stati delle operazioni.
+    /// [`HashMap`] that maps the inference ID with the respective status of the operation.
     statuses: Mutex<HashMap<InferenceID, OpStatus>>,
 
-    /// Condition variable usata per notificare una delle inferenze che l'operazione è stata terminata.
+    /// Condition variable used to notify any inference that the operation has finished.
     /// 
-    /// Le altre, grazie alla wait_while, rimaranno in attesa dopo il risveglio.
+    /// The others, thanks to `wait_while`, will keep waiting after being notified.
     cv: Condvar,
 
-    /// [`HashMap`] che mappa l'identificativo dell'inferenza con il numero di volte che il risultato è stato passato ai nodi
-    /// uscenti.
+    /// [`HashMap`] that maps the inference ID with the number of times that the result has been passed to the outputs of this
+    /// node.
     /// 
-    /// Questo permette di liberare il prima possibile le risorse quando non sono più necessarie (principalmente il risultato
-    /// intermedio memorizzato in [`OpStatus::Finished`] non appena questo è stato comunicato a tutti i nodi uscenti).
+    /// This allows to free resources (mainly the result saved along with [`OpStatus::Finished`]) as soon as they're no longer
+    /// needed.
     notified_count: Mutex<HashMap<InferenceID, usize>>
 }
 
 impl OnnxGraphOperation {
-    /// Crea un nuovo nodo operazione con i relativi dati.
-    pub fn new<SI, SO, I, O>(name: impl ToString, operation: Operation, inputs: I, outputs: O) -> Self
+    /// Creates a new operation node with related data.
+    pub fn new<SI, SO, I, O>(
+        name: impl ToString,
+        operation: Operation,
+        inputs: I,
+        outputs: O
+    ) -> Self
     where
         SI: ToString,
         SO: ToString,
@@ -98,14 +98,14 @@ impl OnnxGraphOperation {
         }
     }
 
-    /// Prende possesso di `self.statuses` e restituisce un [`InnerMutexGuard`] relativo all'operazione dell'inferenza data.
+    /// Locks `self.statuses`and returns an [`InnerMutexGuard`] of the status related to the given inference.
+    ///
+    /// If there is no such status, a new one will be created with value [`OpStatus::ToStart`].
     /// 
-    /// Se l'inferenza non ha alcuno status associato nella mappa, ne viene associato uno nuovo con valore [`OpStatus::ToStart`].
-    /// 
-    /// # Errore
-    /// Se le operazioni di lock non vanno a buon fine.
+    /// # Error
+    /// If any lock operation fails.
     pub(super) fn get_status(&self, infer_id: InferenceID) -> Result<InnerMutexGuard<InferenceID, OpStatus>, OnnxError> {
-        // Lock della mappa
+        // Lock statuses map.
         let mut statuses =
             self.statuses.lock()
                 .map_err(|_| onnx_error!("[{}] PoisonError occurred while locking statuses.", self.name))?;
@@ -117,69 +117,70 @@ impl OnnxGraphOperation {
         Ok(InnerMutexGuard(statuses, infer_id))
     }
     
-    /// Termina forzatamente l'operazione con l'errore passato per parametro e notifica gli eventuali subscriber di ciò.
+    /// Forcefully terminates the operation with the given error and notifies any [`Condvar`] subscriber of this.
+    ///
+    /// If the operation already appears to have terminated with an error, it will not be overwritten.
     /// 
-    /// Se l'operazione risulta già terminata con un errore, questo non viene sovrascritto.
-    /// 
-    /// # Errore
-    /// Se le operazioni di lock non hanno successo.
+    /// # Error
+    /// If any lock operation fails.
     pub(super) fn end_operation_with_error(&self, infer_id: InferenceID, e: OnnxError) -> Result<(), OnnxError> {
-        // Lock delle risorse
+        // Lock resources
         let mut status = self.get_status(infer_id)?;
 
         if let OpStatus::Finished(Err(_)) = *status {
-            // L'operazione è già terminata con un errore: non fare nulla.
+            // Operation already finished with an error: don't do anything.
             Ok(())
         } else {
-            // L'operazione deve ancora terminare o è già terminata con successo: sovrascrivi lo stato con l'errore e notifica i subscriber.
+            // Operation still has to finish, or it has successfully finish: overwrite the status and notify the subscribers.
             *status = OpStatus::Finished(Err(e));
             self.cv.notify_all();
             Ok(())
         }
     }
-
-    /// Marca l'operazione corrente con stato [`OpStatus::Started`], indicando se lo stato è stato effettivamente cambiato.
+ 
+    /// Marks the current operation as [`Started`][OpStatus::Started].
     /// 
     /// # Return
-    /// `true` se lo status è stato effettivmente cambiato (l'operazione aveva come stato precedente [`OpStatus::ToStart`]),
-    /// `false` altrimenti
+    /// `true` if the status was changed (i.e the previous status was [`OpStatus::ToStart`]),
+    /// `false` otherwise.
     /// 
-    /// # Errore
-    /// Se le operazioni di lock non vanno a buon fine.
+    /// # Error
+    /// If any lock operation fails.
     pub(super) fn start_operation(&self, infer_id: InferenceID) -> Result<bool, OnnxError> {
-        // Lock delle risorse
+        // Lock resources
         let mut status = self.get_status(infer_id)?;
     
         if status.is_to_start() {
-            // L'operazione doveva ancora cominciare: cambia stato e restituisci true.
+            // Operation still has to start: change status and return true.
             *status = OpStatus::Started;
             Ok(true)
         } else {
-            // L'operazione è già cominciata/terminata: non fare nulla e restituisci false.
+            // Operation already started/finished: don't do anything and return false.
             Ok(false)
         }
     }
 
-    /// Incrementa `notified_count` per l'inferenza corrente (in modo atomico) e restituisce il numero aggiornato.
+    /// Increments `notified_count` for the current inference (atomically) and returns the updated count.
     /// 
-    /// Inoltre, se il conto aggiornato è pari al numero di nodi uscenti, effettua il cambio di stato da [`OpStatus::Finished`] a
-    /// [`OpStatus::Cleared`] in modo da liberare le risorse occupate dal risultato memorizzato.
+    /// Moreover, if the updated count is equal to the number of outputs to this node, this function will also update the status
+    /// from [`Finished`][OpStatus::Finished] to [`Cleared`][OpStatus::Cleared], so that the saved result will be freed.
     /// 
-    /// # Errore
-    /// Se le operazioni di lock non vanno a buon fine.
+    /// # Error
+    /// If any lock operation fails.
     pub(super) fn increment_notified_count(&self, infer_id: InferenceID) -> Result<(), OnnxError> {
-        // Lock delle risorse
+        // Lock resources
         let mut notified_count =
             self.notified_count.lock()
                 .map_err(|_| onnx_error!("[{}] PoisonError occurred while locking notified count.", self.name))?;
 
-        // Incrementa o aggiungi 1 se assente
+        // Increment or insert 1 if missing
         notified_count
             .entry(infer_id)
             .and_modify(|count| *count += 1)
             .or_insert(1);
 
-        // Se il conto incrementato è pari al numero di output, allora il risultato è stato passato a tutti: si può liberare il risultato intermedio.
+        // If the new count is equal to the number of outputs, then the result has been passed to all outputs: the intermediate
+        // result saved with OpStatus::Finished can be cleared.
         let new_count = *notified_count.get(&infer_id).unwrap();
         drop(notified_count);
         if new_count == self.outputs.len() {
@@ -189,24 +190,24 @@ impl OnnxGraphOperation {
         Ok(())
     }
     
-    /// Restituisce il risultato dell'operazione relativo all'inferenza corrente.
+    /// Returns the result of this operation, related to the given inference.
+    ///
+    /// If the operation has already been terminated, the function will immediately extract the result and return it or, if the
+    /// operation is still in progress, it will wait for it to finish (in a blocking way!).
     /// 
-    /// Se l'operazione è già terminata, estrae il riusultato e lo restituisce, mentre se deve terminare attende (in modo
-    /// bloccante!) che l'operazione termini.
-    /// 
-    /// # Errore
-    /// Se le operazioni di lock non vanno a buon fine.
+    /// # Error
+    /// If any lock operation fails.
     pub(super) fn get_result(&self, infer_id: InferenceID) -> OperationResult {
-        // Lock delle risorse
+        // Lock resources
         let mut status = self.get_status(infer_id)?;
 
         // Estrai risultato in base allo stato dell'operazione
         let result: OperationResult =
             if let OpStatus::Finished(result) = &*status {
-                // Operazione già terminata: restituisci il risultato.
+                // Operation already finished: return the result.
                 result.clone()
             } else {
-                // Operazione avviata ma ancora da terminare: attendi tramite condition variable e restituisci il risultato non appena l'operazione termina.
+                // Operation still has to finish: wait via condition variable and return the result as soon as it finishes.
                 let InnerMutexGuard(statuses, _) = status;
                 status = InnerMutexGuard(
                     self.cv.wait_while(statuses, |statuses| !statuses.get(&infer_id).unwrap().is_finished())
@@ -221,21 +222,21 @@ impl OnnxGraphOperation {
 
         drop(status);
         
-        // Incrementa notified_count per l'inferenza corrente
+        // Increment notified_count for current inference.
         self.increment_notified_count(infer_id)?;
 
         result
     }
     
-    /// Esegue l'operazione dati i suoi input.
-    /// 
-    /// Al termine dell'operazione, aggiorna lo stato a [`OpStatus::Finished`] e notifica gli eventuali subscriber della
-    /// [`Condvar`] del termine.
+    /// Executes the operation, given its inputs.
+    ///
+    /// When the operation finishes, the function will update the status to [`Finished`][OpStatus::Finished] and notify any
+    /// [`Condvar`] subscriber of this.
     pub(super) fn execute_operation<'a>(&self, infer_id: InferenceID, inputs: Vec<Arc<Tensor>>) -> OperationResult {
-        // Calcola il risultato.
+        // Calculate the result.
         let result = self.operation.execute(inputs);
 
-        // Aggiorna lo stato dell'operazione e notifica i subscriber.
+        // Update the status of this operation and notify the subscribers.
         let mut status = self.get_status(infer_id)?;
 
         assert!(status.is_started());
@@ -245,9 +246,10 @@ impl OnnxGraphOperation {
         result
     }
 
-    /// Libera i dati dello status relativo all'inferenza corrente.
+    /// Updates the status from [`Finished`][OpStatus::Finished] to [`Cleared`][OpStatus::Cleared], so that the saved result
+    /// will be freed.
     pub(super) fn clear_status_data(&self, infer_id: InferenceID) -> Result<(), OnnxError> {
-        // Prendi possesso di statuses.
+        // Lock statuses map.
         let mut statuses =
             self.statuses.lock()
                 .map_err(|_| onnx_error!("[{}] Poison Error occurred while locking statuses.", self.name))?;

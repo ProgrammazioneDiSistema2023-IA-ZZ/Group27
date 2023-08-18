@@ -5,7 +5,7 @@ pub struct OnnxError {
 }
 
 impl OnnxError {
-    /// Crea un nuovo errore con un dato messaggio.
+    /// Creates a new error with the given message.
     pub fn new(msg: String) -> Self {
         Self {
             msg: msg.to_string()
@@ -13,7 +13,7 @@ impl OnnxError {
     }
 }
 
-/// Crea un [`OnnxError`] con un dato messaggio formattato.
+/// Creates an [`OnnxError`] with a formatted message.
 #[macro_export]
 macro_rules! onnx_error {
     ($($args: tt)*) => {

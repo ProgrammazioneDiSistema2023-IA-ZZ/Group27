@@ -1,9 +1,9 @@
 use std::{sync::MutexGuard, collections::HashMap, ops::{Deref, DerefMut}, hash::Hash};
 
-/// La struttura, se dereferenziata, restituisce il valore identificato dalla chiave data, con riferimento ad una [`HashMap`]
-/// controllata da un [`Mutex`][`std::sync::Mutex`].
+/// This structure, if dereferenced, returns the value identified by the given key, referencing a [`HashMap`] locked behind a
+/// Mutex.
 /// 
-/// # Esempio
+/// # Example
 /// ```ignore
 /// let mut map = Mutex::new(HashMap::from([
 ///     ("foo", "Hello World!"),
@@ -13,8 +13,8 @@ use std::{sync::MutexGuard, collections::HashMap, ops::{Deref, DerefMut}, hash::
 /// assert_eq!(*foo_guard, "Hello World!");
 /// ```
 /// 
-/// # Panico
-/// Se la chiave non è associata ad alcun valore nella HashMap.
+/// # Panics
+/// If the map has no value associated to the key.
 pub struct InnerMutexGuard<'a, K, V>(pub MutexGuard<'a, HashMap<K, V>>, pub K);
 
 impl<'a, K: Hash + Eq + PartialEq, V> Deref for InnerMutexGuard<'a, K,V> {

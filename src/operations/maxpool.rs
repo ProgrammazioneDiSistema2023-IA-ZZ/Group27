@@ -69,12 +69,12 @@ impl Operation {
     /// * **Y** (heterogeneous) - `T`: Output data tensor from average or max pooling across the input tensor. Dimensions will
     ///   vary based on various kernel, stride, and pad sizes. Floor value of the dimension is used
     pub(super) fn execute_max_pool(&self, inputs: Vec<&Tensor>) -> OperationResult {
-        // Input
+        // Inputs
         let data = *inputs.get(0).ok_or(onnx_error!("Missing X input from MatMul operation"))?;
         let data_shape: [usize; 4] = data.shape().try_into().map_err(|_| onnx_error!("Only 2D (image) convolution is supported at the moment."))?;
         let [ batches, channels, data_h, data_w ] = data_shape;
 
-        // Attributi
+        // Attributes
         // Dilations: non gestite
         let [ dilation_h, dilation_w ] = match self.attributes.get("dilations") {
             Some(Attribute::Ints(val)) => val.as_slice().try_into().map_err(|_| onnx_error!("Dilation should contain two dimensions."))?,
@@ -101,7 +101,7 @@ impl Operation {
             _ => return Err(onnx_error!("kernel_shape attribute has an invalid value type"))
         };
 
-        // Strides: finestre saltate in lunghezza/altezza
+        // Strides: windows skipped in length/height
         let [strides_h, strides_w] = match self.attributes.get("strides") {
             Some(Attribute::Ints(val)) => {
                 // Converti Vec<&isize> a [usize; 2]
@@ -116,7 +116,7 @@ impl Operation {
             _ => return Err(onnx_error!("groups attribute has an invalid value type"))
         };
         
-        // Padding: manuale o automatico, indica righe/colonne aggiuntive con valori costanti.
+        // Padding: manual or automatic, describes amount of added rows/columns with constant values.
         let [ pad_n, pad_w, pad_s, pad_e ] =
             self.get_padding(
                 (data_h, data_w),
@@ -124,7 +124,7 @@ impl Operation {
                 (strides_h, strides_w)
             )?;
 
-        // Ceil mode: arrotonda per difetto o per eccesso la dimensione dell'output.
+        // Ceil mode: use ceil or floor operation to round the output shape
         let ceil_mode = match self.attributes.get("ceil_mode") {
             Some(Attribute::Int(val)) => *val,
             None => 0,
@@ -140,21 +140,20 @@ impl Operation {
 
         /*** MAXPOOL ***/
         
-        // Clona l'input, con eventuale padding aggiunto.
-        // I valori del padding saranno f32::MIN, così non potranno mai essere scelti come massimo.
+        // Clone the input, eventually with added padding.
+        // Padding values are f32::MIN, so that they will never be chosen as the maximum.
         let (padded_h, padded_w) = (data_h + pad_n + pad_s, data_w + pad_e + pad_w);
         let mut padded_data = Array4::<f32>::from_elem((batches, channels, padded_h, padded_w), f32::MIN);
         padded_data.slice_mut(s![.., .., pad_n..pad_n+data_h, pad_w..pad_w+data_w]).assign(data);
 
-        // Calcola le dimensioni dell'output in base a ceil_mode
+        // Calculate output dimensions in base a ceil_mode
         let (out_h, out_w) = (
             if ceil_mode == 1 { f32::ceil((padded_h-kernel_h) as f32/strides_h as f32 + 1.) as usize } else { (padded_h-kernel_h)/strides_h+1 },
             if ceil_mode == 1 { f32::ceil((padded_w-kernel_w) as f32/strides_w as f32 + 1.) as usize } else { (padded_w-kernel_w)/strides_w+1 }
         );
 
-        // Calcola il valore di ogni cella del risultato in modo parallelo, poi unisci il tutto nel vettore finale result. 
-        // L'iteratore parallelo colleziona i valori in modo disordinato, quindi occorre ancora effettuare un sort in base
-        // all'indice globale di ogni valore.
+        // Calculate value of each cell of the result in parallel, then insert all values into the result array. The parallel
+        // iterator collects values in a random fashion, so we also need to sort by the global index of each value
         let values =
             iproduct!(0..batches, 0..channels)
                 .par_bridge()
@@ -166,8 +165,8 @@ impl Operation {
                         [strides_h, strides_w].as_slice(),
                         |window| *window.into_iter().max_by(|a, b| a.partial_cmp(b).unwrap()).unwrap(),
                     ).map(|res| (
-                        n_channel + n_batch * channels, // Indice globale
-                        res // Risultato (array)
+                        n_channel + n_batch * channels, // Global index
+                        res // Result (array)
                     ))
                 })
                 .collect::<Result<Vec<(usize, _)>, OnnxError>>()?

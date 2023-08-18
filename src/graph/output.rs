@@ -1,19 +1,19 @@
 /// Nodo output all'interno di un grafo.
 pub struct OnnxGraphOutput {
-    /// Nome del nodo.
+    /// Name of the node.
     pub name: String,
 
-    /// Eventuale "forma" (dimensioni dell'array) dell'output attesa.
+    /// Optional expected shape of the output (length of every dimension).
     /// 
-    /// Ad esempio, la forma `[1, 2, 3, 4]` indica un array a 4 dimensioni, dove le dimensioni degli assi sono rispettivamente
-    /// 1, 2, 3 e 4.
+    /// For instance, the shape `[1, 2, 3, 4]` relates to an array with 4 dimensions, where the dimensions of the axes are
+    /// 1, 2, 3 and 4 respectively.
     /// 
-    /// Se [`None`] verranno accettati output di qualsiasi dimensione.
+    /// If [`None`], outputs of any shape will be accepted.
     expected_shape: Option<Box<[usize]>>
 }
 
 impl OnnxGraphOutput {
-    /// Crea un nuovo nodo input senza alcun valore opzionale.
+    /// Creates a new output node, without an expected shape.
     pub fn new(name: impl ToString) -> Self {
         Self {
             name: name.to_string(),
@@ -21,7 +21,7 @@ impl OnnxGraphOutput {
         }
     }
 
-    /// Crea un nuovo nodo input con forma attesa.
+    /// Creates a new output node with expected shape.
     pub fn with_expected_shape(name: &str, shape: &[usize]) -> Self{
         Self {
             name: name.to_string(),
@@ -29,7 +29,7 @@ impl OnnxGraphOutput {
         }
     }
 
-    /// Determina se la forma attesa del nodo corrente e quella data come parametro coincidono.
+    /// Determines if `shape` and the expected shape for this node are the same.
     pub(super) fn valid_shape(&self, shape: &[usize]) -> bool {
         if let Some(expected_shape) = &self.expected_shape {
             shape == expected_shape.as_ref()
