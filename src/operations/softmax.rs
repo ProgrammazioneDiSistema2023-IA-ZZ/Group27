@@ -35,7 +35,7 @@ impl Operation {
                 (inputs[0].shape().len() as isize - *val)
                     .try_into().map_err(|_| onnx_error!("Result axis is a negative number."))?
             },
-            None => inputs[0].shape().len()-1,
+            None | Some(Attribute::Undefined) => inputs[0].shape().len()-1,
             _ => return Err(onnx_error!("axis has an invalid attribute type."))
         };
 

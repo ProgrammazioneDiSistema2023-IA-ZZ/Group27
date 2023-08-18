@@ -47,25 +47,25 @@ impl Operation {
         // Attributes
         let alpha = match self.attributes.get("alpha") {
             Some(Attribute::Float(val)) => *val,
-            None => 1.,
+            None | Some(Attribute::Undefined) => 1.,
             _ => return Err(onnx_error!("alpha attribute has an invalid value type"))
         };
 
         let beta = match self.attributes.get("beta") {
             Some(Attribute::Float(val)) => *val,
-            None => 1.,
+            None | Some(Attribute::Undefined) => 1.,
             _ => return Err(onnx_error!("alpha attribute has an invalid value type"))
         };
 
         let trans_a = match self.attributes.get("transA") {
             Some(Attribute::Int(val)) => *val,
-            None => 0,
+            None | Some(Attribute::Undefined) => 0,
             _ => return Err(onnx_error!("alpha attribute has an invalid value type"))
         };
 
         let trans_b = match self.attributes.get("transB") {
             Some(Attribute::Int(val)) => *val,
-            None => 0,
+            None | Some(Attribute::Undefined) => 0,
             _ => return Err(onnx_error!("alpha attribute has an invalid value type"))
         };
 

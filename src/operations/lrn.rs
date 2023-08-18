@@ -44,25 +44,25 @@ impl Operation {
         // Attributes
         let alpha = match self.attributes.get("alpha") {
             Some(Attribute::Float(val)) => *val,
-            None => 1e-4,
+            None | Some(Attribute::Undefined) => 1e-4,
             _ => return Err(onnx_error!("alpha attribute has an invalid value type"))
         };
 
         let beta = match self.attributes.get("beta") {
             Some(Attribute::Float(val)) => *val,
-            None => 0.75,
+            None | Some(Attribute::Undefined) => 0.75,
             _ => return Err(onnx_error!("beta attribute has an invalid value type"))
         };
 
         let bias = match self.attributes.get("bias") {
             Some(Attribute::Float(val)) => *val,
-            None => 1.,
+            None | Some(Attribute::Undefined) => 1.,
             _ => return Err(onnx_error!("bias attribute has an invalid value type"))
         };
 
         let size: usize = match self.attributes.get("size") {
             Some(Attribute::Int(val)) => (*val).try_into().map_err(|_| onnx_error!("Size attribute is a negative value."))?,
-            None => return Err(onnx_error!("size attribute is required")),
+            None | Some(Attribute::Undefined) => return Err(onnx_error!("size attribute is required")),
             _ => return Err(onnx_error!("size attribute has an invalid value type"))
         };
 

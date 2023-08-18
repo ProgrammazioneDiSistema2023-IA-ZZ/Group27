@@ -74,7 +74,7 @@ impl Operation {
         // Dilation: unhandled
         let [ dilation_h, dilation_w ] = match self.attributes.get("dilations") {
             Some(Attribute::Ints(val)) => val.as_slice().try_into().map_err(|_| onnx_error!("Dilation should contain two dimensions."))?,
-            None => [1, 1],
+            None | Some(Attribute::Undefined) => [1, 1],
             _ => return Err(onnx_error!("dilations attribute has an invalid value type"))
         };
 
@@ -93,7 +93,7 @@ impl Operation {
                    .as_slice()
                    .try_into().map_err(|_| onnx_error!("Kernel size should contain two dimensions."))?
             },
-            None => [kernel_h, kernel_w],
+            None | Some(Attribute::Undefined) => [kernel_h, kernel_w],
             _ => return Err(onnx_error!("kernel_shape attribute has an invalid value type"))
         };
 
@@ -101,7 +101,7 @@ impl Operation {
         let _groups = match self.attributes.get("groups") {
             Some(Attribute::Int(1)) => 1usize,
             Some(Attribute::Int(_)) => return Err(onnx_error!("Grouped convolutions are not supported.")),
-            None => 1usize,
+            None | Some(Attribute::Undefined) => 1usize,
             _ => return Err(onnx_error!("groups attribute has an invalid value type"))
         };
 
@@ -116,7 +116,7 @@ impl Operation {
                    .as_slice()
                    .try_into().map_err(|_| onnx_error!("Kernel size should contain two dimensions."))?
             },
-            None => [1, 1],
+            None | Some(Attribute::Undefined) => [1, 1],
             _ => return Err(onnx_error!("groups attribute has an invalid value type"))
         };
         

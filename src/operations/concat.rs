@@ -29,7 +29,7 @@ impl Operation {
                 (inputs[0].shape().len() as isize - *val)
                     .try_into().map_err(|_| onnx_error!("Result axis is a negative number."))?
             },
-            None => return Err(onnx_error!("axis attribute not specified.")),
+            None | Some(Attribute::Undefined) => return Err(onnx_error!("axis attribute not specified.")),
             _ => return Err(onnx_error!("axis has an invalid attribute type."))
         };
 

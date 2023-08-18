@@ -78,7 +78,7 @@ impl Operation {
         // Dilations: unhandled
         let [ dilation_h, dilation_w ] = match self.attributes.get("dilations") {
             Some(Attribute::Ints(val)) => val.as_slice().try_into().map_err(|_| onnx_error!("Dilation should contain two dimensions."))?,
-            None => [1, 1],
+            None | Some(Attribute::Undefined) => [1, 1],
             _ => return Err(onnx_error!("dilations attribute has an invalid value type"))
         };
 
@@ -97,7 +97,7 @@ impl Operation {
                    .as_slice()
                    .try_into().map_err(|_| onnx_error!("Kernel size should contain two dimensions."))?
             },
-            None => return Err(onnx_error!("Kernel shape not given.")),
+            None | Some(Attribute::Undefined) => return Err(onnx_error!("Kernel shape not given.")),
             _ => return Err(onnx_error!("kernel_shape attribute has an invalid value type"))
         };
 
@@ -112,7 +112,7 @@ impl Operation {
                    .as_slice()
                    .try_into().map_err(|_| onnx_error!("Strides should contain two dimensions."))?
             },
-            None => [1, 1],
+            None | Some(Attribute::Undefined) => [1, 1],
             _ => return Err(onnx_error!("groups attribute has an invalid value type"))
         };
         
@@ -127,21 +127,21 @@ impl Operation {
         // Ceil mode: use ceil or floor operation to round the output shape
         let ceil_mode = match self.attributes.get("ceil_mode") {
             Some(Attribute::Int(val)) => *val,
-            None => 0,
+            None | Some(Attribute::Undefined) => 0,
             _ => return Err(onnx_error!("ceil_mode attribute has an invalid value type"))
         };
 
         // Storage order: unhandled
         let count_include_pad = match self.attributes.get("count_include_pad") {
             Some(Attribute::Int(val)) => *val, 
-            None => 0,
+            None | Some(Attribute::Undefined) => 0,
             _ => return Err(onnx_error!("storage_order attribute has an invalid value type"))
         };
 
         /*** AVERAGEPOOL ***/
         
         // Clone the input, eventually with padding.
-        // Values will be Option<f32>, because we need to track what values are part of the padding (None => part of padding). 
+        // Values will be Option<f32>, because we need to track what values are part of the padding (None | Some(Attribute::Undefined) => part of padding). 
         let (padded_h, padded_w) = (data_h + pad_n + pad_s, data_w + pad_e + pad_w);
         let mut padded_data = Array4::<Option<f32>>::from_elem((batches, channels, padded_h, padded_w), None);
         padded_data.slice_mut(s![.., .., pad_n..pad_n+data_h, pad_w..pad_w+data_w]).assign(&data.mapv(|v| Some(v)));

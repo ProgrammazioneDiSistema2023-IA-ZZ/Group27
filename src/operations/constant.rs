@@ -7,7 +7,7 @@ impl Operation {
         // Output is the "value" attribute
         match self.attributes.get("value") {
             Some(Attribute::Tensor(val)) => Ok(Arc::new(val.clone())),
-            None => Err(onnx_error!("Value attribute not specified.")),
+            None | Some(Attribute::Undefined) => Err(onnx_error!("Value attribute not specified.")),
             _ => Err(onnx_error!("Value has an invalid attribute type."))
         }
     }

@@ -78,7 +78,7 @@ impl Operation {
         // Dilations: non gestite
         let [ dilation_h, dilation_w ] = match self.attributes.get("dilations") {
             Some(Attribute::Ints(val)) => val.as_slice().try_into().map_err(|_| onnx_error!("Dilation should contain two dimensions."))?,
-            None => [1, 1],
+            None | Some(Attribute::Undefined) => [1, 1],
             _ => return Err(onnx_error!("dilations attribute has an invalid value type"))
         };
 
@@ -97,7 +97,7 @@ impl Operation {
                    .as_slice()
                    .try_into().map_err(|_| onnx_error!("Kernel size should contain two dimensions."))?
             },
-            None => return Err(onnx_error!("Kernel shape not given.")),
+            None | Some(Attribute::Undefined) => return Err(onnx_error!("Kernel shape not given.")),
             _ => return Err(onnx_error!("kernel_shape attribute has an invalid value type"))
         };
 
@@ -112,7 +112,7 @@ impl Operation {
                    .as_slice()
                    .try_into().map_err(|_| onnx_error!("Strides should contain two dimensions."))?
             },
-            None => [1, 1],
+            None | Some(Attribute::Undefined) => [1, 1],
             _ => return Err(onnx_error!("groups attribute has an invalid value type"))
         };
         
@@ -127,14 +127,14 @@ impl Operation {
         // Ceil mode: use ceil or floor operation to round the output shape
         let ceil_mode = match self.attributes.get("ceil_mode") {
             Some(Attribute::Int(val)) => *val,
-            None => 0,
+            None | Some(Attribute::Undefined) => 0,
             _ => return Err(onnx_error!("ceil_mode attribute has an invalid value type"))
         };
 
         // Storage order: non gestito
         let _storage_order = match self.attributes.get("storage_order") {
             Some(Attribute::Int(val)) => *val, 
-            None => 0,
+            None | Some(Attribute::Undefined) => 0,
             _ => return Err(onnx_error!("storage_order attribute has an invalid value type"))
         };
 
