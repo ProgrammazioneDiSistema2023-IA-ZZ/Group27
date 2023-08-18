@@ -3,4 +3,4 @@ pub mod error;
 pub mod operations;
 mod parser;
 mod helper;
-pub mod fileParser;
+pub mod fileparser;

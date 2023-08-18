@@ -1,21 +1,49 @@
+use std:: sync::Arc;
 
-
-use onnx_rust::{ fileParser::fileParser::OnnxFileParser};
+use onnx_rust::fileparser::fileparser::OnnxFileParser;
 
 fn main() {
-    
-
-    let mut  parser = OnnxFileParser::new();
-    
     /* GOOGLENET */
-    
-  parser.parse("./onnxFile/googlenet-12/googlenet-12.onnx","./onnxFile/googlenet-12/test_data_set_0/input_0.pb");
 
-  
+    //let graph= OnnxFileParser::parse_model("./onnxFile/googlenet-12/googlenet-12.onnx");
+    //let input = OnnxFileParser::parse_data("./onnxFile/googlenet-12/test_data_set_0/input_0.pb");
+    //let output = OnnxFileParser::parse_data("./onnxFile/googlenet-12/test_data_set_0/output_0.pb");
     /* MNIST */
-    // parser.parse("./onnxFile/mnist-12/mnist-12.onnx","./onnxFile/mnist-12/test_data_set_0/input_0.pb");
-    
-     if parser.result.is_err(){
-        println!("{}",parser.result.err().unwrap());
-     }
+    let graph: Result<onnx_rust::graph::OnnxGraph, String> =
+        OnnxFileParser::parse_model("./onnxFile/mnist-12/mnist-12.onnx");
+    let input = OnnxFileParser::parse_data("./onnxFile/mnist-12/test_data_set_0/input_0.pb");
+    let output = OnnxFileParser::parse_data("./onnxFile/mnist-12/test_data_set_0/output_0.pb");
+    if graph.is_err() {
+        println!("{}", graph.err().unwrap());
+        return;
+    }
+    if input.is_err() {
+        println!("{}", input.err().unwrap());
+        return;
+    }
+    let result = Arc::new(graph.unwrap()).infer(input.unwrap());
+    println!("\n\n\n{:?}", result);
+
+
+    //confronto risultati
+    let key: Vec<String> = result.clone().unwrap().into_keys().collect();
+
+    println!(
+        "Result->\t{:?}",
+        result
+            .unwrap()
+            .get(&key.get(0).unwrap().clone())
+            .unwrap()
+            .clone()
+            .into_raw_vec()
+    );
+    println!(
+        "Expected->\t{:?}",
+        output
+            .unwrap()
+            .get(&key.get(0).unwrap().clone())
+            .unwrap()
+            .clone()
+            .into_raw_vec()
+    );
 }

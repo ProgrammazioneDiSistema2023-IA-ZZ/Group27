@@ -1,5 +1,5 @@
 use std::sync::{Arc, Mutex};
-use ndarray::{Array1, Array4, s, parallel::prelude::{IntoParallelIterator, IndexedParallelIterator, ParallelIterator}, Array2};
+use ndarray::{Array1, Array4, s, parallel::prelude::{IntoParallelIterator, IndexedParallelIterator, ParallelIterator}, };
 
 use super::{Operation, OnnxError, onnx_error, Tensor, OperationResult, Attribute};
 

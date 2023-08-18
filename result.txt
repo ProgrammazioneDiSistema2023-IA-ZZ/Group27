@@ -38,7 +38,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"kernel_shape": Ints([7, 7]), "strides": Ints([2, 2]), "pads": Ints([3, 3, 3, 3])}
+{"strides": Ints([2, 2]), "kernel_shape": Ints([7, 7]), "pads": Ints([3, 3, 3, 3])}
 "node":
 		"input":"conv1/7x7_s2_1"
 		"output":"conv1/7x7_s2_2"
@@ -70,7 +70,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([2, 2]), "pads": Ints([0, 0, 2, 2])}
+{"pads": Ints([0, 0, 2, 2]), "strides": Ints([2, 2])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":3
@@ -79,7 +79,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([2, 2]), "pads": Ints([0, 0, 2, 2]), "kernel_shape": Ints([3, 3])}
+{"pads": Ints([0, 0, 2, 2]), "strides": Ints([2, 2]), "kernel_shape": Ints([3, 3])}
 "node":
 		"input":"pool1/3x3_s2_1"
 		"output":"pool1/norm1_1"
@@ -94,13 +94,13 @@ tipo non gestito "type"
 {"size": Int(5)}
 		"attribute":
 			"name":5] : "alpha"
-{"alpha": Undefined, "size": Int(5)}
+{"size": Int(5), "alpha": Undefined}
 		"attribute":
 			"name":4] : "beta"
-{"alpha": Undefined, "size": Int(5), "beta": Undefined}
+{"size": Int(5), "alpha": Undefined, "beta": Undefined}
 		"attribute":
 			"name":4] : "bias"
-{"alpha": Undefined, "beta": Undefined, "size": Int(5), "bias": Undefined}
+{"size": Int(5), "bias": Undefined, "alpha": Undefined, "beta": Undefined}
 "node":
 		"input":"pool1/norm1_1"
 		"input":"conv2/3x3_reduce_w_0"
@@ -129,7 +129,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":1
@@ -138,7 +138,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}
+{"kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
 "node":
 		"input":"conv2/3x3_reduce_1"
 		"output":"conv2/3x3_reduce_2"
@@ -172,7 +172,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
+{"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":3
@@ -181,7 +181,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}
+{"pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3]), "strides": Ints([1, 1])}
 "node":
 		"input":"conv2/3x3_1"
 		"output":"conv2/3x3_2"
@@ -201,13 +201,13 @@ tipo non gestito "type"
 {"size": Int(5)}
 		"attribute":
 			"name":5] : "alpha"
-{"size": Int(5), "alpha": Undefined}
+{"alpha": Undefined, "size": Int(5)}
 		"attribute":
 			"name":4] : "beta"
-{"size": Int(5), "beta": Undefined, "alpha": Undefined}
+{"alpha": Undefined, "size": Int(5), "beta": Undefined}
 		"attribute":
 			"name":4] : "bias"
-{"beta": Undefined, "size": Int(5), "bias": Undefined, "alpha": Undefined}
+{"alpha": Undefined, "size": Int(5), "beta": Undefined, "bias": Undefined}
 "node":
 		"input":"conv2/norm2_1"
 		"output":"pool2/3x3_s2_1"
@@ -243,7 +243,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([2, 2]), "pads": Ints([0, 0, 2, 2]), "kernel_shape": Ints([3, 3])}
+{"strides": Ints([2, 2]), "kernel_shape": Ints([3, 3]), "pads": Ints([0, 0, 2, 2])}
 "node":
 		"input":"pool2/3x3_s2_1"
 		"input":"inception_3a/1x1_w_0"
@@ -272,7 +272,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":1
@@ -281,7 +281,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1]), "kernel_shape": Ints([1, 1])}
 "node":
 		"input":"inception_3a/1x1_1"
 		"output":"inception_3a/1x1_2"
@@ -367,7 +367,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3]), "strides": Ints([1, 1])}
+{"kernel_shape": Ints([3, 3]), "pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}
 "node":
 		"input":"inception_3a/3x3_1"
 		"output":"inception_3a/3x3_2"
@@ -401,7 +401,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":1
@@ -410,7 +410,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}
 "node":
 		"input":"inception_3a/5x5_reduce_1"
 		"output":"inception_3a/5x5_reduce_2"
@@ -444,7 +444,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2])}
+{"pads": Ints([2, 2, 2, 2]), "strides": Ints([1, 1])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":5
@@ -453,7 +453,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2]), "kernel_shape": Ints([5, 5])}
+{"pads": Ints([2, 2, 2, 2]), "kernel_shape": Ints([5, 5]), "strides": Ints([1, 1])}
 "node":
 		"input":"inception_3a/5x5_1"
 		"output":"inception_3a/5x5_2"
@@ -494,7 +494,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}
+{"kernel_shape": Ints([3, 3]), "strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
 "node":
 		"input":"inception_3a/pool_1"
 		"input":"inception_3a/pool_proj_w_0"
@@ -532,7 +532,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}
+{"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
 "node":
 		"input":"inception_3a/pool_proj_1"
 		"output":"inception_3a/pool_proj_2"
@@ -624,7 +624,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":1
@@ -633,7 +633,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}
+{"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
 "node":
 		"input":"inception_3b/3x3_reduce_1"
 		"output":"inception_3b/3x3_reduce_2"
@@ -667,7 +667,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
+{"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":3
@@ -676,7 +676,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"kernel_shape": Ints([3, 3]), "strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
+{"pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3]), "strides": Ints([1, 1])}
 "node":
 		"input":"inception_3b/3x3_1"
 		"output":"inception_3b/3x3_2"
@@ -719,7 +719,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
+{"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}
 "node":
 		"input":"inception_3b/5x5_reduce_1"
 		"output":"inception_3b/5x5_reduce_2"
@@ -762,7 +762,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"kernel_shape": Ints([5, 5]), "strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2])}
+{"strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2]), "kernel_shape": Ints([5, 5])}
 "node":
 		"input":"inception_3b/5x5_1"
 		"output":"inception_3b/5x5_2"
@@ -794,7 +794,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}
+{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":3
@@ -803,7 +803,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"kernel_shape": Ints([3, 3]), "pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}
+{"kernel_shape": Ints([3, 3]), "strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
 "node":
 		"input":"inception_3b/pool_1"
 		"input":"inception_3b/pool_proj_w_0"
@@ -832,7 +832,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":1
@@ -841,7 +841,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+{"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}
 "node":
 		"input":"inception_3b/pool_proj_1"
 		"output":"inception_3b/pool_proj_2"
@@ -897,7 +897,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([2, 2]), "pads": Ints([0, 0, 2, 2]), "kernel_shape": Ints([3, 3])}
+{"strides": Ints([2, 2]), "kernel_shape": Ints([3, 3]), "pads": Ints([0, 0, 2, 2])}
 "node":
 		"input":"pool3/3x3_s2_1"
 		"input":"inception_4a/1x1_w_0"
@@ -1021,7 +1021,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}
+{"kernel_shape": Ints([3, 3]), "strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
 "node":
 		"input":"inception_4a/3x3_1"
 		"output":"inception_4a/3x3_2"
@@ -1098,7 +1098,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([2, 2, 2, 2]), "strides": Ints([1, 1])}
+{"strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":5
@@ -1107,7 +1107,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([2, 2, 2, 2]), "kernel_shape": Ints([5, 5]), "strides": Ints([1, 1])}
+{"strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2]), "kernel_shape": Ints([5, 5])}
 "node":
 		"input":"inception_4a/5x5_1"
 		"output":"inception_4a/5x5_2"
@@ -1139,7 +1139,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}
+{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":3
@@ -1148,7 +1148,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3]), "strides": Ints([1, 1])}
+{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}
 "node":
 		"input":"inception_4a/pool_1"
 		"input":"inception_4a/pool_proj_w_0"
@@ -1177,7 +1177,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":1
@@ -1186,7 +1186,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+{"kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
 "node":
 		"input":"inception_4a/pool_proj_1"
 		"output":"inception_4a/pool_proj_2"
@@ -1235,7 +1235,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":1
@@ -1244,7 +1244,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}
+{"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}
 "node":
 		"input":"inception_4b/1x1_1"
 		"output":"inception_4b/1x1_2"
@@ -1278,7 +1278,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":1
@@ -1287,7 +1287,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+{"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}
 "node":
 		"input":"inception_4b/3x3_reduce_1"
 		"output":"inception_4b/3x3_reduce_2"
@@ -1321,7 +1321,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
+{"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":3
@@ -1330,7 +1330,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"kernel_shape": Ints([3, 3]), "strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
+{"pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3]), "strides": Ints([1, 1])}
 "node":
 		"input":"inception_4b/3x3_1"
 		"output":"inception_4b/3x3_2"
@@ -1364,7 +1364,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":1
@@ -1373,7 +1373,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1]), "kernel_shape": Ints([1, 1])}
 "node":
 		"input":"inception_4b/5x5_reduce_1"
 		"output":"inception_4b/5x5_reduce_2"
@@ -1407,7 +1407,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([2, 2, 2, 2]), "strides": Ints([1, 1])}
+{"strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":5
@@ -1416,7 +1416,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([2, 2, 2, 2]), "kernel_shape": Ints([5, 5]), "strides": Ints([1, 1])}
+{"kernel_shape": Ints([5, 5]), "strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2])}
 "node":
 		"input":"inception_4b/5x5_1"
 		"output":"inception_4b/5x5_2"
@@ -1448,7 +1448,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
+{"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":3
@@ -1457,7 +1457,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}
+{"kernel_shape": Ints([3, 3]), "pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}
 "node":
 		"input":"inception_4b/pool_1"
 		"input":"inception_4b/pool_proj_w_0"
@@ -1486,7 +1486,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":1
@@ -1495,7 +1495,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+{"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}
 "node":
 		"input":"inception_4b/pool_proj_1"
 		"output":"inception_4b/pool_proj_2"
@@ -1553,7 +1553,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}
+{"kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
 "node":
 		"input":"inception_4c/1x1_1"
 		"output":"inception_4c/1x1_2"
@@ -1587,7 +1587,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":1
@@ -1596,7 +1596,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1]), "kernel_shape": Ints([1, 1])}
 "node":
 		"input":"inception_4c/3x3_reduce_1"
 		"output":"inception_4c/3x3_reduce_2"
@@ -1639,7 +1639,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}
+{"kernel_shape": Ints([3, 3]), "strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
 "node":
 		"input":"inception_4c/3x3_1"
 		"output":"inception_4c/3x3_2"
@@ -1682,7 +1682,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1]), "kernel_shape": Ints([1, 1])}
+{"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}
 "node":
 		"input":"inception_4c/5x5_reduce_1"
 		"output":"inception_4c/5x5_reduce_2"
@@ -1725,7 +1725,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"kernel_shape": Ints([5, 5]), "strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2])}
+{"strides": Ints([1, 1]), "kernel_shape": Ints([5, 5]), "pads": Ints([2, 2, 2, 2])}
 "node":
 		"input":"inception_4c/5x5_1"
 		"output":"inception_4c/5x5_2"
@@ -1757,7 +1757,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
+{"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":3
@@ -1766,7 +1766,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}
+{"kernel_shape": Ints([3, 3]), "pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}
 "node":
 		"input":"inception_4c/pool_1"
 		"input":"inception_4c/pool_proj_w_0"
@@ -1905,7 +1905,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+{"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
 "node":
 		"input":"inception_4d/3x3_reduce_1"
 		"output":"inception_4d/3x3_reduce_2"
@@ -1939,7 +1939,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}
+{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":3
@@ -1948,7 +1948,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"kernel_shape": Ints([3, 3]), "pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}
+{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}
 "node":
 		"input":"inception_4d/3x3_1"
 		"output":"inception_4d/3x3_2"
@@ -1982,7 +1982,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":1
@@ -1991,7 +1991,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}
+{"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
 "node":
 		"input":"inception_4d/5x5_reduce_1"
 		"output":"inception_4d/5x5_reduce_2"
@@ -2034,7 +2034,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"kernel_shape": Ints([5, 5]), "strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2])}
+{"strides": Ints([1, 1]), "kernel_shape": Ints([5, 5]), "pads": Ints([2, 2, 2, 2])}
 "node":
 		"input":"inception_4d/5x5_1"
 		"output":"inception_4d/5x5_2"
@@ -2104,7 +2104,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":1
@@ -2113,7 +2113,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}
+{"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}
 "node":
 		"input":"inception_4d/pool_proj_1"
 		"output":"inception_4d/pool_proj_2"
@@ -2162,7 +2162,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":1
@@ -2171,7 +2171,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}
 "node":
 		"input":"inception_4e/1x1_1"
 		"output":"inception_4e/1x1_2"
@@ -2205,7 +2205,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":1
@@ -2214,7 +2214,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}
+{"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
 "node":
 		"input":"inception_4e/3x3_reduce_1"
 		"output":"inception_4e/3x3_reduce_2"
@@ -2291,7 +2291,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":1
@@ -2300,7 +2300,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}
+{"strides": Ints([1, 1]), "kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
 "node":
 		"input":"inception_4e/5x5_reduce_1"
 		"output":"inception_4e/5x5_reduce_2"
@@ -2334,7 +2334,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([2, 2, 2, 2]), "strides": Ints([1, 1])}
+{"strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":5
@@ -2343,7 +2343,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([2, 2, 2, 2]), "kernel_shape": Ints([5, 5]), "strides": Ints([1, 1])}
+{"strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2]), "kernel_shape": Ints([5, 5])}
 "node":
 		"input":"inception_4e/5x5_1"
 		"output":"inception_4e/5x5_2"
@@ -2384,7 +2384,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1]), "kernel_shape": Ints([3, 3])}
+{"pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3]), "strides": Ints([1, 1])}
 "node":
 		"input":"inception_4e/pool_1"
 		"input":"inception_4e/pool_proj_w_0"
@@ -2507,7 +2507,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":1
@@ -2516,7 +2516,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+{"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}
 "node":
 		"input":"inception_5a/1x1_1"
 		"output":"inception_5a/1x1_2"
@@ -2593,7 +2593,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}
+{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":3
@@ -2602,7 +2602,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1]), "kernel_shape": Ints([3, 3])}
+{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}
 "node":
 		"input":"inception_5a/3x3_1"
 		"output":"inception_5a/3x3_2"
@@ -2645,7 +2645,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1]), "kernel_shape": Ints([1, 1])}
+{"kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
 "node":
 		"input":"inception_5a/5x5_reduce_1"
 		"output":"inception_5a/5x5_reduce_2"
@@ -2679,7 +2679,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2])}
+{"pads": Ints([2, 2, 2, 2]), "strides": Ints([1, 1])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":5
@@ -2688,7 +2688,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "kernel_shape": Ints([5, 5]), "pads": Ints([2, 2, 2, 2])}
+{"kernel_shape": Ints([5, 5]), "pads": Ints([2, 2, 2, 2]), "strides": Ints([1, 1])}
 "node":
 		"input":"inception_5a/5x5_1"
 		"output":"inception_5a/5x5_2"
@@ -2729,7 +2729,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3]), "strides": Ints([1, 1])}
+{"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1]), "kernel_shape": Ints([3, 3])}
 "node":
 		"input":"inception_5a/pool_1"
 		"input":"inception_5a/pool_proj_w_0"
@@ -2758,7 +2758,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":1
@@ -2767,7 +2767,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+{"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}
 "node":
 		"input":"inception_5a/pool_proj_1"
 		"output":"inception_5a/pool_proj_2"
@@ -2825,7 +2825,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1]), "kernel_shape": Ints([1, 1])}
 "node":
 		"input":"inception_5b/1x1_1"
 		"output":"inception_5b/1x1_2"
@@ -2859,7 +2859,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":1
@@ -2868,7 +2868,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}
+{"kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
 "node":
 		"input":"inception_5b/3x3_reduce_1"
 		"output":"inception_5b/3x3_reduce_2"
@@ -2911,7 +2911,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}
+{"kernel_shape": Ints([3, 3]), "strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
 "node":
 		"input":"inception_5b/3x3_1"
 		"output":"inception_5b/3x3_2"
@@ -2945,7 +2945,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":1
@@ -2954,7 +2954,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1]), "kernel_shape": Ints([1, 1])}
+{"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
 "node":
 		"input":"inception_5b/5x5_reduce_1"
 		"output":"inception_5b/5x5_reduce_2"
@@ -2997,7 +2997,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "kernel_shape": Ints([5, 5]), "pads": Ints([2, 2, 2, 2])}
+{"strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2]), "kernel_shape": Ints([5, 5])}
 "node":
 		"input":"inception_5b/5x5_1"
 		"output":"inception_5b/5x5_2"
@@ -3038,7 +3038,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"kernel_shape": Ints([3, 3]), "strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}
+{"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}
 "node":
 		"input":"inception_5b/pool_1"
 		"input":"inception_5b/pool_proj_w_0"
@@ -3067,7 +3067,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
+{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":1
@@ -3076,7 +3076,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1]), "kernel_shape": Ints([1, 1])}
+{"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
 "node":
 		"input":"inception_5b/pool_proj_1"
 		"output":"inception_5b/pool_proj_2"
@@ -3123,7 +3123,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}
+{"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}
 		"attribute":
 			"name":12] : "kernel_shape"
 			"ints":7
@@ -3132,7 +3132,7 @@ ints
 ints
 			"type":7
 tipo non gestito "type"
-{"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([7, 7])}
+{"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([7, 7]), "strides": Ints([1, 1])}
 "node":
 		"input":"pool5/7x7_s1_1"
 		"input":"264"
@@ -3168,7 +3168,7 @@ tipo non gestito "type"
 				"dims":64
 				"data_type":1
 				"name":"conv1/7x7_s2_b_0"
-				"raw_data": Vett di 256 elem
+				"raw_data": Vett di 256 elem RAW
 "initializer": INITIAL
 				"dims":64
 				"dims":3
@@ -3176,17 +3176,17 @@ tipo non gestito "type"
 				"dims":7
 				"data_type":1
 				"name":"conv1/7x7_s2_w_0"
-				"raw_data": Vett di 37632 elem
+				"raw_data": Vett di 37632 elem RAW
 "initializer": INITIAL
 				"dims":192
 				"data_type":1
 				"name":"conv2/3x3_b_0"
-				"raw_data": Vett di 768 elem
+				"raw_data": Vett di 768 elem RAW
 "initializer": INITIAL
 				"dims":64
 				"data_type":1
 				"name":"conv2/3x3_reduce_b_0"
-				"raw_data": Vett di 256 elem
+				"raw_data": Vett di 256 elem RAW
 "initializer": INITIAL
 				"dims":64
 				"dims":64
@@ -3194,7 +3194,7 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"conv2/3x3_reduce_w_0"
-				"raw_data": Vett di 16384 elem
+				"raw_data": Vett di 16384 elem RAW
 "initializer": INITIAL
 				"dims":192
 				"dims":64
@@ -3202,12 +3202,12 @@ tipo non gestito "type"
 				"dims":3
 				"data_type":1
 				"name":"conv2/3x3_w_0"
-				"raw_data": Vett di 442368 elem
+				"raw_data": Vett di 442368 elem RAW
 "initializer": INITIAL
 				"dims":64
 				"data_type":1
 				"name":"inception_3a/1x1_b_0"
-				"raw_data": Vett di 256 elem
+				"raw_data": Vett di 256 elem RAW
 "initializer": INITIAL
 				"dims":64
 				"dims":192
@@ -3215,17 +3215,17 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_3a/1x1_w_0"
-				"raw_data": Vett di 49152 elem
+				"raw_data": Vett di 49152 elem RAW
 "initializer": INITIAL
 				"dims":128
 				"data_type":1
 				"name":"inception_3a/3x3_b_0"
-				"raw_data": Vett di 512 elem
+				"raw_data": Vett di 512 elem RAW
 "initializer": INITIAL
 				"dims":96
 				"data_type":1
 				"name":"inception_3a/3x3_reduce_b_0"
-				"raw_data": Vett di 384 elem
+				"raw_data": Vett di 384 elem RAW
 "initializer": INITIAL
 				"dims":96
 				"dims":192
@@ -3233,7 +3233,7 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_3a/3x3_reduce_w_0"
-				"raw_data": Vett di 73728 elem
+				"raw_data": Vett di 73728 elem RAW
 "initializer": INITIAL
 				"dims":128
 				"dims":96
@@ -3241,17 +3241,17 @@ tipo non gestito "type"
 				"dims":3
 				"data_type":1
 				"name":"inception_3a/3x3_w_0"
-				"raw_data": Vett di 442368 elem
+				"raw_data": Vett di 442368 elem RAW
 "initializer": INITIAL
 				"dims":32
 				"data_type":1
 				"name":"inception_3a/5x5_b_0"
-				"raw_data": Vett di 128 elem
+				"raw_data": Vett di 128 elem RAW
 "initializer": INITIAL
 				"dims":16
 				"data_type":1
 				"name":"inception_3a/5x5_reduce_b_0"
-				"raw_data": Vett di 64 elem
+				"raw_data": Vett di 64 elem RAW
 "initializer": INITIAL
 				"dims":16
 				"dims":192
@@ -3259,7 +3259,7 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_3a/5x5_reduce_w_0"
-				"raw_data": Vett di 12288 elem
+				"raw_data": Vett di 12288 elem RAW
 "initializer": INITIAL
 				"dims":32
 				"dims":16
@@ -3267,12 +3267,12 @@ tipo non gestito "type"
 				"dims":5
 				"data_type":1
 				"name":"inception_3a/5x5_w_0"
-				"raw_data": Vett di 51200 elem
+				"raw_data": Vett di 51200 elem RAW
 "initializer": INITIAL
 				"dims":32
 				"data_type":1
 				"name":"inception_3a/pool_proj_b_0"
-				"raw_data": Vett di 128 elem
+				"raw_data": Vett di 128 elem RAW
 "initializer": INITIAL
 				"dims":32
 				"dims":192
@@ -3280,12 +3280,12 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_3a/pool_proj_w_0"
-				"raw_data": Vett di 24576 elem
+				"raw_data": Vett di 24576 elem RAW
 "initializer": INITIAL
 				"dims":128
 				"data_type":1
 				"name":"inception_3b/1x1_b_0"
-				"raw_data": Vett di 512 elem
+				"raw_data": Vett di 512 elem RAW
 "initializer": INITIAL
 				"dims":128
 				"dims":256
@@ -3293,17 +3293,17 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_3b/1x1_w_0"
-				"raw_data": Vett di 131072 elem
+				"raw_data": Vett di 131072 elem RAW
 "initializer": INITIAL
 				"dims":192
 				"data_type":1
 				"name":"inception_3b/3x3_b_0"
-				"raw_data": Vett di 768 elem
+				"raw_data": Vett di 768 elem RAW
 "initializer": INITIAL
 				"dims":128
 				"data_type":1
 				"name":"inception_3b/3x3_reduce_b_0"
-				"raw_data": Vett di 512 elem
+				"raw_data": Vett di 512 elem RAW
 "initializer": INITIAL
 				"dims":128
 				"dims":256
@@ -3311,7 +3311,7 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_3b/3x3_reduce_w_0"
-				"raw_data": Vett di 131072 elem
+				"raw_data": Vett di 131072 elem RAW
 "initializer": INITIAL
 				"dims":192
 				"dims":128
@@ -3319,17 +3319,17 @@ tipo non gestito "type"
 				"dims":3
 				"data_type":1
 				"name":"inception_3b/3x3_w_0"
-				"raw_data": Vett di 884736 elem
+				"raw_data": Vett di 884736 elem RAW
 "initializer": INITIAL
 				"dims":96
 				"data_type":1
 				"name":"inception_3b/5x5_b_0"
-				"raw_data": Vett di 384 elem
+				"raw_data": Vett di 384 elem RAW
 "initializer": INITIAL
 				"dims":32
 				"data_type":1
 				"name":"inception_3b/5x5_reduce_b_0"
-				"raw_data": Vett di 128 elem
+				"raw_data": Vett di 128 elem RAW
 "initializer": INITIAL
 				"dims":32
 				"dims":256
@@ -3337,7 +3337,7 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_3b/5x5_reduce_w_0"
-				"raw_data": Vett di 32768 elem
+				"raw_data": Vett di 32768 elem RAW
 "initializer": INITIAL
 				"dims":96
 				"dims":32
@@ -3345,12 +3345,12 @@ tipo non gestito "type"
 				"dims":5
 				"data_type":1
 				"name":"inception_3b/5x5_w_0"
-				"raw_data": Vett di 307200 elem
+				"raw_data": Vett di 307200 elem RAW
 "initializer": INITIAL
 				"dims":64
 				"data_type":1
 				"name":"inception_3b/pool_proj_b_0"
-				"raw_data": Vett di 256 elem
+				"raw_data": Vett di 256 elem RAW
 "initializer": INITIAL
 				"dims":64
 				"dims":256
@@ -3358,12 +3358,12 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_3b/pool_proj_w_0"
-				"raw_data": Vett di 65536 elem
+				"raw_data": Vett di 65536 elem RAW
 "initializer": INITIAL
 				"dims":192
 				"data_type":1
 				"name":"inception_4a/1x1_b_0"
-				"raw_data": Vett di 768 elem
+				"raw_data": Vett di 768 elem RAW
 "initializer": INITIAL
 				"dims":192
 				"dims":480
@@ -3371,17 +3371,17 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_4a/1x1_w_0"
-				"raw_data": Vett di 368640 elem
+				"raw_data": Vett di 368640 elem RAW
 "initializer": INITIAL
 				"dims":208
 				"data_type":1
 				"name":"inception_4a/3x3_b_0"
-				"raw_data": Vett di 832 elem
+				"raw_data": Vett di 832 elem RAW
 "initializer": INITIAL
 				"dims":96
 				"data_type":1
 				"name":"inception_4a/3x3_reduce_b_0"
-				"raw_data": Vett di 384 elem
+				"raw_data": Vett di 384 elem RAW
 "initializer": INITIAL
 				"dims":96
 				"dims":480
@@ -3389,7 +3389,7 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_4a/3x3_reduce_w_0"
-				"raw_data": Vett di 184320 elem
+				"raw_data": Vett di 184320 elem RAW
 "initializer": INITIAL
 				"dims":208
 				"dims":96
@@ -3397,17 +3397,17 @@ tipo non gestito "type"
 				"dims":3
 				"data_type":1
 				"name":"inception_4a/3x3_w_0"
-				"raw_data": Vett di 718848 elem
+				"raw_data": Vett di 718848 elem RAW
 "initializer": INITIAL
 				"dims":48
 				"data_type":1
 				"name":"inception_4a/5x5_b_0"
-				"raw_data": Vett di 192 elem
+				"raw_data": Vett di 192 elem RAW
 "initializer": INITIAL
 				"dims":16
 				"data_type":1
 				"name":"inception_4a/5x5_reduce_b_0"
-				"raw_data": Vett di 64 elem
+				"raw_data": Vett di 64 elem RAW
 "initializer": INITIAL
 				"dims":16
 				"dims":480
@@ -3415,7 +3415,7 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_4a/5x5_reduce_w_0"
-				"raw_data": Vett di 30720 elem
+				"raw_data": Vett di 30720 elem RAW
 "initializer": INITIAL
 				"dims":48
 				"dims":16
@@ -3423,12 +3423,12 @@ tipo non gestito "type"
 				"dims":5
 				"data_type":1
 				"name":"inception_4a/5x5_w_0"
-				"raw_data": Vett di 76800 elem
+				"raw_data": Vett di 76800 elem RAW
 "initializer": INITIAL
 				"dims":64
 				"data_type":1
 				"name":"inception_4a/pool_proj_b_0"
-				"raw_data": Vett di 256 elem
+				"raw_data": Vett di 256 elem RAW
 "initializer": INITIAL
 				"dims":64
 				"dims":480
@@ -3436,12 +3436,12 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_4a/pool_proj_w_0"
-				"raw_data": Vett di 122880 elem
+				"raw_data": Vett di 122880 elem RAW
 "initializer": INITIAL
 				"dims":160
 				"data_type":1
 				"name":"inception_4b/1x1_b_0"
-				"raw_data": Vett di 640 elem
+				"raw_data": Vett di 640 elem RAW
 "initializer": INITIAL
 				"dims":160
 				"dims":512
@@ -3449,17 +3449,17 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_4b/1x1_w_0"
-				"raw_data": Vett di 327680 elem
+				"raw_data": Vett di 327680 elem RAW
 "initializer": INITIAL
 				"dims":224
 				"data_type":1
 				"name":"inception_4b/3x3_b_0"
-				"raw_data": Vett di 896 elem
+				"raw_data": Vett di 896 elem RAW
 "initializer": INITIAL
 				"dims":112
 				"data_type":1
 				"name":"inception_4b/3x3_reduce_b_0"
-				"raw_data": Vett di 448 elem
+				"raw_data": Vett di 448 elem RAW
 "initializer": INITIAL
 				"dims":112
 				"dims":512
@@ -3467,7 +3467,7 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_4b/3x3_reduce_w_0"
-				"raw_data": Vett di 229376 elem
+				"raw_data": Vett di 229376 elem RAW
 "initializer": INITIAL
 				"dims":224
 				"dims":112
@@ -3475,17 +3475,17 @@ tipo non gestito "type"
 				"dims":3
 				"data_type":1
 				"name":"inception_4b/3x3_w_0"
-				"raw_data": Vett di 903168 elem
+				"raw_data": Vett di 903168 elem RAW
 "initializer": INITIAL
 				"dims":64
 				"data_type":1
 				"name":"inception_4b/5x5_b_0"
-				"raw_data": Vett di 256 elem
+				"raw_data": Vett di 256 elem RAW
 "initializer": INITIAL
 				"dims":24
 				"data_type":1
 				"name":"inception_4b/5x5_reduce_b_0"
-				"raw_data": Vett di 96 elem
+				"raw_data": Vett di 96 elem RAW
 "initializer": INITIAL
 				"dims":24
 				"dims":512
@@ -3493,7 +3493,7 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_4b/5x5_reduce_w_0"
-				"raw_data": Vett di 49152 elem
+				"raw_data": Vett di 49152 elem RAW
 "initializer": INITIAL
 				"dims":64
 				"dims":24
@@ -3501,12 +3501,12 @@ tipo non gestito "type"
 				"dims":5
 				"data_type":1
 				"name":"inception_4b/5x5_w_0"
-				"raw_data": Vett di 153600 elem
+				"raw_data": Vett di 153600 elem RAW
 "initializer": INITIAL
 				"dims":64
 				"data_type":1
 				"name":"inception_4b/pool_proj_b_0"
-				"raw_data": Vett di 256 elem
+				"raw_data": Vett di 256 elem RAW
 "initializer": INITIAL
 				"dims":64
 				"dims":512
@@ -3514,12 +3514,12 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_4b/pool_proj_w_0"
-				"raw_data": Vett di 131072 elem
+				"raw_data": Vett di 131072 elem RAW
 "initializer": INITIAL
 				"dims":128
 				"data_type":1
 				"name":"inception_4c/1x1_b_0"
-				"raw_data": Vett di 512 elem
+				"raw_data": Vett di 512 elem RAW
 "initializer": INITIAL
 				"dims":128
 				"dims":512
@@ -3527,17 +3527,17 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_4c/1x1_w_0"
-				"raw_data": Vett di 262144 elem
+				"raw_data": Vett di 262144 elem RAW
 "initializer": INITIAL
 				"dims":256
 				"data_type":1
 				"name":"inception_4c/3x3_b_0"
-				"raw_data": Vett di 1024 elem
+				"raw_data": Vett di 1024 elem RAW
 "initializer": INITIAL
 				"dims":128
 				"data_type":1
 				"name":"inception_4c/3x3_reduce_b_0"
-				"raw_data": Vett di 512 elem
+				"raw_data": Vett di 512 elem RAW
 "initializer": INITIAL
 				"dims":128
 				"dims":512
@@ -3545,7 +3545,7 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_4c/3x3_reduce_w_0"
-				"raw_data": Vett di 262144 elem
+				"raw_data": Vett di 262144 elem RAW
 "initializer": INITIAL
 				"dims":256
 				"dims":128
@@ -3553,17 +3553,17 @@ tipo non gestito "type"
 				"dims":3
 				"data_type":1
 				"name":"inception_4c/3x3_w_0"
-				"raw_data": Vett di 1179648 elem
+				"raw_data": Vett di 1179648 elem RAW
 "initializer": INITIAL
 				"dims":64
 				"data_type":1
 				"name":"inception_4c/5x5_b_0"
-				"raw_data": Vett di 256 elem
+				"raw_data": Vett di 256 elem RAW
 "initializer": INITIAL
 				"dims":24
 				"data_type":1
 				"name":"inception_4c/5x5_reduce_b_0"
-				"raw_data": Vett di 96 elem
+				"raw_data": Vett di 96 elem RAW
 "initializer": INITIAL
 				"dims":24
 				"dims":512
@@ -3571,7 +3571,7 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_4c/5x5_reduce_w_0"
-				"raw_data": Vett di 49152 elem
+				"raw_data": Vett di 49152 elem RAW
 "initializer": INITIAL
 				"dims":64
 				"dims":24
@@ -3579,12 +3579,12 @@ tipo non gestito "type"
 				"dims":5
 				"data_type":1
 				"name":"inception_4c/5x5_w_0"
-				"raw_data": Vett di 153600 elem
+				"raw_data": Vett di 153600 elem RAW
 "initializer": INITIAL
 				"dims":64
 				"data_type":1
 				"name":"inception_4c/pool_proj_b_0"
-				"raw_data": Vett di 256 elem
+				"raw_data": Vett di 256 elem RAW
 "initializer": INITIAL
 				"dims":64
 				"dims":512
@@ -3592,12 +3592,12 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_4c/pool_proj_w_0"
-				"raw_data": Vett di 131072 elem
+				"raw_data": Vett di 131072 elem RAW
 "initializer": INITIAL
 				"dims":112
 				"data_type":1
 				"name":"inception_4d/1x1_b_0"
-				"raw_data": Vett di 448 elem
+				"raw_data": Vett di 448 elem RAW
 "initializer": INITIAL
 				"dims":112
 				"dims":512
@@ -3605,17 +3605,17 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_4d/1x1_w_0"
-				"raw_data": Vett di 229376 elem
+				"raw_data": Vett di 229376 elem RAW
 "initializer": INITIAL
 				"dims":288
 				"data_type":1
 				"name":"inception_4d/3x3_b_0"
-				"raw_data": Vett di 1152 elem
+				"raw_data": Vett di 1152 elem RAW
 "initializer": INITIAL
 				"dims":144
 				"data_type":1
 				"name":"inception_4d/3x3_reduce_b_0"
-				"raw_data": Vett di 576 elem
+				"raw_data": Vett di 576 elem RAW
 "initializer": INITIAL
 				"dims":144
 				"dims":512
@@ -3623,7 +3623,7 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_4d/3x3_reduce_w_0"
-				"raw_data": Vett di 294912 elem
+				"raw_data": Vett di 294912 elem RAW
 "initializer": INITIAL
 				"dims":288
 				"dims":144
@@ -3631,17 +3631,17 @@ tipo non gestito "type"
 				"dims":3
 				"data_type":1
 				"name":"inception_4d/3x3_w_0"
-				"raw_data": Vett di 1492992 elem
+				"raw_data": Vett di 1492992 elem RAW
 "initializer": INITIAL
 				"dims":64
 				"data_type":1
 				"name":"inception_4d/5x5_b_0"
-				"raw_data": Vett di 256 elem
+				"raw_data": Vett di 256 elem RAW
 "initializer": INITIAL
 				"dims":32
 				"data_type":1
 				"name":"inception_4d/5x5_reduce_b_0"
-				"raw_data": Vett di 128 elem
+				"raw_data": Vett di 128 elem RAW
 "initializer": INITIAL
 				"dims":32
 				"dims":512
@@ -3649,7 +3649,7 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_4d/5x5_reduce_w_0"
-				"raw_data": Vett di 65536 elem
+				"raw_data": Vett di 65536 elem RAW
 "initializer": INITIAL
 				"dims":64
 				"dims":32
@@ -3657,12 +3657,12 @@ tipo non gestito "type"
 				"dims":5
 				"data_type":1
 				"name":"inception_4d/5x5_w_0"
-				"raw_data": Vett di 204800 elem
+				"raw_data": Vett di 204800 elem RAW
 "initializer": INITIAL
 				"dims":64
 				"data_type":1
 				"name":"inception_4d/pool_proj_b_0"
-				"raw_data": Vett di 256 elem
+				"raw_data": Vett di 256 elem RAW
 "initializer": INITIAL
 				"dims":64
 				"dims":512
@@ -3670,12 +3670,12 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_4d/pool_proj_w_0"
-				"raw_data": Vett di 131072 elem
+				"raw_data": Vett di 131072 elem RAW
 "initializer": INITIAL
 				"dims":256
 				"data_type":1
 				"name":"inception_4e/1x1_b_0"
-				"raw_data": Vett di 1024 elem
+				"raw_data": Vett di 1024 elem RAW
 "initializer": INITIAL
 				"dims":256
 				"dims":528
@@ -3683,17 +3683,17 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_4e/1x1_w_0"
-				"raw_data": Vett di 540672 elem
+				"raw_data": Vett di 540672 elem RAW
 "initializer": INITIAL
 				"dims":320
 				"data_type":1
 				"name":"inception_4e/3x3_b_0"
-				"raw_data": Vett di 1280 elem
+				"raw_data": Vett di 1280 elem RAW
 "initializer": INITIAL
 				"dims":160
 				"data_type":1
 				"name":"inception_4e/3x3_reduce_b_0"
-				"raw_data": Vett di 640 elem
+				"raw_data": Vett di 640 elem RAW
 "initializer": INITIAL
 				"dims":160
 				"dims":528
@@ -3701,7 +3701,7 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_4e/3x3_reduce_w_0"
-				"raw_data": Vett di 337920 elem
+				"raw_data": Vett di 337920 elem RAW
 "initializer": INITIAL
 				"dims":320
 				"dims":160
@@ -3709,17 +3709,17 @@ tipo non gestito "type"
 				"dims":3
 				"data_type":1
 				"name":"inception_4e/3x3_w_0"
-				"raw_data": Vett di 1843200 elem
+				"raw_data": Vett di 1843200 elem RAW
 "initializer": INITIAL
 				"dims":128
 				"data_type":1
 				"name":"inception_4e/5x5_b_0"
-				"raw_data": Vett di 512 elem
+				"raw_data": Vett di 512 elem RAW
 "initializer": INITIAL
 				"dims":32
 				"data_type":1
 				"name":"inception_4e/5x5_reduce_b_0"
-				"raw_data": Vett di 128 elem
+				"raw_data": Vett di 128 elem RAW
 "initializer": INITIAL
 				"dims":32
 				"dims":528
@@ -3727,7 +3727,7 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_4e/5x5_reduce_w_0"
-				"raw_data": Vett di 67584 elem
+				"raw_data": Vett di 67584 elem RAW
 "initializer": INITIAL
 				"dims":128
 				"dims":32
@@ -3735,12 +3735,12 @@ tipo non gestito "type"
 				"dims":5
 				"data_type":1
 				"name":"inception_4e/5x5_w_0"
-				"raw_data": Vett di 409600 elem
+				"raw_data": Vett di 409600 elem RAW
 "initializer": INITIAL
 				"dims":128
 				"data_type":1
 				"name":"inception_4e/pool_proj_b_0"
-				"raw_data": Vett di 512 elem
+				"raw_data": Vett di 512 elem RAW
 "initializer": INITIAL
 				"dims":128
 				"dims":528
@@ -3748,12 +3748,12 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_4e/pool_proj_w_0"
-				"raw_data": Vett di 270336 elem
+				"raw_data": Vett di 270336 elem RAW
 "initializer": INITIAL
 				"dims":256
 				"data_type":1
 				"name":"inception_5a/1x1_b_0"
-				"raw_data": Vett di 1024 elem
+				"raw_data": Vett di 1024 elem RAW
 "initializer": INITIAL
 				"dims":256
 				"dims":832
@@ -3761,17 +3761,17 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_5a/1x1_w_0"
-				"raw_data": Vett di 851968 elem
+				"raw_data": Vett di 851968 elem RAW
 "initializer": INITIAL
 				"dims":320
 				"data_type":1
 				"name":"inception_5a/3x3_b_0"
-				"raw_data": Vett di 1280 elem
+				"raw_data": Vett di 1280 elem RAW
 "initializer": INITIAL
 				"dims":160
 				"data_type":1
 				"name":"inception_5a/3x3_reduce_b_0"
-				"raw_data": Vett di 640 elem
+				"raw_data": Vett di 640 elem RAW
 "initializer": INITIAL
 				"dims":160
 				"dims":832
@@ -3779,7 +3779,7 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_5a/3x3_reduce_w_0"
-				"raw_data": Vett di 532480 elem
+				"raw_data": Vett di 532480 elem RAW
 "initializer": INITIAL
 				"dims":320
 				"dims":160
@@ -3787,17 +3787,17 @@ tipo non gestito "type"
 				"dims":3
 				"data_type":1
 				"name":"inception_5a/3x3_w_0"
-				"raw_data": Vett di 1843200 elem
+				"raw_data": Vett di 1843200 elem RAW
 "initializer": INITIAL
 				"dims":128
 				"data_type":1
 				"name":"inception_5a/5x5_b_0"
-				"raw_data": Vett di 512 elem
+				"raw_data": Vett di 512 elem RAW
 "initializer": INITIAL
 				"dims":32
 				"data_type":1
 				"name":"inception_5a/5x5_reduce_b_0"
-				"raw_data": Vett di 128 elem
+				"raw_data": Vett di 128 elem RAW
 "initializer": INITIAL
 				"dims":32
 				"dims":832
@@ -3805,7 +3805,7 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_5a/5x5_reduce_w_0"
-				"raw_data": Vett di 106496 elem
+				"raw_data": Vett di 106496 elem RAW
 "initializer": INITIAL
 				"dims":128
 				"dims":32
@@ -3813,12 +3813,12 @@ tipo non gestito "type"
 				"dims":5
 				"data_type":1
 				"name":"inception_5a/5x5_w_0"
-				"raw_data": Vett di 409600 elem
+				"raw_data": Vett di 409600 elem RAW
 "initializer": INITIAL
 				"dims":128
 				"data_type":1
 				"name":"inception_5a/pool_proj_b_0"
-				"raw_data": Vett di 512 elem
+				"raw_data": Vett di 512 elem RAW
 "initializer": INITIAL
 				"dims":128
 				"dims":832
@@ -3826,12 +3826,12 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_5a/pool_proj_w_0"
-				"raw_data": Vett di 425984 elem
+				"raw_data": Vett di 425984 elem RAW
 "initializer": INITIAL
 				"dims":384
 				"data_type":1
 				"name":"inception_5b/1x1_b_0"
-				"raw_data": Vett di 1536 elem
+				"raw_data": Vett di 1536 elem RAW
 "initializer": INITIAL
 				"dims":384
 				"dims":832
@@ -3839,17 +3839,17 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_5b/1x1_w_0"
-				"raw_data": Vett di 1277952 elem
+				"raw_data": Vett di 1277952 elem RAW
 "initializer": INITIAL
 				"dims":384
 				"data_type":1
 				"name":"inception_5b/3x3_b_0"
-				"raw_data": Vett di 1536 elem
+				"raw_data": Vett di 1536 elem RAW
 "initializer": INITIAL
 				"dims":192
 				"data_type":1
 				"name":"inception_5b/3x3_reduce_b_0"
-				"raw_data": Vett di 768 elem
+				"raw_data": Vett di 768 elem RAW
 "initializer": INITIAL
 				"dims":192
 				"dims":832
@@ -3857,7 +3857,7 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_5b/3x3_reduce_w_0"
-				"raw_data": Vett di 638976 elem
+				"raw_data": Vett di 638976 elem RAW
 "initializer": INITIAL
 				"dims":384
 				"dims":192
@@ -3865,17 +3865,17 @@ tipo non gestito "type"
 				"dims":3
 				"data_type":1
 				"name":"inception_5b/3x3_w_0"
-				"raw_data": Vett di 2654208 elem
+				"raw_data": Vett di 2654208 elem RAW
 "initializer": INITIAL
 				"dims":128
 				"data_type":1
 				"name":"inception_5b/5x5_b_0"
-				"raw_data": Vett di 512 elem
+				"raw_data": Vett di 512 elem RAW
 "initializer": INITIAL
 				"dims":48
 				"data_type":1
 				"name":"inception_5b/5x5_reduce_b_0"
-				"raw_data": Vett di 192 elem
+				"raw_data": Vett di 192 elem RAW
 "initializer": INITIAL
 				"dims":48
 				"dims":832
@@ -3883,7 +3883,7 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_5b/5x5_reduce_w_0"
-				"raw_data": Vett di 159744 elem
+				"raw_data": Vett di 159744 elem RAW
 "initializer": INITIAL
 				"dims":128
 				"dims":48
@@ -3891,12 +3891,12 @@ tipo non gestito "type"
 				"dims":5
 				"data_type":1
 				"name":"inception_5b/5x5_w_0"
-				"raw_data": Vett di 614400 elem
+				"raw_data": Vett di 614400 elem RAW
 "initializer": INITIAL
 				"dims":128
 				"data_type":1
 				"name":"inception_5b/pool_proj_b_0"
-				"raw_data": Vett di 512 elem
+				"raw_data": Vett di 512 elem RAW
 "initializer": INITIAL
 				"dims":128
 				"dims":832
@@ -3904,23 +3904,23 @@ tipo non gestito "type"
 				"dims":1
 				"data_type":1
 				"name":"inception_5b/pool_proj_w_0"
-				"raw_data": Vett di 425984 elem
+				"raw_data": Vett di 425984 elem RAW
 "initializer": INITIAL
 				"dims":1000
 				"data_type":1
 				"name":"loss3/classifier_b_0"
-				"raw_data": Vett di 4000 elem
+				"raw_data": Vett di 4000 elem RAW
 "initializer": INITIAL
 				"dims":1000
 				"dims":1024
 				"data_type":1
 				"name":"loss3/classifier_w_0"
-				"raw_data": Vett di 4096000 elem
+				"raw_data": Vett di 4096000 elem RAW
 "initializer": INITIAL
 				"dims":2
 				"data_type":7
 				"name":"OC2_DUMMY_1"
-				"raw_data": Vett di 16 elem
+				"raw_data": Vett di 16 elem RAW
 "initializer": INITIAL
 				"data_type":1
 				"float_data": Vett di 1 elem
@@ -6222,1453 +6222,1571 @@ FINE GRAFO
 
 ---------------CREAZIONE GRAFO------------
 +--------
-|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([7, 7]), "strides": Ints([2, 2]), "pads": Ints([3, 3, 3, 3])}  
+|OPERATION->__Conv__0             ATTR-> {"strides": Ints([2, 2]), "kernel_shape": Ints([7, 7]), "pads": Ints([3, 3, 3, 3])}  
 |IN-> ["data_0", "conv1/7x7_s2_w_0", "conv1/7x7_s2_b_0"]  OUT-> ["conv1/7x7_s2_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__1             ATTR-> {}  
 |IN-> ["conv1/7x7_s2_1"]  OUT-> ["conv1/7x7_s2_2"]
 +--------
 
 +--------
-|OPERATION->MaxPool               ATTR-> {"strides": Ints([2, 2]), "pads": Ints([0, 0, 2, 2]), "kernel_shape": Ints([3, 3])}  
+|OPERATION->__MaxPool__2          ATTR-> {"pads": Ints([0, 0, 2, 2]), "strides": Ints([2, 2]), "kernel_shape": Ints([3, 3])}  
 |IN-> ["conv1/7x7_s2_2"]  OUT-> ["pool1/3x3_s2_1"]
 +--------
 
 +--------
-|OPERATION->LRN                   ATTR-> {"alpha": Undefined, "beta": Undefined, "size": Int(5), "bias": Undefined}  
+|OPERATION->__LRN__3              ATTR-> {"size": Int(5), "bias": Undefined, "alpha": Undefined, "beta": Undefined}  
 |IN-> ["pool1/3x3_s2_1"]  OUT-> ["pool1/norm1_1"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}  
+|OPERATION->__Conv__4             ATTR-> {"kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}  
 |IN-> ["pool1/norm1_1", "conv2/3x3_reduce_w_0", "conv2/3x3_reduce_b_0"]  OUT-> ["conv2/3x3_reduce_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__5             ATTR-> {}  
 |IN-> ["conv2/3x3_reduce_1"]  OUT-> ["conv2/3x3_reduce_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}  
+|OPERATION->__Conv__6             ATTR-> {"pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3]), "strides": Ints([1, 1])}  
 |IN-> ["conv2/3x3_reduce_2", "conv2/3x3_w_0", "conv2/3x3_b_0"]  OUT-> ["conv2/3x3_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__7             ATTR-> {}  
 |IN-> ["conv2/3x3_1"]  OUT-> ["conv2/3x3_2"]
 +--------
 
 +--------
-|OPERATION->LRN                   ATTR-> {"beta": Undefined, "size": Int(5), "bias": Undefined, "alpha": Undefined}  
+|OPERATION->__LRN__8              ATTR-> {"alpha": Undefined, "size": Int(5), "beta": Undefined, "bias": Undefined}  
 |IN-> ["conv2/3x3_2"]  OUT-> ["conv2/norm2_1"]
 +--------
 
 +--------
-|OPERATION->MaxPool               ATTR-> {"strides": Ints([2, 2]), "pads": Ints([0, 0, 2, 2]), "kernel_shape": Ints([3, 3])}  
+|OPERATION->__MaxPool__9          ATTR-> {"strides": Ints([2, 2]), "kernel_shape": Ints([3, 3]), "pads": Ints([0, 0, 2, 2])}  
 |IN-> ["conv2/norm2_1"]  OUT-> ["pool2/3x3_s2_1"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
+|OPERATION->__Conv__10            ATTR-> {"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1]), "kernel_shape": Ints([1, 1])}  
 |IN-> ["pool2/3x3_s2_1", "inception_3a/1x1_w_0", "inception_3a/1x1_b_0"]  OUT-> ["inception_3a/1x1_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__11            ATTR-> {}  
 |IN-> ["inception_3a/1x1_1"]  OUT-> ["inception_3a/1x1_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}  
+|OPERATION->__Conv__12            ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}  
 |IN-> ["pool2/3x3_s2_1", "inception_3a/3x3_reduce_w_0", "inception_3a/3x3_reduce_b_0"]  OUT-> ["inception_3a/3x3_reduce_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__13            ATTR-> {}  
 |IN-> ["inception_3a/3x3_reduce_1"]  OUT-> ["inception_3a/3x3_reduce_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3]), "strides": Ints([1, 1])}  
+|OPERATION->__Conv__14            ATTR-> {"kernel_shape": Ints([3, 3]), "pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}  
 |IN-> ["inception_3a/3x3_reduce_2", "inception_3a/3x3_w_0", "inception_3a/3x3_b_0"]  OUT-> ["inception_3a/3x3_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__15            ATTR-> {}  
 |IN-> ["inception_3a/3x3_1"]  OUT-> ["inception_3a/3x3_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}  
+|OPERATION->__Conv__16            ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}  
 |IN-> ["pool2/3x3_s2_1", "inception_3a/5x5_reduce_w_0", "inception_3a/5x5_reduce_b_0"]  OUT-> ["inception_3a/5x5_reduce_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__17            ATTR-> {}  
 |IN-> ["inception_3a/5x5_reduce_1"]  OUT-> ["inception_3a/5x5_reduce_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2]), "kernel_shape": Ints([5, 5])}  
+|OPERATION->__Conv__18            ATTR-> {"pads": Ints([2, 2, 2, 2]), "kernel_shape": Ints([5, 5]), "strides": Ints([1, 1])}  
 |IN-> ["inception_3a/5x5_reduce_2", "inception_3a/5x5_w_0", "inception_3a/5x5_b_0"]  OUT-> ["inception_3a/5x5_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__19            ATTR-> {}  
 |IN-> ["inception_3a/5x5_1"]  OUT-> ["inception_3a/5x5_2"]
 +--------
 
 +--------
-|OPERATION->MaxPool               ATTR-> {"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}  
+|OPERATION->__MaxPool__20         ATTR-> {"kernel_shape": Ints([3, 3]), "strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}  
 |IN-> ["pool2/3x3_s2_1"]  OUT-> ["inception_3a/pool_1"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}  
+|OPERATION->__Conv__21            ATTR-> {"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
 |IN-> ["inception_3a/pool_1", "inception_3a/pool_proj_w_0", "inception_3a/pool_proj_b_0"]  OUT-> ["inception_3a/pool_proj_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__22            ATTR-> {}  
 |IN-> ["inception_3a/pool_proj_1"]  OUT-> ["inception_3a/pool_proj_2"]
 +--------
 
 +--------
-|OPERATION->Concat                ATTR-> {"axis": Int(1)}  
+|OPERATION->__Concat__23          ATTR-> {"axis": Int(1)}  
 |IN-> ["inception_3a/1x1_2", "inception_3a/3x3_2", "inception_3a/5x5_2", "inception_3a/pool_proj_2"]  OUT-> ["inception_3a/output_1"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}  
+|OPERATION->__Conv__24            ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}  
 |IN-> ["inception_3a/output_1", "inception_3b/1x1_w_0", "inception_3b/1x1_b_0"]  OUT-> ["inception_3b/1x1_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__25            ATTR-> {}  
 |IN-> ["inception_3b/1x1_1"]  OUT-> ["inception_3b/1x1_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}  
+|OPERATION->__Conv__26            ATTR-> {"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
 |IN-> ["inception_3a/output_1", "inception_3b/3x3_reduce_w_0", "inception_3b/3x3_reduce_b_0"]  OUT-> ["inception_3b/3x3_reduce_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__27            ATTR-> {}  
 |IN-> ["inception_3b/3x3_reduce_1"]  OUT-> ["inception_3b/3x3_reduce_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([3, 3]), "strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}  
+|OPERATION->__Conv__28            ATTR-> {"pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3]), "strides": Ints([1, 1])}  
 |IN-> ["inception_3b/3x3_reduce_2", "inception_3b/3x3_w_0", "inception_3b/3x3_b_0"]  OUT-> ["inception_3b/3x3_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__29            ATTR-> {}  
 |IN-> ["inception_3b/3x3_1"]  OUT-> ["inception_3b/3x3_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}  
+|OPERATION->__Conv__30            ATTR-> {"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}  
 |IN-> ["inception_3a/output_1", "inception_3b/5x5_reduce_w_0", "inception_3b/5x5_reduce_b_0"]  OUT-> ["inception_3b/5x5_reduce_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__31            ATTR-> {}  
 |IN-> ["inception_3b/5x5_reduce_1"]  OUT-> ["inception_3b/5x5_reduce_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([5, 5]), "strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2])}  
+|OPERATION->__Conv__32            ATTR-> {"strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2]), "kernel_shape": Ints([5, 5])}  
 |IN-> ["inception_3b/5x5_reduce_2", "inception_3b/5x5_w_0", "inception_3b/5x5_b_0"]  OUT-> ["inception_3b/5x5_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__33            ATTR-> {}  
 |IN-> ["inception_3b/5x5_1"]  OUT-> ["inception_3b/5x5_2"]
 +--------
 
 +--------
-|OPERATION->MaxPool               ATTR-> {"kernel_shape": Ints([3, 3]), "pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}  
+|OPERATION->__MaxPool__34         ATTR-> {"kernel_shape": Ints([3, 3]), "strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}  
 |IN-> ["inception_3a/output_1"]  OUT-> ["inception_3b/pool_1"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
+|OPERATION->__Conv__35            ATTR-> {"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}  
 |IN-> ["inception_3b/pool_1", "inception_3b/pool_proj_w_0", "inception_3b/pool_proj_b_0"]  OUT-> ["inception_3b/pool_proj_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__36            ATTR-> {}  
 |IN-> ["inception_3b/pool_proj_1"]  OUT-> ["inception_3b/pool_proj_2"]
 +--------
 
 +--------
-|OPERATION->Concat                ATTR-> {"axis": Int(1)}  
+|OPERATION->__Concat__37          ATTR-> {"axis": Int(1)}  
 |IN-> ["inception_3b/1x1_2", "inception_3b/3x3_2", "inception_3b/5x5_2", "inception_3b/pool_proj_2"]  OUT-> ["inception_3b/output_1"]
 +--------
 
 +--------
-|OPERATION->MaxPool               ATTR-> {"strides": Ints([2, 2]), "pads": Ints([0, 0, 2, 2]), "kernel_shape": Ints([3, 3])}  
+|OPERATION->__MaxPool__38         ATTR-> {"strides": Ints([2, 2]), "kernel_shape": Ints([3, 3]), "pads": Ints([0, 0, 2, 2])}  
 |IN-> ["inception_3b/output_1"]  OUT-> ["pool3/3x3_s2_1"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}  
+|OPERATION->__Conv__39            ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}  
 |IN-> ["pool3/3x3_s2_1", "inception_4a/1x1_w_0", "inception_4a/1x1_b_0"]  OUT-> ["inception_4a/1x1_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__40            ATTR-> {}  
 |IN-> ["inception_4a/1x1_1"]  OUT-> ["inception_4a/1x1_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}  
+|OPERATION->__Conv__41            ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}  
 |IN-> ["pool3/3x3_s2_1", "inception_4a/3x3_reduce_w_0", "inception_4a/3x3_reduce_b_0"]  OUT-> ["inception_4a/3x3_reduce_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__42            ATTR-> {}  
 |IN-> ["inception_4a/3x3_reduce_1"]  OUT-> ["inception_4a/3x3_reduce_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}  
+|OPERATION->__Conv__43            ATTR-> {"kernel_shape": Ints([3, 3]), "strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}  
 |IN-> ["inception_4a/3x3_reduce_2", "inception_4a/3x3_w_0", "inception_4a/3x3_b_0"]  OUT-> ["inception_4a/3x3_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__44            ATTR-> {}  
 |IN-> ["inception_4a/3x3_1"]  OUT-> ["inception_4a/3x3_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
+|OPERATION->__Conv__45            ATTR-> {"strides": Ints([1, 1]), "kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
 |IN-> ["pool3/3x3_s2_1", "inception_4a/5x5_reduce_w_0", "inception_4a/5x5_reduce_b_0"]  OUT-> ["inception_4a/5x5_reduce_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__46            ATTR-> {}  
 |IN-> ["inception_4a/5x5_reduce_1"]  OUT-> ["inception_4a/5x5_reduce_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"pads": Ints([2, 2, 2, 2]), "kernel_shape": Ints([5, 5]), "strides": Ints([1, 1])}  
+|OPERATION->__Conv__47            ATTR-> {"strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2]), "kernel_shape": Ints([5, 5])}  
 |IN-> ["inception_4a/5x5_reduce_2", "inception_4a/5x5_w_0", "inception_4a/5x5_b_0"]  OUT-> ["inception_4a/5x5_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__48            ATTR-> {}  
 |IN-> ["inception_4a/5x5_1"]  OUT-> ["inception_4a/5x5_2"]
 +--------
 
 +--------
-|OPERATION->MaxPool               ATTR-> {"pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3]), "strides": Ints([1, 1])}  
+|OPERATION->__MaxPool__49         ATTR-> {"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}  
 |IN-> ["pool3/3x3_s2_1"]  OUT-> ["inception_4a/pool_1"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
+|OPERATION->__Conv__50            ATTR-> {"kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}  
 |IN-> ["inception_4a/pool_1", "inception_4a/pool_proj_w_0", "inception_4a/pool_proj_b_0"]  OUT-> ["inception_4a/pool_proj_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__51            ATTR-> {}  
 |IN-> ["inception_4a/pool_proj_1"]  OUT-> ["inception_4a/pool_proj_2"]
 +--------
 
 +--------
-|OPERATION->Concat                ATTR-> {"axis": Int(1)}  
+|OPERATION->__Concat__52          ATTR-> {"axis": Int(1)}  
 |IN-> ["inception_4a/1x1_2", "inception_4a/3x3_2", "inception_4a/5x5_2", "inception_4a/pool_proj_2"]  OUT-> ["inception_4a/output_1"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}  
+|OPERATION->__Conv__53            ATTR-> {"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}  
 |IN-> ["inception_4a/output_1", "inception_4b/1x1_w_0", "inception_4b/1x1_b_0"]  OUT-> ["inception_4b/1x1_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__54            ATTR-> {}  
 |IN-> ["inception_4b/1x1_1"]  OUT-> ["inception_4b/1x1_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
+|OPERATION->__Conv__55            ATTR-> {"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}  
 |IN-> ["inception_4a/output_1", "inception_4b/3x3_reduce_w_0", "inception_4b/3x3_reduce_b_0"]  OUT-> ["inception_4b/3x3_reduce_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__56            ATTR-> {}  
 |IN-> ["inception_4b/3x3_reduce_1"]  OUT-> ["inception_4b/3x3_reduce_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([3, 3]), "strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}  
+|OPERATION->__Conv__57            ATTR-> {"pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3]), "strides": Ints([1, 1])}  
 |IN-> ["inception_4b/3x3_reduce_2", "inception_4b/3x3_w_0", "inception_4b/3x3_b_0"]  OUT-> ["inception_4b/3x3_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__58            ATTR-> {}  
 |IN-> ["inception_4b/3x3_1"]  OUT-> ["inception_4b/3x3_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}  
+|OPERATION->__Conv__59            ATTR-> {"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1]), "kernel_shape": Ints([1, 1])}  
 |IN-> ["inception_4a/output_1", "inception_4b/5x5_reduce_w_0", "inception_4b/5x5_reduce_b_0"]  OUT-> ["inception_4b/5x5_reduce_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__60            ATTR-> {}  
 |IN-> ["inception_4b/5x5_reduce_1"]  OUT-> ["inception_4b/5x5_reduce_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"pads": Ints([2, 2, 2, 2]), "kernel_shape": Ints([5, 5]), "strides": Ints([1, 1])}  
+|OPERATION->__Conv__61            ATTR-> {"kernel_shape": Ints([5, 5]), "strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2])}  
 |IN-> ["inception_4b/5x5_reduce_2", "inception_4b/5x5_w_0", "inception_4b/5x5_b_0"]  OUT-> ["inception_4b/5x5_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__62            ATTR-> {}  
 |IN-> ["inception_4b/5x5_1"]  OUT-> ["inception_4b/5x5_2"]
 +--------
 
 +--------
-|OPERATION->MaxPool               ATTR-> {"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}  
+|OPERATION->__MaxPool__63         ATTR-> {"kernel_shape": Ints([3, 3]), "pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}  
 |IN-> ["inception_4a/output_1"]  OUT-> ["inception_4b/pool_1"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
+|OPERATION->__Conv__64            ATTR-> {"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}  
 |IN-> ["inception_4b/pool_1", "inception_4b/pool_proj_w_0", "inception_4b/pool_proj_b_0"]  OUT-> ["inception_4b/pool_proj_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__65            ATTR-> {}  
 |IN-> ["inception_4b/pool_proj_1"]  OUT-> ["inception_4b/pool_proj_2"]
 +--------
 
 +--------
-|OPERATION->Concat                ATTR-> {"axis": Int(1)}  
+|OPERATION->__Concat__66          ATTR-> {"axis": Int(1)}  
 |IN-> ["inception_4b/1x1_2", "inception_4b/3x3_2", "inception_4b/5x5_2", "inception_4b/pool_proj_2"]  OUT-> ["inception_4b/output_1"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}  
+|OPERATION->__Conv__67            ATTR-> {"kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}  
 |IN-> ["inception_4b/output_1", "inception_4c/1x1_w_0", "inception_4c/1x1_b_0"]  OUT-> ["inception_4c/1x1_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__68            ATTR-> {}  
 |IN-> ["inception_4c/1x1_1"]  OUT-> ["inception_4c/1x1_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
+|OPERATION->__Conv__69            ATTR-> {"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1]), "kernel_shape": Ints([1, 1])}  
 |IN-> ["inception_4b/output_1", "inception_4c/3x3_reduce_w_0", "inception_4c/3x3_reduce_b_0"]  OUT-> ["inception_4c/3x3_reduce_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__70            ATTR-> {}  
 |IN-> ["inception_4c/3x3_reduce_1"]  OUT-> ["inception_4c/3x3_reduce_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}  
+|OPERATION->__Conv__71            ATTR-> {"kernel_shape": Ints([3, 3]), "strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}  
 |IN-> ["inception_4c/3x3_reduce_2", "inception_4c/3x3_w_0", "inception_4c/3x3_b_0"]  OUT-> ["inception_4c/3x3_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__72            ATTR-> {}  
 |IN-> ["inception_4c/3x3_1"]  OUT-> ["inception_4c/3x3_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1]), "kernel_shape": Ints([1, 1])}  
+|OPERATION->__Conv__73            ATTR-> {"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}  
 |IN-> ["inception_4b/output_1", "inception_4c/5x5_reduce_w_0", "inception_4c/5x5_reduce_b_0"]  OUT-> ["inception_4c/5x5_reduce_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__74            ATTR-> {}  
 |IN-> ["inception_4c/5x5_reduce_1"]  OUT-> ["inception_4c/5x5_reduce_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([5, 5]), "strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2])}  
+|OPERATION->__Conv__75            ATTR-> {"strides": Ints([1, 1]), "kernel_shape": Ints([5, 5]), "pads": Ints([2, 2, 2, 2])}  
 |IN-> ["inception_4c/5x5_reduce_2", "inception_4c/5x5_w_0", "inception_4c/5x5_b_0"]  OUT-> ["inception_4c/5x5_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__76            ATTR-> {}  
 |IN-> ["inception_4c/5x5_1"]  OUT-> ["inception_4c/5x5_2"]
 +--------
 
 +--------
-|OPERATION->MaxPool               ATTR-> {"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}  
+|OPERATION->__MaxPool__77         ATTR-> {"kernel_shape": Ints([3, 3]), "pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}  
 |IN-> ["inception_4b/output_1"]  OUT-> ["inception_4c/pool_1"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
+|OPERATION->__Conv__78            ATTR-> {"strides": Ints([1, 1]), "kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
 |IN-> ["inception_4c/pool_1", "inception_4c/pool_proj_w_0", "inception_4c/pool_proj_b_0"]  OUT-> ["inception_4c/pool_proj_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__79            ATTR-> {}  
 |IN-> ["inception_4c/pool_proj_1"]  OUT-> ["inception_4c/pool_proj_2"]
 +--------
 
 +--------
-|OPERATION->Concat                ATTR-> {"axis": Int(1)}  
+|OPERATION->__Concat__80          ATTR-> {"axis": Int(1)}  
 |IN-> ["inception_4c/1x1_2", "inception_4c/3x3_2", "inception_4c/5x5_2", "inception_4c/pool_proj_2"]  OUT-> ["inception_4c/output_1"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}  
+|OPERATION->__Conv__81            ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}  
 |IN-> ["inception_4c/output_1", "inception_4d/1x1_w_0", "inception_4d/1x1_b_0"]  OUT-> ["inception_4d/1x1_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__82            ATTR-> {}  
 |IN-> ["inception_4d/1x1_1"]  OUT-> ["inception_4d/1x1_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
+|OPERATION->__Conv__83            ATTR-> {"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
 |IN-> ["inception_4c/output_1", "inception_4d/3x3_reduce_w_0", "inception_4d/3x3_reduce_b_0"]  OUT-> ["inception_4d/3x3_reduce_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__84            ATTR-> {}  
 |IN-> ["inception_4d/3x3_reduce_1"]  OUT-> ["inception_4d/3x3_reduce_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([3, 3]), "pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1])}  
+|OPERATION->__Conv__85            ATTR-> {"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}  
 |IN-> ["inception_4d/3x3_reduce_2", "inception_4d/3x3_w_0", "inception_4d/3x3_b_0"]  OUT-> ["inception_4d/3x3_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__86            ATTR-> {}  
 |IN-> ["inception_4d/3x3_1"]  OUT-> ["inception_4d/3x3_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}  
+|OPERATION->__Conv__87            ATTR-> {"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
 |IN-> ["inception_4c/output_1", "inception_4d/5x5_reduce_w_0", "inception_4d/5x5_reduce_b_0"]  OUT-> ["inception_4d/5x5_reduce_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__88            ATTR-> {}  
 |IN-> ["inception_4d/5x5_reduce_1"]  OUT-> ["inception_4d/5x5_reduce_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([5, 5]), "strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2])}  
+|OPERATION->__Conv__89            ATTR-> {"strides": Ints([1, 1]), "kernel_shape": Ints([5, 5]), "pads": Ints([2, 2, 2, 2])}  
 |IN-> ["inception_4d/5x5_reduce_2", "inception_4d/5x5_w_0", "inception_4d/5x5_b_0"]  OUT-> ["inception_4d/5x5_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__90            ATTR-> {}  
 |IN-> ["inception_4d/5x5_1"]  OUT-> ["inception_4d/5x5_2"]
 +--------
 
 +--------
-|OPERATION->MaxPool               ATTR-> {"kernel_shape": Ints([3, 3]), "strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}  
+|OPERATION->__MaxPool__91         ATTR-> {"kernel_shape": Ints([3, 3]), "strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}  
 |IN-> ["inception_4c/output_1"]  OUT-> ["inception_4d/pool_1"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}  
+|OPERATION->__Conv__92            ATTR-> {"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}  
 |IN-> ["inception_4d/pool_1", "inception_4d/pool_proj_w_0", "inception_4d/pool_proj_b_0"]  OUT-> ["inception_4d/pool_proj_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__93            ATTR-> {}  
 |IN-> ["inception_4d/pool_proj_1"]  OUT-> ["inception_4d/pool_proj_2"]
 +--------
 
 +--------
-|OPERATION->Concat                ATTR-> {"axis": Int(1)}  
+|OPERATION->__Concat__94          ATTR-> {"axis": Int(1)}  
 |IN-> ["inception_4d/1x1_2", "inception_4d/3x3_2", "inception_4d/5x5_2", "inception_4d/pool_proj_2"]  OUT-> ["inception_4d/output_1"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}  
+|OPERATION->__Conv__95            ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}  
 |IN-> ["inception_4d/output_1", "inception_4e/1x1_w_0", "inception_4e/1x1_b_0"]  OUT-> ["inception_4e/1x1_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__96            ATTR-> {}  
 |IN-> ["inception_4e/1x1_1"]  OUT-> ["inception_4e/1x1_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}  
+|OPERATION->__Conv__97            ATTR-> {"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
 |IN-> ["inception_4d/output_1", "inception_4e/3x3_reduce_w_0", "inception_4e/3x3_reduce_b_0"]  OUT-> ["inception_4e/3x3_reduce_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__98            ATTR-> {}  
 |IN-> ["inception_4e/3x3_reduce_1"]  OUT-> ["inception_4e/3x3_reduce_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1]), "kernel_shape": Ints([3, 3])}  
+|OPERATION->__Conv__99            ATTR-> {"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1]), "kernel_shape": Ints([3, 3])}  
 |IN-> ["inception_4e/3x3_reduce_2", "inception_4e/3x3_w_0", "inception_4e/3x3_b_0"]  OUT-> ["inception_4e/3x3_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__100           ATTR-> {}  
 |IN-> ["inception_4e/3x3_1"]  OUT-> ["inception_4e/3x3_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}  
+|OPERATION->__Conv__101           ATTR-> {"strides": Ints([1, 1]), "kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
 |IN-> ["inception_4d/output_1", "inception_4e/5x5_reduce_w_0", "inception_4e/5x5_reduce_b_0"]  OUT-> ["inception_4e/5x5_reduce_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__102           ATTR-> {}  
 |IN-> ["inception_4e/5x5_reduce_1"]  OUT-> ["inception_4e/5x5_reduce_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"pads": Ints([2, 2, 2, 2]), "kernel_shape": Ints([5, 5]), "strides": Ints([1, 1])}  
+|OPERATION->__Conv__103           ATTR-> {"strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2]), "kernel_shape": Ints([5, 5])}  
 |IN-> ["inception_4e/5x5_reduce_2", "inception_4e/5x5_w_0", "inception_4e/5x5_b_0"]  OUT-> ["inception_4e/5x5_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__104           ATTR-> {}  
 |IN-> ["inception_4e/5x5_1"]  OUT-> ["inception_4e/5x5_2"]
 +--------
 
 +--------
-|OPERATION->MaxPool               ATTR-> {"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1]), "kernel_shape": Ints([3, 3])}  
+|OPERATION->__MaxPool__105        ATTR-> {"pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3]), "strides": Ints([1, 1])}  
 |IN-> ["inception_4d/output_1"]  OUT-> ["inception_4e/pool_1"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
+|OPERATION->__Conv__106           ATTR-> {"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
 |IN-> ["inception_4e/pool_1", "inception_4e/pool_proj_w_0", "inception_4e/pool_proj_b_0"]  OUT-> ["inception_4e/pool_proj_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__107           ATTR-> {}  
 |IN-> ["inception_4e/pool_proj_1"]  OUT-> ["inception_4e/pool_proj_2"]
 +--------
 
 +--------
-|OPERATION->Concat                ATTR-> {"axis": Int(1)}  
+|OPERATION->__Concat__108         ATTR-> {"axis": Int(1)}  
 |IN-> ["inception_4e/1x1_2", "inception_4e/3x3_2", "inception_4e/5x5_2", "inception_4e/pool_proj_2"]  OUT-> ["inception_4e/output_1"]
 +--------
 
 +--------
-|OPERATION->MaxPool               ATTR-> {"strides": Ints([2, 2]), "pads": Ints([0, 0, 2, 2]), "kernel_shape": Ints([3, 3])}  
+|OPERATION->__MaxPool__109        ATTR-> {"strides": Ints([2, 2]), "pads": Ints([0, 0, 2, 2]), "kernel_shape": Ints([3, 3])}  
 |IN-> ["inception_4e/output_1"]  OUT-> ["pool4/3x3_s2_1"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
+|OPERATION->__Conv__110           ATTR-> {"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}  
 |IN-> ["pool4/3x3_s2_1", "inception_5a/1x1_w_0", "inception_5a/1x1_b_0"]  OUT-> ["inception_5a/1x1_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__111           ATTR-> {}  
 |IN-> ["inception_5a/1x1_1"]  OUT-> ["inception_5a/1x1_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}  
+|OPERATION->__Conv__112           ATTR-> {"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}  
 |IN-> ["pool4/3x3_s2_1", "inception_5a/3x3_reduce_w_0", "inception_5a/3x3_reduce_b_0"]  OUT-> ["inception_5a/3x3_reduce_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__113           ATTR-> {}  
 |IN-> ["inception_5a/3x3_reduce_1"]  OUT-> ["inception_5a/3x3_reduce_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1]), "kernel_shape": Ints([3, 3])}  
+|OPERATION->__Conv__114           ATTR-> {"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}  
 |IN-> ["inception_5a/3x3_reduce_2", "inception_5a/3x3_w_0", "inception_5a/3x3_b_0"]  OUT-> ["inception_5a/3x3_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__115           ATTR-> {}  
 |IN-> ["inception_5a/3x3_1"]  OUT-> ["inception_5a/3x3_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1]), "kernel_shape": Ints([1, 1])}  
+|OPERATION->__Conv__116           ATTR-> {"kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}  
 |IN-> ["pool4/3x3_s2_1", "inception_5a/5x5_reduce_w_0", "inception_5a/5x5_reduce_b_0"]  OUT-> ["inception_5a/5x5_reduce_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__117           ATTR-> {}  
 |IN-> ["inception_5a/5x5_reduce_1"]  OUT-> ["inception_5a/5x5_reduce_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "kernel_shape": Ints([5, 5]), "pads": Ints([2, 2, 2, 2])}  
+|OPERATION->__Conv__118           ATTR-> {"kernel_shape": Ints([5, 5]), "pads": Ints([2, 2, 2, 2]), "strides": Ints([1, 1])}  
 |IN-> ["inception_5a/5x5_reduce_2", "inception_5a/5x5_w_0", "inception_5a/5x5_b_0"]  OUT-> ["inception_5a/5x5_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__119           ATTR-> {}  
 |IN-> ["inception_5a/5x5_1"]  OUT-> ["inception_5a/5x5_2"]
 +--------
 
 +--------
-|OPERATION->MaxPool               ATTR-> {"pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3]), "strides": Ints([1, 1])}  
+|OPERATION->__MaxPool__120        ATTR-> {"pads": Ints([1, 1, 1, 1]), "strides": Ints([1, 1]), "kernel_shape": Ints([3, 3])}  
 |IN-> ["pool4/3x3_s2_1"]  OUT-> ["inception_5a/pool_1"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
+|OPERATION->__Conv__121           ATTR-> {"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}  
 |IN-> ["inception_5a/pool_1", "inception_5a/pool_proj_w_0", "inception_5a/pool_proj_b_0"]  OUT-> ["inception_5a/pool_proj_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__122           ATTR-> {}  
 |IN-> ["inception_5a/pool_proj_1"]  OUT-> ["inception_5a/pool_proj_2"]
 +--------
 
 +--------
-|OPERATION->Concat                ATTR-> {"axis": Int(1)}  
+|OPERATION->__Concat__123         ATTR-> {"axis": Int(1)}  
 |IN-> ["inception_5a/1x1_2", "inception_5a/3x3_2", "inception_5a/5x5_2", "inception_5a/pool_proj_2"]  OUT-> ["inception_5a/output_1"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1]), "strides": Ints([1, 1])}  
+|OPERATION->__Conv__124           ATTR-> {"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1]), "kernel_shape": Ints([1, 1])}  
 |IN-> ["inception_5a/output_1", "inception_5b/1x1_w_0", "inception_5b/1x1_b_0"]  OUT-> ["inception_5b/1x1_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__125           ATTR-> {}  
 |IN-> ["inception_5b/1x1_1"]  OUT-> ["inception_5b/1x1_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([1, 1])}  
+|OPERATION->__Conv__126           ATTR-> {"kernel_shape": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1])}  
 |IN-> ["inception_5a/output_1", "inception_5b/3x3_reduce_w_0", "inception_5b/3x3_reduce_b_0"]  OUT-> ["inception_5b/3x3_reduce_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__127           ATTR-> {}  
 |IN-> ["inception_5b/3x3_reduce_1"]  OUT-> ["inception_5b/3x3_reduce_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}  
+|OPERATION->__Conv__128           ATTR-> {"kernel_shape": Ints([3, 3]), "strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}  
 |IN-> ["inception_5b/3x3_reduce_2", "inception_5b/3x3_w_0", "inception_5b/3x3_b_0"]  OUT-> ["inception_5b/3x3_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__129           ATTR-> {}  
 |IN-> ["inception_5b/3x3_1"]  OUT-> ["inception_5b/3x3_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1]), "kernel_shape": Ints([1, 1])}  
+|OPERATION->__Conv__130           ATTR-> {"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
 |IN-> ["inception_5a/output_1", "inception_5b/5x5_reduce_w_0", "inception_5b/5x5_reduce_b_0"]  OUT-> ["inception_5b/5x5_reduce_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__131           ATTR-> {}  
 |IN-> ["inception_5b/5x5_reduce_1"]  OUT-> ["inception_5b/5x5_reduce_2"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"strides": Ints([1, 1]), "kernel_shape": Ints([5, 5]), "pads": Ints([2, 2, 2, 2])}  
+|OPERATION->__Conv__132           ATTR-> {"strides": Ints([1, 1]), "pads": Ints([2, 2, 2, 2]), "kernel_shape": Ints([5, 5])}  
 |IN-> ["inception_5b/5x5_reduce_2", "inception_5b/5x5_w_0", "inception_5b/5x5_b_0"]  OUT-> ["inception_5b/5x5_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__133           ATTR-> {}  
 |IN-> ["inception_5b/5x5_1"]  OUT-> ["inception_5b/5x5_2"]
 +--------
 
 +--------
-|OPERATION->MaxPool               ATTR-> {"kernel_shape": Ints([3, 3]), "strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1])}  
+|OPERATION->__MaxPool__134        ATTR-> {"strides": Ints([1, 1]), "pads": Ints([1, 1, 1, 1]), "kernel_shape": Ints([3, 3])}  
 |IN-> ["inception_5a/output_1"]  OUT-> ["inception_5b/pool_1"]
 +--------
 
 +--------
-|OPERATION->Conv                  ATTR-> {"pads": Ints([0, 0, 0, 0]), "strides": Ints([1, 1]), "kernel_shape": Ints([1, 1])}  
+|OPERATION->__Conv__135           ATTR-> {"kernel_shape": Ints([1, 1]), "strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0])}  
 |IN-> ["inception_5b/pool_1", "inception_5b/pool_proj_w_0", "inception_5b/pool_proj_b_0"]  OUT-> ["inception_5b/pool_proj_1"]
 +--------
 
 +--------
-|OPERATION->Relu                  ATTR-> {}  
+|OPERATION->__Relu__136           ATTR-> {}  
 |IN-> ["inception_5b/pool_proj_1"]  OUT-> ["inception_5b/pool_proj_2"]
 +--------
 
 +--------
-|OPERATION->Concat                ATTR-> {"axis": Int(1)}  
+|OPERATION->__Concat__137         ATTR-> {"axis": Int(1)}  
 |IN-> ["inception_5b/1x1_2", "inception_5b/3x3_2", "inception_5b/5x5_2", "inception_5b/pool_proj_2"]  OUT-> ["inception_5b/output_1"]
 +--------
 
 +--------
-|OPERATION->AveragePool           ATTR-> {"strides": Ints([1, 1]), "pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([7, 7])}  
+|OPERATION->__AveragePool__138    ATTR-> {"pads": Ints([0, 0, 0, 0]), "kernel_shape": Ints([7, 7]), "strides": Ints([1, 1])}  
 |IN-> ["inception_5b/output_1"]  OUT-> ["pool5/7x7_s1_1"]
 +--------
 
 +--------
-|OPERATION->Dropout               ATTR-> {}  
-|IN-> ["pool5/7x7_s1_1", "264"]  OUT-> ["pool5/7x7_s1_2", "_pool5/7x7_s1_mask_1"]
+|OPERATION->__Dropout__139        ATTR-> {}  
+|IN-> ["pool5/7x7_s1_1", "264"]  OUT-> ["pool5/7x7_s1_2"]
 +--------
 
 +--------
-|OPERATION->Reshape               ATTR-> {}  
+|OPERATION->__Reshape__140        ATTR-> {}  
 |IN-> ["pool5/7x7_s1_2", "OC2_DUMMY_1"]  OUT-> ["OC2_DUMMY_0"]
 +--------
 
 +--------
-|OPERATION->Gemm                  ATTR-> {"transB": Int(1)}  
+|OPERATION->__Gemm__141           ATTR-> {"transB": Int(1)}  
 |IN-> ["OC2_DUMMY_0", "loss3/classifier_w_0", "loss3/classifier_b_0"]  OUT-> ["loss3/classifier_1"]
 +--------
 
 +--------
-|OPERATION->Softmax               ATTR-> {}  
+|OPERATION->__Softmax__142        ATTR-> {}  
 |IN-> ["loss3/classifier_1"]  OUT-> ["prob_1"]
 +--------
 
 +--------
 |INITIALIZER->conv1/7x7_s2_b_0      DIMS-> [64]  
  Vett di 64 elem
+|vett:-2.5272307
 +--------
 
 +--------
 |INITIALIZER->conv1/7x7_s2_w_0      DIMS-> [64, 3, 7, 7]  
  Vett di 9408 elem
+|vett:0.08820479
 +--------
 
 +--------
 |INITIALIZER->conv2/3x3_b_0         DIMS-> [192]  
  Vett di 192 elem
+|vett:-0.018044986
 +--------
 
 +--------
 |INITIALIZER->conv2/3x3_reduce_b_0  DIMS-> [64]  
  Vett di 64 elem
+|vett:0.3816347
 +--------
 
 +--------
 |INITIALIZER->conv2/3x3_reduce_w_0  DIMS-> [64, 64, 1, 1]  
  Vett di 4096 elem
+|vett:-0.10927808
 +--------
 
 +--------
 |INITIALIZER->conv2/3x3_w_0         DIMS-> [192, 64, 3, 3]  
  Vett di 110592 elem
+|vett:-0.039554488
 +--------
 
 +--------
 |INITIALIZER->inception_3a/1x1_b_0  DIMS-> [64]  
  Vett di 64 elem
+|vett:-0.026486643
 +--------
 
 +--------
 |INITIALIZER->inception_3a/1x1_w_0  DIMS-> [64, 192, 1, 1]  
  Vett di 12288 elem
+|vett:-0.06411519
 +--------
 
 +--------
 |INITIALIZER->inception_3a/3x3_b_0  DIMS-> [128]  
  Vett di 128 elem
+|vett:-0.13008335
 +--------
 
 +--------
 |INITIALIZER->inception_3a/3x3_reduce_b_0  DIMS-> [96]  
  Vett di 96 elem
+|vett:0.44444996
 +--------
 
 +--------
 |INITIALIZER->inception_3a/3x3_reduce_w_0  DIMS-> [96, 192, 1, 1]  
  Vett di 18432 elem
+|vett:-0.0005883532
 +--------
 
 +--------
 |INITIALIZER->inception_3a/3x3_w_0  DIMS-> [128, 96, 3, 3]  
  Vett di 110592 elem
+|vett:-0.044127166
 +--------
 
 +--------
 |INITIALIZER->inception_3a/5x5_b_0  DIMS-> [32]  
  Vett di 32 elem
+|vett:-0.09990166
 +--------
 
 +--------
 |INITIALIZER->inception_3a/5x5_reduce_b_0  DIMS-> [16]  
  Vett di 16 elem
+|vett:0.3286865
 +--------
 
 +--------
 |INITIALIZER->inception_3a/5x5_reduce_w_0  DIMS-> [16, 192, 1, 1]  
  Vett di 3072 elem
+|vett:0.04991605
 +--------
 
 +--------
 |INITIALIZER->inception_3a/5x5_w_0  DIMS-> [32, 16, 5, 5]  
  Vett di 12800 elem
+|vett:0.023800189
 +--------
 
 +--------
 |INITIALIZER->inception_3a/pool_proj_b_0  DIMS-> [32]  
  Vett di 32 elem
+|vett:0.48976383
 +--------
 
 +--------
 |INITIALIZER->inception_3a/pool_proj_w_0  DIMS-> [32, 192, 1, 1]  
  Vett di 6144 elem
+|vett:-0.056634545
 +--------
 
 +--------
 |INITIALIZER->inception_3b/1x1_b_0  DIMS-> [128]  
  Vett di 128 elem
+|vett:0.51720166
 +--------
 
 +--------
 |INITIALIZER->inception_3b/1x1_w_0  DIMS-> [128, 256, 1, 1]  
  Vett di 32768 elem
+|vett:-0.08966812
 +--------
 
 +--------
 |INITIALIZER->inception_3b/3x3_b_0  DIMS-> [192]  
  Vett di 192 elem
+|vett:0.22327067
 +--------
 
 +--------
 |INITIALIZER->inception_3b/3x3_reduce_b_0  DIMS-> [128]  
  Vett di 128 elem
+|vett:0.48442835
 +--------
 
 +--------
 |INITIALIZER->inception_3b/3x3_reduce_w_0  DIMS-> [128, 256, 1, 1]  
  Vett di 32768 elem
+|vett:0.018128334
 +--------
 
 +--------
 |INITIALIZER->inception_3b/3x3_w_0  DIMS-> [192, 128, 3, 3]  
  Vett di 221184 elem
+|vett:0.034463175
 +--------
 
 +--------
 |INITIALIZER->inception_3b/5x5_b_0  DIMS-> [96]  
  Vett di 96 elem
+|vett:0.31097102
 +--------
 
 +--------
 |INITIALIZER->inception_3b/5x5_reduce_b_0  DIMS-> [32]  
  Vett di 32 elem
+|vett:0.83293635
 +--------
 
 +--------
 |INITIALIZER->inception_3b/5x5_reduce_w_0  DIMS-> [32, 256, 1, 1]  
  Vett di 8192 elem
+|vett:0.027573733
 +--------
 
 +--------
 |INITIALIZER->inception_3b/5x5_w_0  DIMS-> [96, 32, 5, 5]  
  Vett di 76800 elem
+|vett:0.04354005
 +--------
 
 +--------
 |INITIALIZER->inception_3b/pool_proj_b_0  DIMS-> [64]  
  Vett di 64 elem
+|vett:0.27661338
 +--------
 
 +--------
 |INITIALIZER->inception_3b/pool_proj_w_0  DIMS-> [64, 256, 1, 1]  
  Vett di 16384 elem
+|vett:0.046720106
 +--------
 
 +--------
 |INITIALIZER->inception_4a/1x1_b_0  DIMS-> [192]  
  Vett di 192 elem
+|vett:-0.096732356
 +--------
 
 +--------
 |INITIALIZER->inception_4a/1x1_w_0  DIMS-> [192, 480, 1, 1]  
  Vett di 92160 elem
+|vett:-0.06284538
 +--------
 
 +--------
 |INITIALIZER->inception_4a/3x3_b_0  DIMS-> [208]  
  Vett di 208 elem
+|vett:0.41642737
 +--------
 
 +--------
 |INITIALIZER->inception_4a/3x3_reduce_b_0  DIMS-> [96]  
  Vett di 96 elem
+|vett:0.40540427
 +--------
 
 +--------
 |INITIALIZER->inception_4a/3x3_reduce_w_0  DIMS-> [96, 480, 1, 1]  
  Vett di 46080 elem
+|vett:-0.043250173
 +--------
 
 +--------
 |INITIALIZER->inception_4a/3x3_w_0  DIMS-> [208, 96, 3, 3]  
  Vett di 179712 elem
+|vett:0.0009532249
 +--------
 
 +--------
 |INITIALIZER->inception_4a/5x5_b_0  DIMS-> [48]  
  Vett di 48 elem
+|vett:0.09320728
 +--------
 
 +--------
 |INITIALIZER->inception_4a/5x5_reduce_b_0  DIMS-> [16]  
  Vett di 16 elem
+|vett:1.9424506
 +--------
 
 +--------
 |INITIALIZER->inception_4a/5x5_reduce_w_0  DIMS-> [16, 480, 1, 1]  
  Vett di 7680 elem
+|vett:0.027936395
 +--------
 
 +--------
 |INITIALIZER->inception_4a/5x5_w_0  DIMS-> [48, 16, 5, 5]  
  Vett di 19200 elem
+|vett:0.017485783
 +--------
 
 +--------
 |INITIALIZER->inception_4a/pool_proj_b_0  DIMS-> [64]  
  Vett di 64 elem
+|vett:0.17807616
 +--------
 
 +--------
 |INITIALIZER->inception_4a/pool_proj_w_0  DIMS-> [64, 480, 1, 1]  
  Vett di 30720 elem
+|vett:-0.0034028888
 +--------
 
 +--------
 |INITIALIZER->inception_4b/1x1_b_0  DIMS-> [160]  
  Vett di 160 elem
+|vett:-0.10216025
 +--------
 
 +--------
 |INITIALIZER->inception_4b/1x1_w_0  DIMS-> [160, 512, 1, 1]  
  Vett di 81920 elem
+|vett:-0.04097938
 +--------
 
 +--------
 |INITIALIZER->inception_4b/3x3_b_0  DIMS-> [224]  
  Vett di 224 elem
+|vett:0.13604604
 +--------
 
 +--------
 |INITIALIZER->inception_4b/3x3_reduce_b_0  DIMS-> [112]  
  Vett di 112 elem
+|vett:1.3347721
 +--------
 
 +--------
 |INITIALIZER->inception_4b/3x3_reduce_w_0  DIMS-> [112, 512, 1, 1]  
  Vett di 57344 elem
+|vett:-0.0042434726
 +--------
 
 +--------
 |INITIALIZER->inception_4b/3x3_w_0  DIMS-> [224, 112, 3, 3]  
  Vett di 225792 elem
+|vett:-0.0032237289
 +--------
 
 +--------
 |INITIALIZER->inception_4b/5x5_b_0  DIMS-> [64]  
  Vett di 64 elem
+|vett:0.57840437
 +--------
 
 +--------
 |INITIALIZER->inception_4b/5x5_reduce_b_0  DIMS-> [24]  
  Vett di 24 elem
+|vett:1.8710047
 +--------
 
 +--------
 |INITIALIZER->inception_4b/5x5_reduce_w_0  DIMS-> [24, 512, 1, 1]  
  Vett di 12288 elem
+|vett:-0.037632354
 +--------
 
 +--------
 |INITIALIZER->inception_4b/5x5_w_0  DIMS-> [64, 24, 5, 5]  
  Vett di 38400 elem
+|vett:-0.07547405
 +--------
 
 +--------
 |INITIALIZER->inception_4b/pool_proj_b_0  DIMS-> [64]  
  Vett di 64 elem
+|vett:0.0691238
 +--------
 
 +--------
 |INITIALIZER->inception_4b/pool_proj_w_0  DIMS-> [64, 512, 1, 1]  
  Vett di 32768 elem
+|vett:-0.049035285
 +--------
 
 +--------
 |INITIALIZER->inception_4c/1x1_b_0  DIMS-> [128]  
  Vett di 128 elem
+|vett:0.56527483
 +--------
 
 +--------
 |INITIALIZER->inception_4c/1x1_w_0  DIMS-> [128, 512, 1, 1]  
  Vett di 65536 elem
+|vett:0.03413254
 +--------
 
 +--------
 |INITIALIZER->inception_4c/3x3_b_0  DIMS-> [256]  
  Vett di 256 elem
+|vett:0.7832245
 +--------
 
 +--------
 |INITIALIZER->inception_4c/3x3_reduce_b_0  DIMS-> [128]  
  Vett di 128 elem
+|vett:-1.5113516
 +--------
 
 +--------
 |INITIALIZER->inception_4c/3x3_reduce_w_0  DIMS-> [128, 512, 1, 1]  
  Vett di 65536 elem
+|vett:-0.023010362
 +--------
 
 +--------
 |INITIALIZER->inception_4c/3x3_w_0  DIMS-> [256, 128, 3, 3]  
  Vett di 294912 elem
+|vett:-0.017933715
 +--------
 
 +--------
 |INITIALIZER->inception_4c/5x5_b_0  DIMS-> [64]  
  Vett di 64 elem
+|vett:0.009293802
 +--------
 
 +--------
 |INITIALIZER->inception_4c/5x5_reduce_b_0  DIMS-> [24]  
  Vett di 24 elem
+|vett:3.358047
 +--------
 
 +--------
 |INITIALIZER->inception_4c/5x5_reduce_w_0  DIMS-> [24, 512, 1, 1]  
  Vett di 12288 elem
+|vett:0.025774295
 +--------
 
 +--------
 |INITIALIZER->inception_4c/5x5_w_0  DIMS-> [64, 24, 5, 5]  
  Vett di 38400 elem
+|vett:0.016557675
 +--------
 
 +--------
 |INITIALIZER->inception_4c/pool_proj_b_0  DIMS-> [64]  
  Vett di 64 elem
+|vett:0.12435112
 +--------
 
 +--------
 |INITIALIZER->inception_4c/pool_proj_w_0  DIMS-> [64, 512, 1, 1]  
  Vett di 32768 elem
+|vett:-0.09356401
 +--------
 
 +--------
 |INITIALIZER->inception_4d/1x1_b_0  DIMS-> [112]  
  Vett di 112 elem
+|vett:0.51861477
 +--------
 
 +--------
 |INITIALIZER->inception_4d/1x1_w_0  DIMS-> [112, 512, 1, 1]  
  Vett di 57344 elem
+|vett:-0.002514925
 +--------
 
 +--------
 |INITIALIZER->inception_4d/3x3_b_0  DIMS-> [288]  
  Vett di 288 elem
+|vett:1.2016231
 +--------
 
 +--------
 |INITIALIZER->inception_4d/3x3_reduce_b_0  DIMS-> [144]  
  Vett di 144 elem
+|vett:0.5814865
 +--------
 
 +--------
 |INITIALIZER->inception_4d/3x3_reduce_w_0  DIMS-> [144, 512, 1, 1]  
  Vett di 73728 elem
+|vett:0.052244164
 +--------
 
 +--------
 |INITIALIZER->inception_4d/3x3_w_0  DIMS-> [288, 144, 3, 3]  
  Vett di 373248 elem
+|vett:0.044988535
 +--------
 
 +--------
 |INITIALIZER->inception_4d/5x5_b_0  DIMS-> [64]  
  Vett di 64 elem
+|vett:0.31585637
 +--------
 
 +--------
 |INITIALIZER->inception_4d/5x5_reduce_b_0  DIMS-> [32]  
  Vett di 32 elem
+|vett:2.8130217
 +--------
 
 +--------
 |INITIALIZER->inception_4d/5x5_reduce_w_0  DIMS-> [32, 512, 1, 1]  
  Vett di 16384 elem
+|vett:-0.0066701015
 +--------
 
 +--------
 |INITIALIZER->inception_4d/5x5_w_0  DIMS-> [64, 32, 5, 5]  
  Vett di 51200 elem
+|vett:-0.021689767
 +--------
 
 +--------
 |INITIALIZER->inception_4d/pool_proj_b_0  DIMS-> [64]  
  Vett di 64 elem
+|vett:0.40891156
 +--------
 
 +--------
 |INITIALIZER->inception_4d/pool_proj_w_0  DIMS-> [64, 512, 1, 1]  
  Vett di 32768 elem
+|vett:0.012645614
 +--------
 
 +--------
 |INITIALIZER->inception_4e/1x1_b_0  DIMS-> [256]  
  Vett di 256 elem
+|vett:-0.08221403
 +--------
 
 +--------
 |INITIALIZER->inception_4e/1x1_w_0  DIMS-> [256, 528, 1, 1]  
  Vett di 135168 elem
+|vett:-0.04030411
 +--------
 
 +--------
 |INITIALIZER->inception_4e/3x3_b_0  DIMS-> [320]  
  Vett di 320 elem
+|vett:1.7868364
 +--------
 
 +--------
 |INITIALIZER->inception_4e/3x3_reduce_b_0  DIMS-> [160]  
  Vett di 160 elem
+|vett:0.039642993
 +--------
 
 +--------
 |INITIALIZER->inception_4e/3x3_reduce_w_0  DIMS-> [160, 528, 1, 1]  
  Vett di 84480 elem
+|vett:0.078927934
 +--------
 
 +--------
 |INITIALIZER->inception_4e/3x3_w_0  DIMS-> [320, 160, 3, 3]  
  Vett di 460800 elem
+|vett:-0.013062978
 +--------
 
 +--------
 |INITIALIZER->inception_4e/5x5_b_0  DIMS-> [128]  
  Vett di 128 elem
+|vett:-0.0013850537
 +--------
 
 +--------
 |INITIALIZER->inception_4e/5x5_reduce_b_0  DIMS-> [32]  
  Vett di 32 elem
+|vett:3.2392192
 +--------
 
 +--------
 |INITIALIZER->inception_4e/5x5_reduce_w_0  DIMS-> [32, 528, 1, 1]  
  Vett di 16896 elem
+|vett:-0.03043563
 +--------
 
 +--------
 |INITIALIZER->inception_4e/5x5_w_0  DIMS-> [128, 32, 5, 5]  
  Vett di 102400 elem
+|vett:0.026630094
 +--------
 
 +--------
 |INITIALIZER->inception_4e/pool_proj_b_0  DIMS-> [128]  
  Vett di 128 elem
+|vett:0.26723856
 +--------
 
 +--------
 |INITIALIZER->inception_4e/pool_proj_w_0  DIMS-> [128, 528, 1, 1]  
  Vett di 67584 elem
+|vett:-0.018467486
 +--------
 
 +--------
 |INITIALIZER->inception_5a/1x1_b_0  DIMS-> [256]  
  Vett di 256 elem
+|vett:0.05287663
 +--------
 
 +--------
 |INITIALIZER->inception_5a/1x1_w_0  DIMS-> [256, 832, 1, 1]  
  Vett di 212992 elem
+|vett:-0.02110244
 +--------
 
 +--------
 |INITIALIZER->inception_5a/3x3_b_0  DIMS-> [320]  
  Vett di 320 elem
+|vett:0.27099738
 +--------
 
 +--------
 |INITIALIZER->inception_5a/3x3_reduce_b_0  DIMS-> [160]  
  Vett di 160 elem
+|vett:0.46992004
 +--------
 
 +--------
 |INITIALIZER->inception_5a/3x3_reduce_w_0  DIMS-> [160, 832, 1, 1]  
  Vett di 133120 elem
+|vett:-0.031917945
 +--------
 
 +--------
 |INITIALIZER->inception_5a/3x3_w_0  DIMS-> [320, 160, 3, 3]  
  Vett di 460800 elem
+|vett:0.003864434
 +--------
 
 +--------
 |INITIALIZER->inception_5a/5x5_b_0  DIMS-> [128]  
  Vett di 128 elem
+|vett:-0.29692674
 +--------
 
 +--------
 |INITIALIZER->inception_5a/5x5_reduce_b_0  DIMS-> [32]  
  Vett di 32 elem
+|vett:-1.5412434
 +--------
 
 +--------
 |INITIALIZER->inception_5a/5x5_reduce_w_0  DIMS-> [32, 832, 1, 1]  
  Vett di 26624 elem
+|vett:0.02477313
 +--------
 
 +--------
 |INITIALIZER->inception_5a/5x5_w_0  DIMS-> [128, 32, 5, 5]  
  Vett di 102400 elem
+|vett:0.04702855
 +--------
 
 +--------
 |INITIALIZER->inception_5a/pool_proj_b_0  DIMS-> [128]  
  Vett di 128 elem
+|vett:-0.09366725
 +--------
 
 +--------
 |INITIALIZER->inception_5a/pool_proj_w_0  DIMS-> [128, 832, 1, 1]  
  Vett di 106496 elem
+|vett:0.10465837
 +--------
 
 +--------
 |INITIALIZER->inception_5b/1x1_b_0  DIMS-> [384]  
  Vett di 384 elem
+|vett:0.78886217
 +--------
 
 +--------
 |INITIALIZER->inception_5b/1x1_w_0  DIMS-> [384, 832, 1, 1]  
  Vett di 319488 elem
+|vett:-0.0044851163
 +--------
 
 +--------
 |INITIALIZER->inception_5b/3x3_b_0  DIMS-> [384]  
  Vett di 384 elem
+|vett:-0.06534396
 +--------
 
 +--------
 |INITIALIZER->inception_5b/3x3_reduce_b_0  DIMS-> [192]  
  Vett di 192 elem
+|vett:0.41248125
 +--------
 
 +--------
 |INITIALIZER->inception_5b/3x3_reduce_w_0  DIMS-> [192, 832, 1, 1]  
  Vett di 159744 elem
+|vett:-0.04551649
 +--------
 
 +--------
 |INITIALIZER->inception_5b/3x3_w_0  DIMS-> [384, 192, 3, 3]  
  Vett di 663552 elem
+|vett:-0.0031408663
 +--------
 
 +--------
 |INITIALIZER->inception_5b/5x5_b_0  DIMS-> [128]  
  Vett di 128 elem
+|vett:0.22085093
 +--------
 
 +--------
 |INITIALIZER->inception_5b/5x5_reduce_b_0  DIMS-> [48]  
  Vett di 48 elem
+|vett:-0.11779742
 +--------
 
 +--------
 |INITIALIZER->inception_5b/5x5_reduce_w_0  DIMS-> [48, 832, 1, 1]  
  Vett di 39936 elem
+|vett:-0.03393805
 +--------
 
 +--------
 |INITIALIZER->inception_5b/5x5_w_0  DIMS-> [128, 48, 5, 5]  
  Vett di 153600 elem
+|vett:0.01949692
 +--------
 
 +--------
 |INITIALIZER->inception_5b/pool_proj_b_0  DIMS-> [128]  
  Vett di 128 elem
+|vett:0.22859024
 +--------
 
 +--------
 |INITIALIZER->inception_5b/pool_proj_w_0  DIMS-> [128, 832, 1, 1]  
  Vett di 106496 elem
+|vett:-0.0038079422
 +--------
 
 +--------
 |INITIALIZER->loss3/classifier_b_0  DIMS-> [1000]  
  Vett di 1000 elem
+|vett:-0.95660794
 +--------
 
 +--------
 |INITIALIZER->loss3/classifier_w_0  DIMS-> [1000, 1024]  
  Vett di 1024000 elem
+|vett:0.05421512
 +--------
 
 +--------
 |INITIALIZER->OC2_DUMMY_1           DIMS-> [2]  
  Vett di 2 elem
+|vett:1
 +--------
 
 +--------
 |INITIALIZER->264                   DIMS-> []  
+|vett:0.4
 +--------
 
 INPUT->data_0
 OUTPUT->prob_1
-INTERMEDIATE->conv1/7x7_s2_1 IN ->["__0"], OUT->["__1"]
-INTERMEDIATE->conv1/7x7_s2_2 IN ->["__1"], OUT->["__2"]
-INTERMEDIATE->pool1/3x3_s2_1 IN ->["__2"], OUT->["__3"]
-INTERMEDIATE->pool1/norm1_1 IN ->["__3"], OUT->["__4"]
-INTERMEDIATE->conv2/3x3_reduce_1 IN ->["__4"], OUT->["__5"]
-INTERMEDIATE->conv2/3x3_reduce_2 IN ->["__5"], OUT->["__6"]
-INTERMEDIATE->conv2/3x3_1 IN ->["__6"], OUT->["__7"]
-INTERMEDIATE->conv2/3x3_2 IN ->["__7"], OUT->["__8"]
-INTERMEDIATE->conv2/norm2_1 IN ->["__8"], OUT->["__9"]
-INTERMEDIATE->pool2/3x3_s2_1 IN ->["__9"], OUT->["__10", "__12", "__16", "__20"]
-INTERMEDIATE->inception_3a/1x1_1 IN ->["__10"], OUT->["__11"]
-INTERMEDIATE->inception_3a/1x1_2 IN ->["__11"], OUT->["__23"]
-INTERMEDIATE->inception_3a/3x3_reduce_1 IN ->["__12"], OUT->["__13"]
-INTERMEDIATE->inception_3a/3x3_reduce_2 IN ->["__13"], OUT->["__14"]
-INTERMEDIATE->inception_3a/3x3_1 IN ->["__14"], OUT->["__15"]
-INTERMEDIATE->inception_3a/3x3_2 IN ->["__15"], OUT->["__23"]
-INTERMEDIATE->inception_3a/5x5_reduce_1 IN ->["__16"], OUT->["__17"]
-INTERMEDIATE->inception_3a/5x5_reduce_2 IN ->["__17"], OUT->["__18"]
-INTERMEDIATE->inception_3a/5x5_1 IN ->["__18"], OUT->["__19"]
-INTERMEDIATE->inception_3a/5x5_2 IN ->["__19"], OUT->["__23"]
-INTERMEDIATE->inception_3a/pool_1 IN ->["__20"], OUT->["__21"]
-INTERMEDIATE->inception_3a/pool_proj_1 IN ->["__21"], OUT->["__22"]
-INTERMEDIATE->inception_3a/pool_proj_2 IN ->["__22"], OUT->["__23"]
-INTERMEDIATE->inception_3a/output_1 IN ->["__23"], OUT->["__24", "__26", "__30", "__34"]
-INTERMEDIATE->inception_3b/1x1_1 IN ->["__24"], OUT->["__25"]
-INTERMEDIATE->inception_3b/1x1_2 IN ->["__25"], OUT->["__37"]
-INTERMEDIATE->inception_3b/3x3_reduce_1 IN ->["__26"], OUT->["__27"]
-INTERMEDIATE->inception_3b/3x3_reduce_2 IN ->["__27"], OUT->["__28"]
-INTERMEDIATE->inception_3b/3x3_1 IN ->["__28"], OUT->["__29"]
-INTERMEDIATE->inception_3b/3x3_2 IN ->["__29"], OUT->["__37"]
-INTERMEDIATE->inception_3b/5x5_reduce_1 IN ->["__30"], OUT->["__31"]
-INTERMEDIATE->inception_3b/5x5_reduce_2 IN ->["__31"], OUT->["__32"]
-INTERMEDIATE->inception_3b/5x5_1 IN ->["__32"], OUT->["__33"]
-INTERMEDIATE->inception_3b/5x5_2 IN ->["__33"], OUT->["__37"]
-INTERMEDIATE->inception_3b/pool_1 IN ->["__34"], OUT->["__35"]
-INTERMEDIATE->inception_3b/pool_proj_1 IN ->["__35"], OUT->["__36"]
-INTERMEDIATE->inception_3b/pool_proj_2 IN ->["__36"], OUT->["__37"]
-INTERMEDIATE->inception_3b/output_1 IN ->["__37"], OUT->["__38"]
-INTERMEDIATE->pool3/3x3_s2_1 IN ->["__38"], OUT->["__39", "__41", "__45", "__49"]
-INTERMEDIATE->inception_4a/1x1_1 IN ->["__39"], OUT->["__40"]
-INTERMEDIATE->inception_4a/1x1_2 IN ->["__40"], OUT->["__52"]
-INTERMEDIATE->inception_4a/3x3_reduce_1 IN ->["__41"], OUT->["__42"]
-INTERMEDIATE->inception_4a/3x3_reduce_2 IN ->["__42"], OUT->["__43"]
-INTERMEDIATE->inception_4a/3x3_1 IN ->["__43"], OUT->["__44"]
-INTERMEDIATE->inception_4a/3x3_2 IN ->["__44"], OUT->["__52"]
-INTERMEDIATE->inception_4a/5x5_reduce_1 IN ->["__45"], OUT->["__46"]
-INTERMEDIATE->inception_4a/5x5_reduce_2 IN ->["__46"], OUT->["__47"]
-INTERMEDIATE->inception_4a/5x5_1 IN ->["__47"], OUT->["__48"]
-INTERMEDIATE->inception_4a/5x5_2 IN ->["__48"], OUT->["__52"]
-INTERMEDIATE->inception_4a/pool_1 IN ->["__49"], OUT->["__50"]
-INTERMEDIATE->inception_4a/pool_proj_1 IN ->["__50"], OUT->["__51"]
-INTERMEDIATE->inception_4a/pool_proj_2 IN ->["__51"], OUT->["__52"]
-INTERMEDIATE->inception_4a/output_1 IN ->["__52"], OUT->["__53", "__55", "__59", "__63"]
-INTERMEDIATE->inception_4b/1x1_1 IN ->["__53"], OUT->["__54"]
-INTERMEDIATE->inception_4b/1x1_2 IN ->["__54"], OUT->["__66"]
-INTERMEDIATE->inception_4b/3x3_reduce_1 IN ->["__55"], OUT->["__56"]
-INTERMEDIATE->inception_4b/3x3_reduce_2 IN ->["__56"], OUT->["__57"]
-INTERMEDIATE->inception_4b/3x3_1 IN ->["__57"], OUT->["__58"]
-INTERMEDIATE->inception_4b/3x3_2 IN ->["__58"], OUT->["__66"]
-INTERMEDIATE->inception_4b/5x5_reduce_1 IN ->["__59"], OUT->["__60"]
-INTERMEDIATE->inception_4b/5x5_reduce_2 IN ->["__60"], OUT->["__61"]
-INTERMEDIATE->inception_4b/5x5_1 IN ->["__61"], OUT->["__62"]
-INTERMEDIATE->inception_4b/5x5_2 IN ->["__62"], OUT->["__66"]
-INTERMEDIATE->inception_4b/pool_1 IN ->["__63"], OUT->["__64"]
-INTERMEDIATE->inception_4b/pool_proj_1 IN ->["__64"], OUT->["__65"]
-INTERMEDIATE->inception_4b/pool_proj_2 IN ->["__65"], OUT->["__66"]
-INTERMEDIATE->inception_4b/output_1 IN ->["__66"], OUT->["__67", "__69", "__73", "__77"]
-INTERMEDIATE->inception_4c/1x1_1 IN ->["__67"], OUT->["__68"]
-INTERMEDIATE->inception_4c/1x1_2 IN ->["__68"], OUT->["__80"]
-INTERMEDIATE->inception_4c/3x3_reduce_1 IN ->["__69"], OUT->["__70"]
-INTERMEDIATE->inception_4c/3x3_reduce_2 IN ->["__70"], OUT->["__71"]
-INTERMEDIATE->inception_4c/3x3_1 IN ->["__71"], OUT->["__72"]
-INTERMEDIATE->inception_4c/3x3_2 IN ->["__72"], OUT->["__80"]
-INTERMEDIATE->inception_4c/5x5_reduce_1 IN ->["__73"], OUT->["__74"]
-INTERMEDIATE->inception_4c/5x5_reduce_2 IN ->["__74"], OUT->["__75"]
-INTERMEDIATE->inception_4c/5x5_1 IN ->["__75"], OUT->["__76"]
-INTERMEDIATE->inception_4c/5x5_2 IN ->["__76"], OUT->["__80"]
-INTERMEDIATE->inception_4c/pool_1 IN ->["__77"], OUT->["__78"]
-INTERMEDIATE->inception_4c/pool_proj_1 IN ->["__78"], OUT->["__79"]
-INTERMEDIATE->inception_4c/pool_proj_2 IN ->["__79"], OUT->["__80"]
-INTERMEDIATE->inception_4c/output_1 IN ->["__80"], OUT->["__81", "__83", "__87", "__91"]
-INTERMEDIATE->inception_4d/1x1_1 IN ->["__81"], OUT->["__82"]
-INTERMEDIATE->inception_4d/1x1_2 IN ->["__82"], OUT->["__94"]
-INTERMEDIATE->inception_4d/3x3_reduce_1 IN ->["__83"], OUT->["__84"]
-INTERMEDIATE->inception_4d/3x3_reduce_2 IN ->["__84"], OUT->["__85"]
-INTERMEDIATE->inception_4d/3x3_1 IN ->["__85"], OUT->["__86"]
-INTERMEDIATE->inception_4d/3x3_2 IN ->["__86"], OUT->["__94"]
-INTERMEDIATE->inception_4d/5x5_reduce_1 IN ->["__87"], OUT->["__88"]
-INTERMEDIATE->inception_4d/5x5_reduce_2 IN ->["__88"], OUT->["__89"]
-INTERMEDIATE->inception_4d/5x5_1 IN ->["__89"], OUT->["__90"]
-INTERMEDIATE->inception_4d/5x5_2 IN ->["__90"], OUT->["__94"]
-INTERMEDIATE->inception_4d/pool_1 IN ->["__91"], OUT->["__92"]
-INTERMEDIATE->inception_4d/pool_proj_1 IN ->["__92"], OUT->["__93"]
-INTERMEDIATE->inception_4d/pool_proj_2 IN ->["__93"], OUT->["__94"]
-INTERMEDIATE->inception_4d/output_1 IN ->["__94"], OUT->["__95", "__97", "__101", "__105"]
-INTERMEDIATE->inception_4e/1x1_1 IN ->["__95"], OUT->["__96"]
-INTERMEDIATE->inception_4e/1x1_2 IN ->["__96"], OUT->["__108"]
-INTERMEDIATE->inception_4e/3x3_reduce_1 IN ->["__97"], OUT->["__98"]
-INTERMEDIATE->inception_4e/3x3_reduce_2 IN ->["__98"], OUT->["__99"]
-INTERMEDIATE->inception_4e/3x3_1 IN ->["__99"], OUT->["__100"]
-INTERMEDIATE->inception_4e/3x3_2 IN ->["__100"], OUT->["__108"]
-INTERMEDIATE->inception_4e/5x5_reduce_1 IN ->["__101"], OUT->["__102"]
-INTERMEDIATE->inception_4e/5x5_reduce_2 IN ->["__102"], OUT->["__103"]
-INTERMEDIATE->inception_4e/5x5_1 IN ->["__103"], OUT->["__104"]
-INTERMEDIATE->inception_4e/5x5_2 IN ->["__104"], OUT->["__108"]
-INTERMEDIATE->inception_4e/pool_1 IN ->["__105"], OUT->["__106"]
-INTERMEDIATE->inception_4e/pool_proj_1 IN ->["__106"], OUT->["__107"]
-INTERMEDIATE->inception_4e/pool_proj_2 IN ->["__107"], OUT->["__108"]
-INTERMEDIATE->inception_4e/output_1 IN ->["__108"], OUT->["__109"]
-INTERMEDIATE->pool4/3x3_s2_1 IN ->["__109"], OUT->["__110", "__112", "__116", "__120"]
-INTERMEDIATE->inception_5a/1x1_1 IN ->["__110"], OUT->["__111"]
-INTERMEDIATE->inception_5a/1x1_2 IN ->["__111"], OUT->["__123"]
-INTERMEDIATE->inception_5a/3x3_reduce_1 IN ->["__112"], OUT->["__113"]
-INTERMEDIATE->inception_5a/3x3_reduce_2 IN ->["__113"], OUT->["__114"]
-INTERMEDIATE->inception_5a/3x3_1 IN ->["__114"], OUT->["__115"]
-INTERMEDIATE->inception_5a/3x3_2 IN ->["__115"], OUT->["__123"]
-INTERMEDIATE->inception_5a/5x5_reduce_1 IN ->["__116"], OUT->["__117"]
-INTERMEDIATE->inception_5a/5x5_reduce_2 IN ->["__117"], OUT->["__118"]
-INTERMEDIATE->inception_5a/5x5_1 IN ->["__118"], OUT->["__119"]
-INTERMEDIATE->inception_5a/5x5_2 IN ->["__119"], OUT->["__123"]
-INTERMEDIATE->inception_5a/pool_1 IN ->["__120"], OUT->["__121"]
-INTERMEDIATE->inception_5a/pool_proj_1 IN ->["__121"], OUT->["__122"]
-INTERMEDIATE->inception_5a/pool_proj_2 IN ->["__122"], OUT->["__123"]
-INTERMEDIATE->inception_5a/output_1 IN ->["__123"], OUT->["__124", "__126", "__130", "__134"]
-INTERMEDIATE->inception_5b/1x1_1 IN ->["__124"], OUT->["__125"]
-INTERMEDIATE->inception_5b/1x1_2 IN ->["__125"], OUT->["__137"]
-INTERMEDIATE->inception_5b/3x3_reduce_1 IN ->["__126"], OUT->["__127"]
-INTERMEDIATE->inception_5b/3x3_reduce_2 IN ->["__127"], OUT->["__128"]
-INTERMEDIATE->inception_5b/3x3_1 IN ->["__128"], OUT->["__129"]
-INTERMEDIATE->inception_5b/3x3_2 IN ->["__129"], OUT->["__137"]
-INTERMEDIATE->inception_5b/5x5_reduce_1 IN ->["__130"], OUT->["__131"]
-INTERMEDIATE->inception_5b/5x5_reduce_2 IN ->["__131"], OUT->["__132"]
-INTERMEDIATE->inception_5b/5x5_1 IN ->["__132"], OUT->["__133"]
-INTERMEDIATE->inception_5b/5x5_2 IN ->["__133"], OUT->["__137"]
-INTERMEDIATE->inception_5b/pool_1 IN ->["__134"], OUT->["__135"]
-INTERMEDIATE->inception_5b/pool_proj_1 IN ->["__135"], OUT->["__136"]
-INTERMEDIATE->inception_5b/pool_proj_2 IN ->["__136"], OUT->["__137"]
-INTERMEDIATE->inception_5b/output_1 IN ->["__137"], OUT->["__138"]
-INTERMEDIATE->pool5/7x7_s1_1 IN ->["__138"], OUT->["__139"]
-INTERMEDIATE->pool5/7x7_s1_2 IN ->["__139"], OUT->["__140"]
-INTERMEDIATE->OC2_DUMMY_0 IN ->["__140"], OUT->["__141"]
-INTERMEDIATE->loss3/classifier_1 IN ->["__141"], OUT->["__142"]
+INTERMEDIATE->conv1/7x7_s2_1 IN ->["__Conv__0"], OUT->["__Relu__1"]
+INTERMEDIATE->conv1/7x7_s2_2 IN ->["__Relu__1"], OUT->["__MaxPool__2"]
+INTERMEDIATE->pool1/3x3_s2_1 IN ->["__MaxPool__2"], OUT->["__LRN__3"]
+INTERMEDIATE->pool1/norm1_1 IN ->["__LRN__3"], OUT->["__Conv__4"]
+INTERMEDIATE->conv2/3x3_reduce_1 IN ->["__Conv__4"], OUT->["__Relu__5"]
+INTERMEDIATE->conv2/3x3_reduce_2 IN ->["__Relu__5"], OUT->["__Conv__6"]
+INTERMEDIATE->conv2/3x3_1 IN ->["__Conv__6"], OUT->["__Relu__7"]
+INTERMEDIATE->conv2/3x3_2 IN ->["__Relu__7"], OUT->["__LRN__8"]
+INTERMEDIATE->conv2/norm2_1 IN ->["__LRN__8"], OUT->["__MaxPool__9"]
+INTERMEDIATE->pool2/3x3_s2_1 IN ->["__MaxPool__9"], OUT->["__Conv__10", "__Conv__12", "__Conv__16", "__MaxPool__20"]
+INTERMEDIATE->inception_3a/1x1_1 IN ->["__Conv__10"], OUT->["__Relu__11"]
+INTERMEDIATE->inception_3a/1x1_2 IN ->["__Relu__11"], OUT->["__Concat__23"]
+INTERMEDIATE->inception_3a/3x3_reduce_1 IN ->["__Conv__12"], OUT->["__Relu__13"]
+INTERMEDIATE->inception_3a/3x3_reduce_2 IN ->["__Relu__13"], OUT->["__Conv__14"]
+INTERMEDIATE->inception_3a/3x3_1 IN ->["__Conv__14"], OUT->["__Relu__15"]
+INTERMEDIATE->inception_3a/3x3_2 IN ->["__Relu__15"], OUT->["__Concat__23"]
+INTERMEDIATE->inception_3a/5x5_reduce_1 IN ->["__Conv__16"], OUT->["__Relu__17"]
+INTERMEDIATE->inception_3a/5x5_reduce_2 IN ->["__Relu__17"], OUT->["__Conv__18"]
+INTERMEDIATE->inception_3a/5x5_1 IN ->["__Conv__18"], OUT->["__Relu__19"]
+INTERMEDIATE->inception_3a/5x5_2 IN ->["__Relu__19"], OUT->["__Concat__23"]
+INTERMEDIATE->inception_3a/pool_1 IN ->["__MaxPool__20"], OUT->["__Conv__21"]
+INTERMEDIATE->inception_3a/pool_proj_1 IN ->["__Conv__21"], OUT->["__Relu__22"]
+INTERMEDIATE->inception_3a/pool_proj_2 IN ->["__Relu__22"], OUT->["__Concat__23"]
+INTERMEDIATE->inception_3a/output_1 IN ->["__Concat__23"], OUT->["__Conv__24", "__Conv__26", "__Conv__30", "__MaxPool__34"]
+INTERMEDIATE->inception_3b/1x1_1 IN ->["__Conv__24"], OUT->["__Relu__25"]
+INTERMEDIATE->inception_3b/1x1_2 IN ->["__Relu__25"], OUT->["__Concat__37"]
+INTERMEDIATE->inception_3b/3x3_reduce_1 IN ->["__Conv__26"], OUT->["__Relu__27"]
+INTERMEDIATE->inception_3b/3x3_reduce_2 IN ->["__Relu__27"], OUT->["__Conv__28"]
+INTERMEDIATE->inception_3b/3x3_1 IN ->["__Conv__28"], OUT->["__Relu__29"]
+INTERMEDIATE->inception_3b/3x3_2 IN ->["__Relu__29"], OUT->["__Concat__37"]
+INTERMEDIATE->inception_3b/5x5_reduce_1 IN ->["__Conv__30"], OUT->["__Relu__31"]
+INTERMEDIATE->inception_3b/5x5_reduce_2 IN ->["__Relu__31"], OUT->["__Conv__32"]
+INTERMEDIATE->inception_3b/5x5_1 IN ->["__Conv__32"], OUT->["__Relu__33"]
+INTERMEDIATE->inception_3b/5x5_2 IN ->["__Relu__33"], OUT->["__Concat__37"]
+INTERMEDIATE->inception_3b/pool_1 IN ->["__MaxPool__34"], OUT->["__Conv__35"]
+INTERMEDIATE->inception_3b/pool_proj_1 IN ->["__Conv__35"], OUT->["__Relu__36"]
+INTERMEDIATE->inception_3b/pool_proj_2 IN ->["__Relu__36"], OUT->["__Concat__37"]
+INTERMEDIATE->inception_3b/output_1 IN ->["__Concat__37"], OUT->["__MaxPool__38"]
+INTERMEDIATE->pool3/3x3_s2_1 IN ->["__MaxPool__38"], OUT->["__Conv__39", "__Conv__41", "__Conv__45", "__MaxPool__49"]
+INTERMEDIATE->inception_4a/1x1_1 IN ->["__Conv__39"], OUT->["__Relu__40"]
+INTERMEDIATE->inception_4a/1x1_2 IN ->["__Relu__40"], OUT->["__Concat__52"]
+INTERMEDIATE->inception_4a/3x3_reduce_1 IN ->["__Conv__41"], OUT->["__Relu__42"]
+INTERMEDIATE->inception_4a/3x3_reduce_2 IN ->["__Relu__42"], OUT->["__Conv__43"]
+INTERMEDIATE->inception_4a/3x3_1 IN ->["__Conv__43"], OUT->["__Relu__44"]
+INTERMEDIATE->inception_4a/3x3_2 IN ->["__Relu__44"], OUT->["__Concat__52"]
+INTERMEDIATE->inception_4a/5x5_reduce_1 IN ->["__Conv__45"], OUT->["__Relu__46"]
+INTERMEDIATE->inception_4a/5x5_reduce_2 IN ->["__Relu__46"], OUT->["__Conv__47"]
+INTERMEDIATE->inception_4a/5x5_1 IN ->["__Conv__47"], OUT->["__Relu__48"]
+INTERMEDIATE->inception_4a/5x5_2 IN ->["__Relu__48"], OUT->["__Concat__52"]
+INTERMEDIATE->inception_4a/pool_1 IN ->["__MaxPool__49"], OUT->["__Conv__50"]
+INTERMEDIATE->inception_4a/pool_proj_1 IN ->["__Conv__50"], OUT->["__Relu__51"]
+INTERMEDIATE->inception_4a/pool_proj_2 IN ->["__Relu__51"], OUT->["__Concat__52"]
+INTERMEDIATE->inception_4a/output_1 IN ->["__Concat__52"], OUT->["__Conv__53", "__Conv__55", "__Conv__59", "__MaxPool__63"]
+INTERMEDIATE->inception_4b/1x1_1 IN ->["__Conv__53"], OUT->["__Relu__54"]
+INTERMEDIATE->inception_4b/1x1_2 IN ->["__Relu__54"], OUT->["__Concat__66"]
+INTERMEDIATE->inception_4b/3x3_reduce_1 IN ->["__Conv__55"], OUT->["__Relu__56"]
+INTERMEDIATE->inception_4b/3x3_reduce_2 IN ->["__Relu__56"], OUT->["__Conv__57"]
+INTERMEDIATE->inception_4b/3x3_1 IN ->["__Conv__57"], OUT->["__Relu__58"]
+INTERMEDIATE->inception_4b/3x3_2 IN ->["__Relu__58"], OUT->["__Concat__66"]
+INTERMEDIATE->inception_4b/5x5_reduce_1 IN ->["__Conv__59"], OUT->["__Relu__60"]
+INTERMEDIATE->inception_4b/5x5_reduce_2 IN ->["__Relu__60"], OUT->["__Conv__61"]
+INTERMEDIATE->inception_4b/5x5_1 IN ->["__Conv__61"], OUT->["__Relu__62"]
+INTERMEDIATE->inception_4b/5x5_2 IN ->["__Relu__62"], OUT->["__Concat__66"]
+INTERMEDIATE->inception_4b/pool_1 IN ->["__MaxPool__63"], OUT->["__Conv__64"]
+INTERMEDIATE->inception_4b/pool_proj_1 IN ->["__Conv__64"], OUT->["__Relu__65"]
+INTERMEDIATE->inception_4b/pool_proj_2 IN ->["__Relu__65"], OUT->["__Concat__66"]
+INTERMEDIATE->inception_4b/output_1 IN ->["__Concat__66"], OUT->["__Conv__67", "__Conv__69", "__Conv__73", "__MaxPool__77"]
+INTERMEDIATE->inception_4c/1x1_1 IN ->["__Conv__67"], OUT->["__Relu__68"]
+INTERMEDIATE->inception_4c/1x1_2 IN ->["__Relu__68"], OUT->["__Concat__80"]
+INTERMEDIATE->inception_4c/3x3_reduce_1 IN ->["__Conv__69"], OUT->["__Relu__70"]
+INTERMEDIATE->inception_4c/3x3_reduce_2 IN ->["__Relu__70"], OUT->["__Conv__71"]
+INTERMEDIATE->inception_4c/3x3_1 IN ->["__Conv__71"], OUT->["__Relu__72"]
+INTERMEDIATE->inception_4c/3x3_2 IN ->["__Relu__72"], OUT->["__Concat__80"]
+INTERMEDIATE->inception_4c/5x5_reduce_1 IN ->["__Conv__73"], OUT->["__Relu__74"]
+INTERMEDIATE->inception_4c/5x5_reduce_2 IN ->["__Relu__74"], OUT->["__Conv__75"]
+INTERMEDIATE->inception_4c/5x5_1 IN ->["__Conv__75"], OUT->["__Relu__76"]
+INTERMEDIATE->inception_4c/5x5_2 IN ->["__Relu__76"], OUT->["__Concat__80"]
+INTERMEDIATE->inception_4c/pool_1 IN ->["__MaxPool__77"], OUT->["__Conv__78"]
+INTERMEDIATE->inception_4c/pool_proj_1 IN ->["__Conv__78"], OUT->["__Relu__79"]
+INTERMEDIATE->inception_4c/pool_proj_2 IN ->["__Relu__79"], OUT->["__Concat__80"]
+INTERMEDIATE->inception_4c/output_1 IN ->["__Concat__80"], OUT->["__Conv__81", "__Conv__83", "__Conv__87", "__MaxPool__91"]
+INTERMEDIATE->inception_4d/1x1_1 IN ->["__Conv__81"], OUT->["__Relu__82"]
+INTERMEDIATE->inception_4d/1x1_2 IN ->["__Relu__82"], OUT->["__Concat__94"]
+INTERMEDIATE->inception_4d/3x3_reduce_1 IN ->["__Conv__83"], OUT->["__Relu__84"]
+INTERMEDIATE->inception_4d/3x3_reduce_2 IN ->["__Relu__84"], OUT->["__Conv__85"]
+INTERMEDIATE->inception_4d/3x3_1 IN ->["__Conv__85"], OUT->["__Relu__86"]
+INTERMEDIATE->inception_4d/3x3_2 IN ->["__Relu__86"], OUT->["__Concat__94"]
+INTERMEDIATE->inception_4d/5x5_reduce_1 IN ->["__Conv__87"], OUT->["__Relu__88"]
+INTERMEDIATE->inception_4d/5x5_reduce_2 IN ->["__Relu__88"], OUT->["__Conv__89"]
+INTERMEDIATE->inception_4d/5x5_1 IN ->["__Conv__89"], OUT->["__Relu__90"]
+INTERMEDIATE->inception_4d/5x5_2 IN ->["__Relu__90"], OUT->["__Concat__94"]
+INTERMEDIATE->inception_4d/pool_1 IN ->["__MaxPool__91"], OUT->["__Conv__92"]
+INTERMEDIATE->inception_4d/pool_proj_1 IN ->["__Conv__92"], OUT->["__Relu__93"]
+INTERMEDIATE->inception_4d/pool_proj_2 IN ->["__Relu__93"], OUT->["__Concat__94"]
+INTERMEDIATE->inception_4d/output_1 IN ->["__Concat__94"], OUT->["__Conv__95", "__Conv__97", "__Conv__101", "__MaxPool__105"]
+INTERMEDIATE->inception_4e/1x1_1 IN ->["__Conv__95"], OUT->["__Relu__96"]
+INTERMEDIATE->inception_4e/1x1_2 IN ->["__Relu__96"], OUT->["__Concat__108"]
+INTERMEDIATE->inception_4e/3x3_reduce_1 IN ->["__Conv__97"], OUT->["__Relu__98"]
+INTERMEDIATE->inception_4e/3x3_reduce_2 IN ->["__Relu__98"], OUT->["__Conv__99"]
+INTERMEDIATE->inception_4e/3x3_1 IN ->["__Conv__99"], OUT->["__Relu__100"]
+INTERMEDIATE->inception_4e/3x3_2 IN ->["__Relu__100"], OUT->["__Concat__108"]
+INTERMEDIATE->inception_4e/5x5_reduce_1 IN ->["__Conv__101"], OUT->["__Relu__102"]
+INTERMEDIATE->inception_4e/5x5_reduce_2 IN ->["__Relu__102"], OUT->["__Conv__103"]
+INTERMEDIATE->inception_4e/5x5_1 IN ->["__Conv__103"], OUT->["__Relu__104"]
+INTERMEDIATE->inception_4e/5x5_2 IN ->["__Relu__104"], OUT->["__Concat__108"]
+INTERMEDIATE->inception_4e/pool_1 IN ->["__MaxPool__105"], OUT->["__Conv__106"]
+INTERMEDIATE->inception_4e/pool_proj_1 IN ->["__Conv__106"], OUT->["__Relu__107"]
+INTERMEDIATE->inception_4e/pool_proj_2 IN ->["__Relu__107"], OUT->["__Concat__108"]
+INTERMEDIATE->inception_4e/output_1 IN ->["__Concat__108"], OUT->["__MaxPool__109"]
+INTERMEDIATE->pool4/3x3_s2_1 IN ->["__MaxPool__109"], OUT->["__Conv__110", "__Conv__112", "__Conv__116", "__MaxPool__120"]
+INTERMEDIATE->inception_5a/1x1_1 IN ->["__Conv__110"], OUT->["__Relu__111"]
+INTERMEDIATE->inception_5a/1x1_2 IN ->["__Relu__111"], OUT->["__Concat__123"]
+INTERMEDIATE->inception_5a/3x3_reduce_1 IN ->["__Conv__112"], OUT->["__Relu__113"]
+INTERMEDIATE->inception_5a/3x3_reduce_2 IN ->["__Relu__113"], OUT->["__Conv__114"]
+INTERMEDIATE->inception_5a/3x3_1 IN ->["__Conv__114"], OUT->["__Relu__115"]
+INTERMEDIATE->inception_5a/3x3_2 IN ->["__Relu__115"], OUT->["__Concat__123"]
+INTERMEDIATE->inception_5a/5x5_reduce_1 IN ->["__Conv__116"], OUT->["__Relu__117"]
+INTERMEDIATE->inception_5a/5x5_reduce_2 IN ->["__Relu__117"], OUT->["__Conv__118"]
+INTERMEDIATE->inception_5a/5x5_1 IN ->["__Conv__118"], OUT->["__Relu__119"]
+INTERMEDIATE->inception_5a/5x5_2 IN ->["__Relu__119"], OUT->["__Concat__123"]
+INTERMEDIATE->inception_5a/pool_1 IN ->["__MaxPool__120"], OUT->["__Conv__121"]
+INTERMEDIATE->inception_5a/pool_proj_1 IN ->["__Conv__121"], OUT->["__Relu__122"]
+INTERMEDIATE->inception_5a/pool_proj_2 IN ->["__Relu__122"], OUT->["__Concat__123"]
+INTERMEDIATE->inception_5a/output_1 IN ->["__Concat__123"], OUT->["__Conv__124", "__Conv__126", "__Conv__130", "__MaxPool__134"]
+INTERMEDIATE->inception_5b/1x1_1 IN ->["__Conv__124"], OUT->["__Relu__125"]
+INTERMEDIATE->inception_5b/1x1_2 IN ->["__Relu__125"], OUT->["__Concat__137"]
+INTERMEDIATE->inception_5b/3x3_reduce_1 IN ->["__Conv__126"], OUT->["__Relu__127"]
+INTERMEDIATE->inception_5b/3x3_reduce_2 IN ->["__Relu__127"], OUT->["__Conv__128"]
+INTERMEDIATE->inception_5b/3x3_1 IN ->["__Conv__128"], OUT->["__Relu__129"]
+INTERMEDIATE->inception_5b/3x3_2 IN ->["__Relu__129"], OUT->["__Concat__137"]
+INTERMEDIATE->inception_5b/5x5_reduce_1 IN ->["__Conv__130"], OUT->["__Relu__131"]
+INTERMEDIATE->inception_5b/5x5_reduce_2 IN ->["__Relu__131"], OUT->["__Conv__132"]
+INTERMEDIATE->inception_5b/5x5_1 IN ->["__Conv__132"], OUT->["__Relu__133"]
+INTERMEDIATE->inception_5b/5x5_2 IN ->["__Relu__133"], OUT->["__Concat__137"]
+INTERMEDIATE->inception_5b/pool_1 IN ->["__MaxPool__134"], OUT->["__Conv__135"]
+INTERMEDIATE->inception_5b/pool_proj_1 IN ->["__Conv__135"], OUT->["__Relu__136"]
+INTERMEDIATE->inception_5b/pool_proj_2 IN ->["__Relu__136"], OUT->["__Concat__137"]
+INTERMEDIATE->inception_5b/output_1 IN ->["__Concat__137"], OUT->["__AveragePool__138"]
+INTERMEDIATE->pool5/7x7_s1_1 IN ->["__AveragePool__138"], OUT->["__Dropout__139"]
+INTERMEDIATE->pool5/7x7_s1_2 IN ->["__Dropout__139"], OUT->["__Reshape__140"]
+INTERMEDIATE->OC2_DUMMY_0 IN ->["__Reshape__140"], OUT->["__Gemm__141"]
+INTERMEDIATE->loss3/classifier_1 IN ->["__Gemm__141"], OUT->["__Softmax__142"]
 
 CONTENUTO FILE INPUT ->
 				"dims":1
@@ -7677,7 +7795,7 @@ CONTENUTO FILE INPUT ->
 				"dims":224
 				"data_type":1
 				"name":"data_0"
-				"raw_data": Vett di 602112 elem
+				"raw_data": Vett di 602112 elem RAW
  Vett di 150528 elem
 [[[[17.76738, 8.872088, 12.70994, 0.37630937, 10.426729, ..., -0.6312349, 10.550119, 17.229822, -23.779156, 10.02943],
    [-29.783958, -0.8181445, -6.5128584, -9.01855, -14.114364, ..., -3.920341, -0.27139828, -15.621905, 1.9824336, -8.286268],
@@ -7714,7 +7832,3 @@ CONTENUTO FILE INPUT ->
    [3.0572016, 30.773397, 3.278474, 1.5662042, 3.1969585, ..., -14.7385025, -9.942686, 2.9483707, 15.430005, 20.562502],
    [-7.0982857, 13.952895, 4.9009757, 7.2926035, 10.880739, ..., -1.4246731, 3.0624206, 0.7536134, 12.892176, 11.67709],
    [-15.999081, 0.6513544, -10.868083, 13.81134, 4.470176, ..., -4.5379467, 8.517247, -0.8430254, 14.809061, 5.3305917]]]], shape=[1, 3, 224, 224], strides=[150528, 50176, 224, 1], layout=Cc (0x5), dynamic ndim=4
-
-
-
-Err(OnnxError { msg: "[__140] Could not change shape of tensor: ShapeError/IncompatibleShape: incompatible shapes" })
