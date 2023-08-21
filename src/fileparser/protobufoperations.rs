@@ -145,16 +145,18 @@ fn wire_type_two(
                 );
             }
             let tag_name = opt_tag_name.unwrap();
-            print!("\"{}\":", tag_name);
+          
             let val = read_varint(&vect, index);
 
             if tag_name == "graph" {
+                log::debug!("[Parsing] Model-> \"{}\":", tag_name);
                 let mut graph = ProtoBufMessage::GraphProto(GraphProto::new());
                 proto_buffer_tag_reader(&mut graph, &(vect[*index..(*index + val)]).to_vec());
                 p.graph = GraphProto::try_from(graph).unwrap();
             } else if tag_name != "opset_import" {
                 let word = String::from_utf8(vect[*index..(*index + val)].to_owned()).unwrap();
-                println!("{:?}", word);
+                log::debug!("[Parsing] Model -> \"{}\":{:?}", tag_name,word);
+               
             }
             (*index) += val;
         }
@@ -171,48 +173,55 @@ fn wire_type_two(
                 );
             }
             let tag_name = opt_tag_name.unwrap();
-            print!("\t \"{}\":", tag_name);
+            log::debug!("[Parsing] Graph -> \"{}\":", tag_name);
             let val = read_varint(&vect, index);
             //inside tag Graph there is more tag nested
             match tag_name.as_str() {
                 "node" => {
-                    println!("");
+                    log::debug!("[Parsing] Node begin");
                     let mut node: ProtoBufMessage = ProtoBufMessage::NodeProto(NodeProto::new());
                     proto_buffer_tag_reader(&mut node, &(vect[*index..(*index + val)]).to_vec());
                     p.node.push(NodeProto::try_from(node).unwrap());
+                    log::debug!("[Parsing] Node end");
                 }
                 "input" => {
-                    println!("");
+                    log::debug!("[Parsing] Input begin");
                     let mut node: ProtoBufMessage =
                         ProtoBufMessage::ValueInfoProto(ValueInfoProto::new());
                     proto_buffer_tag_reader(&mut node, &(vect[*index..(*index + val)]).to_vec());
                     p.inputs_node.push(ValueInfoProto::try_from(node).unwrap());
+                    log::debug!("[Parsing] Input end");
                 }
                 "output" => {
-                    println!("");
+                    log::debug!("[Parsing] Ouput begin");
                     let mut node: ProtoBufMessage =
                         ProtoBufMessage::ValueInfoProto(ValueInfoProto::new());
                     proto_buffer_tag_reader(&mut node, &(vect[*index..(*index + val)]).to_vec());
                     p.outputs_node.push(ValueInfoProto::try_from(node).unwrap());
+                    log::debug!("[Parsing] Output end");
                 }
                 "value_info" => {
-                    println!("");
+                    log::debug!("[Parsing] Value info begin");
                     let mut node: ProtoBufMessage =
                         ProtoBufMessage::ValueInfoProto(ValueInfoProto::new());
                     proto_buffer_tag_reader(&mut node, &(vect[*index..(*index + val)]).to_vec());
                     p.value_info_node
                         .push(ValueInfoProto::try_from(node).unwrap().name);
+                    log::debug!("[Parsing] Value info end");
                 }
                 "initializer" => {
+                    log::debug!("[Parsing] Initializer begin");
                     let mut node: ProtoBufMessage =
                         ProtoBufMessage::TensorProto(TensorProto::new());
                     proto_buffer_tag_reader(&mut node, &(vect[*index..(*index + val)]).to_vec());
                     p.tensor_initializer
                         .push(TensorProto::try_from(node).unwrap());
+                    log::debug!("[Parsing] Initializer end");
                 }
                 _ => {
                     let word = String::from_utf8(vect[*index..(*index + val)].to_owned()).unwrap();
-                    println!("{:?}", word);
+             
+                    log::debug!("[Parsing] Graph -> \"{}\":{:?}", tag_name,word);
                     if *field_number == 2 {
                         p.name = word;
                     }
@@ -233,18 +242,20 @@ fn wire_type_two(
                 );
             }
             let tag_name = opt_tag_name.unwrap();
-            print!("\t\t \"{}\":", tag_name);
+            log::debug!("[Parsing] Node -> \"{}\":", tag_name);
             let val = read_varint(&vect, index);
             if tag_name == "attribute" {
-                println!("");
+                log::debug!("[Parsing] Attribute begin");
                 let mut at = ProtoBufMessage::AttributeProto(AttributeProto::new());
                 proto_buffer_tag_reader(&mut at, &(vect[*index..(*index + val)]).to_vec());
                 let attr = AttributeProto::try_from(at).unwrap();
                 p.attributes.insert(attr.name, attr.attr);
+                log::debug!("[Parsing] Attribute begin");
        
             } else {
                 let word = String::from_utf8(vect[*index..(*index + val)].to_owned()).unwrap();
-                println!("{:?}", word);
+               
+                log::debug!("[Parsing] Node -> \"{}\":{:?}", tag_name,word);
                 match tag_name.as_str(){
                     "name"=>p.name = word,
                     "input"=> p.inputs.push(word),
@@ -268,19 +279,23 @@ fn wire_type_two(
                 );
             }
             let tag_name = opt_tag_name.unwrap();
-            print!("\t\t \"{}\":", tag_name);
+            
+            log::debug!("[Parsing] Attribute -> \"{}\":", tag_name);
             let val = read_varint(&vect, index);
             if tag_name=="t" {
-                println!("");
+                log::debug!("[Parsing] Tensor begin");
                 let mut tp = ProtoBufMessage::TensorProto(TensorProto::new());
                 proto_buffer_tag_reader(&mut tp, &(vect[*index..(*index + val)]).to_vec());
 
                 p.tp = TensorProto::try_from(tp).unwrap();
+                log::debug!("[Parsing] Tensor end");
                 //HO UN TENSORE COMPLETO
             } else {
                 
                 let word = String::from_utf8(vect[*index..(*index + val)].to_owned()).unwrap();
-                println!("{:?}", word);
+           
+                log::debug!("[Parsing] Attribute -> \"{}\":{:?}", tag_name,word);
+                
                 if tag_name=="name" {
                     //name
                     p.name = word.clone();
@@ -295,29 +310,38 @@ fn wire_type_two(
             (*index) += val;
         }
         ProtoBufMessage::TensorProto(p) => {
-            if p.field_number.get(field_number).is_some() {
-                print!("\t\t\t\t\"{:}\":", p.field_number.get(field_number).unwrap());
-            } else {
-                panic!("{}", field_number);
+            let  opt_tag_name = p.field_number.get(field_number);
+            if opt_tag_name.is_none() {
+                return Some(
+                    vec![
+                        "Field number ",
+                        &(field_number.to_string()),
+                        "is not implemented",
+                    ]
+                    .join(""),
+                );
             }
-            let val = read_varint(&vect, index) as usize;
-            if *field_number == 4 {
+            let tag_name = opt_tag_name.unwrap();
+            log::debug!("[Parsing] Tensor -> \"{}\":", tag_name);
+            let val = read_varint(&vect, index);
+            if tag_name == "float_data" {
                 let v = read_floats(&vect[*index..*index + val].to_vec());
-                println!(" Vett di {:?} elem", v.len());
+              // println!(" Vett di {:?} elem", v.len());
                 p.float_data = v;
-            } else if *field_number == 9 {
+            } else if tag_name == "raw_data" {
                 //RAW_DATA -> leggo bytes poi in base al campo data_type converto nel tipo corretto
                 let v = leggibytes(&vect[*index..*index + val].to_vec());
                 //let v = leggiraw(&vect[*index..*index + val].to_vec());
-                println!(" Vett di {:?} elem RAW", v.len());
+                //println!(" Vett di {:?} elem RAW", v.len());
                 p.raw_data = v;
-            } else if *field_number == 7 {
+            } else if tag_name == "int64_data" {
                 let v = read_int64(&vect[*index..*index + val].to_vec());
-                println!(" Vett di {:?} elem", v.len());
+               // println!(" Vett di {:?} elem", v.len());
                 p.float_data = v.iter().map(|x| *x as f32).collect();
             } else {
                 let word = String::from_utf8(vect[*index..(*index + val)].to_owned()).unwrap();
-                println!("{:?}", word);
+             
+                log::debug!("[Parsing] Tensor -> \"{}\":{:?}", tag_name,word);
                 if *field_number == 8 {
                     p.name = word;
                 }
@@ -325,17 +349,30 @@ fn wire_type_two(
             (*index) += val;
         }
         ProtoBufMessage::ValueInfoProto(p) => {
-            print!("\t\t\"{}\":", *p.field_number.get(field_number).unwrap());
+            let  opt_tag_name = p.field_number.get(field_number);
+            if opt_tag_name.is_none() {
+                return Some(
+                    vec![
+                        "Field number ",
+                        &(field_number.to_string()),
+                        "is not implemented",
+                    ]
+                    .join(""),
+                );
+            }
+            let tag_name = opt_tag_name.unwrap();
+            log::debug!("[Parsing] Value info -> \"{}\":", tag_name);
             let val = read_varint(&vect, index);
-            if *field_number == 2 {
+            if tag_name=="type" {
                 //typeProto
-                println!("");
+                log::debug!("[Parsing] Type begin");
                 let mut tp = ProtoBufMessage::TypeProto(TypeProto::new());
                 proto_buffer_tag_reader(&mut tp, &(vect[*index..(*index + val)]).to_vec());
                 p.tp = TypeProto::try_from(tp).unwrap();
+                log::debug!("[Parsing] Type end");
             } else {
                 let word = String::from_utf8(vect[*index..(*index + val)].to_owned()).unwrap();
-                println!("{:?}", word);
+                log::debug!("[Parsing] Value info -> \"{}\":{:?}", tag_name,word);
                 if *field_number == 1 {
                     p.name = word;
                 }
@@ -344,65 +381,106 @@ fn wire_type_two(
             (*index) += val;
         }
         ProtoBufMessage::TypeProto(p) => {
-            print!("\t\t\t\"{}\":", *p.field_number.get(field_number).unwrap());
+            let  opt_tag_name = p.field_number.get(field_number);
+            if opt_tag_name.is_none() {
+                return Some(
+                    vec![
+                        "Field number ",
+                        &(field_number.to_string()),
+                        "is not implemented",
+                    ]
+                    .join(""),
+                );
+            }
+            let tag_name = opt_tag_name.unwrap();
+            log::debug!("[Parsing] Type -> \"{}\":", tag_name);
             let val = read_varint(&vect, index);
-            if *field_number == 1 {
+            if *tag_name == "tensor_type" {
                 //tensor
-                println!("");
+                log::debug!("[Parsing] Tensor begin");
                 let mut t = ProtoBufMessage::Tensor2(Tensor2::new());
                 proto_buffer_tag_reader(&mut t, &(vect[*index..(*index + val)]).to_vec());
                 p.t = Tensor2::try_from(t).unwrap();
+                log::debug!("[Parsing] Tensor begin");
             } else {
                 let word = String::from_utf8(vect[*index..(*index + val)].to_owned()).unwrap();
-                println!("{:?}", word);
+              
+                log::debug!("[Parsing] Type -> \"{}\":{:?}", tag_name,word);
             } //index..(index + val)
             (*index) += val;
         }
         ProtoBufMessage::Tensor2(p) => {
-            print!("\t\t\t\t\"{}\":", *p.field_number.get(field_number).unwrap());
+            let  opt_tag_name = p.field_number.get(field_number);
+            if opt_tag_name.is_none() {
+                return Some(
+                    vec![
+                        "Field number ",
+                        &(field_number.to_string()),
+                        "is not implemented",
+                    ]
+                    .join(""),
+                );
+            }
+            let tag_name = opt_tag_name.unwrap();
+            log::debug!("[Parsing] Tensor -> \"{}\":", tag_name);
             let val = read_varint(&vect, index);
-            if *field_number == 2 {
+            if tag_name == "shape" {
                 //tensorShape
-                println!("");
+                log::debug!("[Parsing] Shape begin");
                 let mut t = ProtoBufMessage::TensorShapeProto(TensorShapeProto::new());
                 proto_buffer_tag_reader(&mut t, &(vect[*index..(*index + val)]).to_vec());
                 p.ts = TensorShapeProto::try_from(t).unwrap();
+                log::debug!("[Parsing] Shape end");
             } else {
                 let word = String::from_utf8(vect[*index..(*index + val)].to_owned()).unwrap();
-                println!("{:?}", word);
+             
+                log::debug!("[Parsing] Tensor -> \"{}\":{:?}", tag_name,word);
             } //index..(index + val)
             (*index) += val;
         }
         ProtoBufMessage::TensorShapeProto(p) => {
-            print!(
-                "\t\t\t\t\t\"{}\":",
-                *p.field_number.get(field_number).unwrap()
-            );
+            let  opt_tag_name = p.field_number.get(field_number);
+            if opt_tag_name.is_none() {
+                return Some(vec!["Field number ",&(field_number.to_string()),"is not implemented",].join("")
+                );
+            }
+            let tag_name = opt_tag_name.unwrap();
+            log::debug!("[Parsing] Shape -> \"{}\":", tag_name);
             let val = read_varint(&vect, index);
-            if *field_number == 1 {
+            if tag_name == "dimension" {
                 //dimension
-                println!("");
+              
+                log::debug!("[Parsing] Dimension begin");
                 let mut t = ProtoBufMessage::Dimension(Dimension::new());
                 proto_buffer_tag_reader(&mut t, &(vect[*index..(*index + val)]).to_vec());
                 p.dim.push(Dimension::try_from(t).unwrap());
+                log::debug!("[Parsing] Dimension end");
             } else {
                 let word = String::from_utf8(vect[*index..(*index + val)].to_owned()).unwrap();
-                println!("{:?}", word);
+              
+                log::debug!("[Parsing] Shape -> \"{}\":{:?}", tag_name,word);
             }
 
             //index..(index + val)
             (*index) += val;
         }
         ProtoBufMessage::Dimension(p) => {
-            print!(
-                "\t\t\t\t\t\t\"{}\":",
-                *p.field_number.get(field_number).unwrap()
-            );
+            let  opt_tag_name = p.field_number.get(field_number);
+            if opt_tag_name.is_none() {
+                return Some(
+                    vec![
+                        "Field number ",
+                        &(field_number.to_string()),
+                        "is not implemented",
+                    ]
+                    .join(""),
+                );
+            }
+            let tag_name = opt_tag_name.unwrap();
             let val = read_varint(&vect, index);
-
             let word = String::from_utf8(vect[*index..(*index + val)].to_owned()).unwrap();
-            println!("{:?}", word);
-
+        
+            log::debug!("[Parsing] Dimension -> \"{}\":{:?}", tag_name,word);
             (*index) += val;
         }
 
@@ -417,35 +495,56 @@ pub fn wire_type_zero(
     vettore: &Vec<u8>,
     index: &mut usize,
 ) -> Option<String> {
-    let fieldName;
+   
     let val = read_varint(&vettore, index);
     match pbm {
         ProtoBufMessage::ModelProto(p) => {
-            fieldName = p.field_number.get(field_number);
-            if fieldName.is_some() {
-                print!("\"{}\":S", p.field_number.get(field_number).unwrap());
-                println!("{}", val);
-            } else {
-                println!("\t NON SUPPORTATO val = {}", field_number);
+            let  opt_tag_name = p.field_number.get(field_number);
+            if opt_tag_name.is_none() {
+                return Some(
+                    vec![
+                        "Field number ",
+                        &(field_number.to_string()),
+                        "is not implemented",
+                    ]
+                    .join(""),
+                );
             }
+            let tag_name = opt_tag_name.unwrap();
+            log::debug!("[Parsing] Model -> {}:{}",tag_name,val);
         }
         ProtoBufMessage::GraphProto(p) => {
-            fieldName = p.field_number.get(field_number);
-            if fieldName.is_some() {
-                print!("\t\"{}\":S", p.field_number.get(field_number).unwrap());
-                println!("{}", val);
-            } else {
-                println!("\t NON SUPPORTATO val = {}", field_number);
+            let  opt_tag_name = p.field_number.get(field_number);
+            if opt_tag_name.is_none() {
+                return Some(
+                    vec![
+                        "Field number ",
+                        &(field_number.to_string()),
+                        "is not implemented",
+                    ]
+                    .join(""),
+                );
             }
+            let tag_name = opt_tag_name.unwrap();
+            log::debug!("[Parsing] Graph -> {}:{}",tag_name,val);
         }
         ProtoBufMessage::AttributeProto(p) => {
-            fieldName = (p).field_number.get(field_number);
-            if fieldName.is_some() {
-                print!("\t\t\t\"{}\":", p.field_number.get(field_number).unwrap());
-                println!("{}", val);
-                match fieldName.unwrap().as_str() {
+            let  opt_tag_name = p.field_number.get(field_number);
+            if opt_tag_name.is_none() {
+                return Some(
+                    vec![
+                        "Field number ",
+                        &(field_number.to_string()),
+                        "is not implemented",
+                    ]
+                    .join(""),
+                );
+            }
+            let tag_name = opt_tag_name.unwrap();
+            log::debug!("[Parsing] Attribute -> {}:{}",tag_name,val);
+                match tag_name.as_str() {
                     "f" => {
-                        println!("f");
+                        
                         if let Attribute::Undefined = p.attr {
                             p.attr = Attribute::Float(val as f32);
                         }
@@ -455,7 +554,7 @@ pub fn wire_type_zero(
                             p.attr = Attribute::Int(val as isize);
                         }
 
-                        println!("i");
+                        
                     }
                     "ints" => {
                         if let Attribute::Undefined = p.attr {
@@ -466,9 +565,9 @@ pub fn wire_type_zero(
                             temp.push(val as isize);
                             p.attr = Attribute::Ints(temp);
                         }
-                        println!("ints");
+                        
                     }
-                    "strings" => {
+                    /*"strings" => {
                         println!("strings");
                     }
                     "t" => {
@@ -479,88 +578,126 @@ pub fn wire_type_zero(
                     }
                     "floats" => {
                         println!("floats");
-                    }
+                    }*/
                     _ => {
-                        println!("tipo non gestito {:?}", fieldName.unwrap());
+                        
+                        return Some(
+                            vec![
+                                "Attribute data type ",
+                                &(field_number.to_string()),
+                                "is not implemented",
+                            ]
+                            .join(""));
                     }
                 }
-            } else {
-                print!("\t\t\tNON SUPPORTATO val = {}", field_number);
-            }
+           
         }
         ProtoBufMessage::TensorProto(p) => {
-            fieldName = p.field_number.get(field_number);
-            if fieldName.is_some() {
-                print!("\t\t\t\t\"{}\":", p.field_number.get(field_number).unwrap());
-                println!("{}", val);
-                if *field_number == 1 {
-                    // Campo "dims", è gestito come varint
+
+            let  opt_tag_name = p.field_number.get(field_number);
+            if opt_tag_name.is_none() {
+                return Some(
+                    vec![
+                        "Field number ",
+                        &(field_number.to_string()),
+                        "is not implemented",
+                    ]
+                    .join(""),
+                );
+            }
+            let tag_name = opt_tag_name.unwrap();
+            log::debug!("[Parsing] Tensor -> {}:{}",tag_name,val);
+                if tag_name == "dims" {
+                    // Campo "dims", è memorizzato come varint
                     p.dims.push(val);
                 }
-                if *field_number == 9 {
-                    //RAW_DATA
-                    print!("\n\n\n\nffdfjdighdsghdi");
-                }
-                if *field_number == 2 {
+                if tag_name== "data_type"{
                     //data_type
                     p.data_type = val;
                 }
-            } else {
-                print!("\t\t\t\tNON SUPPORTATO val = {}", field_number);
-            }
+            
         }
         ProtoBufMessage::NodeProto(p) => {
-            fieldName = p.field_number.get(field_number);
-            if fieldName.is_some() {
-                print!("\t\t\"{}\":S", p.field_number.get(field_number).unwrap());
-                println!("{}", val);
-            } else {
-                print!("\t\tNON SUPPORTATO val = {}", field_number);
+            let  opt_tag_name = p.field_number.get(field_number);
+            if opt_tag_name.is_none() {
+                return Some(
+                    vec![
+                        "Field number ",
+                        &(field_number.to_string()),
+                        "is not implemented",
+                    ]
+                    .join(""),
+                );
             }
+            let tag_name = opt_tag_name.unwrap();
+            log::debug!("[Parsing] Node -> {}:{}",tag_name,val);
         }
         ProtoBufMessage::ValueInfoProto(p) => {
-            fieldName = p.field_number.get(field_number);
-            if fieldName.is_some() {
-                print!("\t\t\t\"{}\":", p.field_number.get(field_number).unwrap());
-                println!("{}", val);
-            } else {
-                print!("\t\t\tNON SUPPORTATO val = {}", field_number);
+            let  opt_tag_name = p.field_number.get(field_number);
+            if opt_tag_name.is_none() {
+                return Some(
+                    vec![
+                        "Field number ",
+                        &(field_number.to_string()),
+                        "is not implemented",
+                    ]
+                    .join(""),
+                );
             }
+            let tag_name = opt_tag_name.unwrap();
+            log::debug!("[Parsing] Value info -> {}:{}",tag_name,val);
         }
         ProtoBufMessage::TypeProto(p) => {
-            fieldName = p.field_number.get(field_number);
-            if fieldName.is_some() {
-                print!("\t\t\t\"{}\":", p.field_number.get(field_number).unwrap());
-                println!("{}", val);
-            } else {
-                print!("\t\t\tNON SUPPORTATO val = {}", field_number);
+            let  opt_tag_name = p.field_number.get(field_number);
+            if opt_tag_name.is_none() {
+                return Some(
+                    vec![
+                        "Field number ",
+                        &(field_number.to_string()),
+                        "is not implemented",
+                    ]
+                    .join(""),
+                );
             }
+            let tag_name = opt_tag_name.unwrap();
+            log::debug!("[Parsing] Type -> {}:{}",tag_name,val);
         }
 
         ProtoBufMessage::Tensor2(p) => {
-            fieldName = p.field_number.get(field_number);
-            if fieldName.is_some() {
-                print!("\t\t\t\t\"{}\":", p.field_number.get(field_number).unwrap());
-                println!("{}", val);
-            } else {
-                print!("\t\t\tNON SUPPORTATO val = {}", field_number);
+            let  opt_tag_name = p.field_number.get(field_number);
+            if opt_tag_name.is_none() {
+                return Some(
+                    vec![
+                        "Field number ",
+                        &(field_number.to_string()),
+                        "is not implemented",
+                    ]
+                    .join(""),
+                );
             }
+            let tag_name = opt_tag_name.unwrap();
+            log::debug!("[Parsing] Tensor -> {}:{}",tag_name,val);
         }
         ProtoBufMessage::Dimension(p) => {
-            fieldName = p.field_number.get(field_number);
-            if fieldName.is_some() {
-                print!(
-                    "\t\t\t\t\t\t\"{}\":",
-                    p.field_number.get(field_number).unwrap()
+            let  opt_tag_name = p.field_number.get(field_number);
+            if opt_tag_name.is_none() {
+                return Some(
+                    vec![
+                        "Field number ",
+                        &(field_number.to_string()),
+                        "is not implemented",
+                    ]
+                    .join(""),
                 );
-                println!("{}", val);
-                if *field_number == 1 {
+            }
+            let tag_name = opt_tag_name.unwrap();
+            log::debug!("[Parsing] Tensor -> {}:{}",tag_name,val);
+        
+                if tag_name == "dim_value" {
                     //dim_value
                     p.value = val;
                 }
-            } else {
-                print!("\t\tNON SUPPORTATO val = {}", field_number);
-            }
+            
         }
         _ => {
             return Some("protoBuf message not implemented".to_string());
