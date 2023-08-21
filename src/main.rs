@@ -1,4 +1,4 @@
-use std::sync::Arc;
+use std::{sync::Arc, io::{stdout, Write}};
 use clap::{Parser, ArgAction::Count};
 use itertools::Itertools;
 use log::LevelFilter;
@@ -43,7 +43,8 @@ fn main() {
         .init();
 
     // Parse input model
-    log::info!("Attempting to read model from path `{}`...", args.model);
+    print!("Reading model from path `{}`...", args.model);
+    if args.verbose > 0 { print!("\n"); } else { stdout().flush().unwrap(); }
     let graph = match OnnxGraph::from_file(&args.model) {
         Ok(graph) => Arc::new(graph),
         Err(e) => {
@@ -51,10 +52,15 @@ fn main() {
             return;
         }
     };
-    log::info!("Successfully read graph {}!", graph.name);
+    if args.verbose > 0 {
+        println!("Successfully read graph {}!", args.model);
+    } else {
+        println!("\rReading model from path `{}`... \x1b[1m\x1b[32m\u{2713}\x1b[0m", args.model);
+    }
 
     // Read input data
-    log::info!("Attempting to read input data from path `{}`...", args.input);
+    print!("Reading input data from path `{}`...", args.input);
+    if args.verbose > 0 { print!("\n"); } else { stdout().flush().unwrap(); }
     let inputs = match OnnxFileParser::parse_data(args.input.as_str()) {
         Ok(data) => data,
         Err(e) => {
@@ -62,11 +68,15 @@ fn main() {
             return;
         }
     };
-    log::info!("Successfully read input data!");
-    inputs.values().for_each(|input| log::debug!("\n{}", PrettyTensor::from(input)));
+    if args.verbose > 0 {
+        println!("Successfully read input data!");
+    } else {
+        println!("\rReading input data from path `{}`... \x1b[1m\x1b[32m\u{2713}\x1b[0m", args.input);
+    }
 
     // Perform inference
-    log::info!("Attempting to perform inference on graph {} with input data...", graph.name);
+    print!("Performing inference...");
+    if args.verbose > 0 { print!("\n"); } else { stdout().flush().unwrap(); }
     let outputs = match graph.infer(inputs) {
         Ok(outputs) => outputs,
         Err(e) => {
@@ -74,11 +84,17 @@ fn main() {
             return;
         }
     };
+    if args.verbose > 0 {
+        println!("Inference finished!");
+    } else {
+        println!("\rPerforming inference... \x1b[1m\x1b[32m\u{2713}\x1b[0m");
+    }
 
     // Read outputs if included
     let expected_outputs = if args.output.is_some() {
         let output = args.output.unwrap();
-        log::info!("Attempting to read output data from path `{}`...", output);
+        print!("Reading output data from path `{}`...", output);
+        if args.verbose > 0 { print!("\n"); } else { stdout().flush().unwrap(); }
         let outputs = match OnnxFileParser::parse_data(output.as_str()) {
             Ok(data) => data,
             Err(e) => {
@@ -86,7 +102,11 @@ fn main() {
                 return;
             }
         };
-        log::info!("Successfully read output data!");
+        if args.verbose > 0 {
+            println!("Successfully read output data!");
+        } else {
+            println!("\rReading output data from path `{}`... \x1b[1m\x1b[32m\u{2713}\x1b[0m", output);
+        }
         Some(outputs)
     } else {
         None
