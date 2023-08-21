@@ -465,14 +465,14 @@ impl OnnxGraph {
 
     /// Returns the name of all "first layer nodes", i.e nodes that contain *only* input and initializer nodes as entering nodes.
     fn get_first_layer_nodes<'a>(&self, nodes: &'a RwLockReadGuard<'a, HashMap<String, OnnxGraphNode>>) -> HashSet<&'a OnnxGraphNode> {
-        nodes
-            .values()
-            .filter(|node| {
-                if let OnnxGraphNode::Operation(op_node) = node {
-                    op_node.inputs.iter().all(|input_name| self.inputs.contains(input_name) || self.initializers.contains(input_name))
-                } else {
-                    false
-                }
+        self.operations
+            .iter()
+            .map(|name| nodes.get(name).unwrap())
+            .filter(|node|{
+                node
+                    .ref_operation().unwrap()
+                    .inputs.iter()
+                    .all(|input_name| self.inputs.contains(input_name) || self.initializers.contains(input_name))
             })
             .collect()
     }

@@ -1,7 +1,9 @@
 extern crate ndarray;
 
 use std::{sync::Arc, collections::HashMap};
-use ndarray::{ArrayD, Array1, ArrayViewD, Zip, IntoDimension, Dimension, IxDyn};
+use itertools::Itertools;
+use ndarray::{ArrayD, Array1, Zip, IntoDimension, Dimension, ArrayView, Array};
+use rayon::prelude::{ParallelBridge, ParallelIterator};
 use crate::{error::OnnxError, onnx_error};
 
 mod add;
@@ -240,12 +242,19 @@ impl Operation {
     /// Obtains the windows of shape `window_dim` of the `data` array.
     /// 
     /// # Return
-    /// Iterator over the windows.
-    fn get_strided_windows<'a, I, D: IntoDimension<Dim = IxDyn>>(
-        data: &'a ArrayViewD<I>,
-        window_dim: D,
-        strides: D
-    ) -> impl Iterator<Item = ArrayViewD<'a, I>>
+    /// Parallel iterator over the windows.
+    /// 
+    /// **NOTE:** Since the iterator is parallel, the elements' order is NOT preserved, hence why the iterator also provides the
+    /// index of the window. If strides > 1 are present, some index values are skipped.
+    fn get_strided_windows<'a, I, D, ID>(
+        data: &'a ArrayView<'a, I, D>,
+        window_dim: ID,
+        strides: ID
+    ) -> impl ParallelIterator<Item = (usize, ArrayView<'a, I, D>)>
+    where
+        I: Send + Sync,
+        D: Dimension + 'a,
+        ID: IntoDimension<Dim = D>
     {
         let window_dim = window_dim.into_dimension();
         let strides_dim = strides.into_dimension();
@@ -253,25 +262,27 @@ impl Operation {
         // Amount of windows, for each dimension.
         let window_amounts =
             Zip::from(data.shape()).and(window_dim.as_array_view())
-                .map_collect(|data_len, window_len| data_len - window_len + 1)
+                .map_collect(|data_len: &usize, window_len| data_len - window_len + 1)
                 .to_vec();
 
         data
             .windows(window_dim)
             .into_iter()
             .enumerate()
-            .filter_map(move |(mut i, window)| {
+            .par_bridge()
+            .filter_map(move |(i, window)| {
                 // Get current position
+                let mut i_mut = i;
                 let mut position = Vec::with_capacity(window_amounts.len());
                 for w_i in 0..window_amounts.len() {
-                    let product: usize = window_amounts.iter().skip(w_i+1).map(|v| *v).product();
-                    position.push(i / product);
-                    i %= product;
+                    let product: usize = window_amounts.iter().skip(w_i+1).cloned().product();
+                    position.push(i_mut / product);
+                    i_mut %= product;
                 }
 
                 // Determine if current position is to skip based on the strides.
                 if Zip::from(&position).and(strides_dim.as_array_view()).all(|&pos, &stride| pos % stride == 0) {
-                    Some(window)
+                    Some((i, window))
                 } else {
                     None
                 }
@@ -285,26 +296,37 @@ impl Operation {
     /// 
     /// # Error
     /// If the shape of the final array is not compatible with the number of results.
-    fn map_windows<I, O, D: IntoDimension<Dim = IxDyn>>(
-        data: ArrayViewD<I>,
-        window_dim: D,
-        strides: D,
-        f: impl FnMut(ArrayViewD<I>) -> O
-    ) -> Result<ArrayD<O>, OnnxError> {
+    fn map_windows<'a,I, O, D, ID>(
+        data: &'a ArrayView<'a, I, D>,
+        window_dim: ID,
+        strides: ID,
+        f: impl Fn(ArrayView<I, D>) -> O + Send + Sync
+    ) -> Result<Array<O, D>, OnnxError>
+    where
+        I: Send + Sync,
+        O: Send,
+        D: Dimension + 'a,
+        ID: IntoDimension<Dim = D>
+    {
         let window_dim = window_dim.into_dimension();
         let strides_dim = strides.into_dimension();
 
         // Compute output shapes
         let out_shape = 
             Zip::from(data.shape()).and(window_dim.as_array_view()).and(strides_dim.as_array_view())
-                .map_collect(|data_len, window_len, strides_len| (data_len-window_len)/strides_len+1)
-                .to_vec();
+                .map_collect(|data_len, window_len, strides_len| (data_len-window_len)/strides_len+1);
+        let mut out_dim = D::zeros(out_shape.len());
+        out_dim.as_array_view_mut().assign(&out_shape);
 
         Self::get_strided_windows(&data, window_dim, strides_dim)
-            .map(f)
+            .map(|(i, t)| (i, f(t)))
+            .collect::<Vec<(usize, O)>>()
+            .into_iter()
+            .sorted_by(|(i1, _), (i2, _)| i1.cmp(i2))
+            .map(|(_, o)| o)
             .collect::<Array1<O>>()
-            .into_shape(out_shape.clone())
-            .map_err(|_| onnx_error!("Could not insert mapped values into {} matrix.", out_shape.into_iter().map(|v| v.to_string()).collect::<Vec<_>>().join("x")))
+            .into_shape(out_dim)
+            .map_err(|_| onnx_error!("Could not insert mapped values into {} matrix.", out_shape.iter().join("x")))
     }
 
 }

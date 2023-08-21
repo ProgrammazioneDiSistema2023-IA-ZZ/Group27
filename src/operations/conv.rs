@@ -1,6 +1,8 @@
 use std::sync::Arc;
-use ndarray::{Array1, Array4, s, Array, Ix1};
-use ndarray_einsum_beta::{ArrayLike, einsum};
+use itertools::{Itertools, iproduct};
+use ndarray::{Array1, Array4, s, Ix1, Ix2, stack, Axis, ArrayView2};
+use ndarray_einsum_beta::einsum;
+use rayon::prelude::{ParallelIterator, ParallelBridge};
 
 use super::{Operation, OnnxError, onnx_error, Tensor, OperationResult, Attribute};
 
@@ -137,31 +139,41 @@ impl Operation {
         
         let strides = [ strides_h, strides_w ];
         let window_dim = [ kernel_h, kernel_w ];
+        
+        let ( windows_h, windows_w ) = (padded_h-kernel_h+1, padded_w-kernel_w+1);
 
-        // Obtain all two-dimensional windows for each channel and save them in windows_array.
-        // (The result has shape B x C x Nh x Nw x Kh x Kw)
-        // B: batches; C: channels; Nh,Nw: Number of windows in height/length; Kh,Kw: kernel shape.
-        let windows_data =
-            padded_data
-                .outer_iter()
-                .flat_map(|batch| {
-                    batch
-                        .outer_iter()
-                        .flat_map(|channel| {
-                            Self::get_strided_windows(&channel.into_dyn_view(), window_dim.as_slice(), strides.as_slice())
-                                .flat_map(|m| m.to_owned().into_iter())
-                                .collect::<Vec<_>>()
-                        })
-                        .collect::<Vec<_>>()
-                });
+        // Collect each channel as a slice, used in the next step
+        let channel_slices =
+            iproduct!(0..batches, 0..channels)
+                .map(|(n_batch, n_channel)| padded_data.slice(s![n_batch, n_channel, .., ..]).into_dimensionality::<Ix2>().unwrap())
+                .collect::<Vec<ArrayView2<f32>>>();
+
+        // Obtain all two-dimensional strided windows for each channel, in parallel.
+        let windows =
+            iproduct!(0..batches, 0..channels)
+                .par_bridge()
+                .flat_map(|(n_batch, n_channel)| {
+                    let channel = &channel_slices[n_channel + n_batch * channels];
+                    Self::get_strided_windows(channel, window_dim, strides)
+                        .map(move |(n_window, window)| (
+                            n_window + n_channel * windows_h * windows_w + n_batch * channels * windows_h * windows_w,
+                            window
+                        ))
+                })
+                .collect::<Vec<(usize, _)>>()
+                .into_iter()
+                .sorted_by(|(i1, _), (i2, _)| i1.cmp(i2))
+                .map(|(_, t)| t)
+                .collect::<Vec<ArrayView2<f32>>>();
 
         // Calculate output dimensions
         let (out_h, out_w) = ((padded_h-kernel_h)/strides_h+1, (padded_w-kernel_w)/strides_w+1);
-
+        
+        // Create array containing all strided windows, for each batch and channel.
+        // Used as the first input for einsum.
         let windows_array =
-            Array::from_iter(windows_data)
-                .into_shape((batches, channels, out_h, out_w, kernel_h, kernel_w))
-                .unwrap();
+            stack(Axis(0), windows.as_slice()).unwrap()
+                .into_shape((batches, channels, out_h, out_w, kernel_h, kernel_w)).unwrap();
 
         // Compute the result of the convolution via the Einsum operation.
         let mut result = 
@@ -321,6 +333,36 @@ mod tests {
                 288., 306., 324.
             ]
         ].into_shape((1,2,3,3)).unwrap().into_dyn();
+    
+        let result = op.execute(vec![Arc::new(data), Arc::new(weights)]);
+
+        assert!(result.is_ok(), "{:?}", result.unwrap_err());
+        assert_eq!(result.unwrap(), Arc::new(expected_result));
+    }
+
+    #[test]
+    fn multiple_batches() {
+        let op = Operation::new(OpType::Conv);
+
+        let data =
+            Array::from_iter((0..=24).map(|i| i as f32).cycle().take(2*1*5*5))
+            .into_shape((2,1,5,5))
+            .unwrap().into_dyn();
+
+        let weights =
+            Array::from_iter(iter::repeat(1. as f32).take(1*1*3*3))
+            .into_shape((1,1,3,3))
+            .unwrap().into_dyn();
+
+        let expected_result = array![
+            54.,  63.,  72., 
+            99.,  108., 117.,
+            144., 153., 162.,
+
+            54.,  63.,  72., 
+            99.,  108., 117.,
+            144., 153., 162.,
+        ].into_shape((2,1,3,3)).unwrap().into_dyn();
     
         let result = op.execute(vec![Arc::new(data), Arc::new(weights)]);
 

@@ -1,6 +1,6 @@
 use std::sync::Arc;
 use itertools::{iproduct, Itertools};
-use ndarray::{Array4, s, Array};
+use ndarray::{Array4, s, Array2, stack, Axis};
 use rayon::prelude::{ParallelBridge, ParallelIterator};
 
 use super::{Operation, OnnxError, onnx_error, Tensor, OperationResult, Attribute};
@@ -152,17 +152,17 @@ impl Operation {
             if ceil_mode == 1 { f32::ceil((padded_w-kernel_w) as f32/strides_w as f32 + 1.) as usize } else { (padded_w-kernel_w)/strides_w+1 }
         );
 
-        // Calculate value of each cell of the result in parallel, then insert all values into the result array. The parallel
-        // iterator collects values in a random fashion, so we also need to sort by the global index of each value
-        let values =
+        // Map all windows of the input array by selecting the maximum. The iterator is parallel, so the initial order is not
+        // preserved. For that reason, we also need to sort by the global index of each value
+        let mapped_windows =
             iproduct!(0..batches, 0..channels)
                 .par_bridge()
                 .map(|(n_batch, n_channel)| {
                     let channel = padded_data.slice(s![n_batch, n_channel, .., ..]);
                     Self::map_windows(
-                        channel.into_dyn(),
-                        [kernel_h, kernel_w].as_slice(),
-                        [strides_h, strides_w].as_slice(),
+                        &channel,
+                        [kernel_h, kernel_w],
+                        [strides_h, strides_w],
                         |window| *window.into_iter().max_by(|a, b| a.partial_cmp(b).unwrap()).unwrap(),
                     ).map(|res| (
                         n_channel + n_batch * channels, // Global index
@@ -172,14 +172,22 @@ impl Operation {
                 .collect::<Result<Vec<(usize, _)>, OnnxError>>()?
                 .into_iter()
                 .sorted_by(|(i1, _), (|i2, _)| i1.cmp(i2))
-                .flat_map(|(_, v)| v)
-                .collect::<Vec<f32>>();
+                .map(|(_, v)| v)
+                .collect::<Vec<Array2<f32>>>();
         
-        let result =
-            Array::from_shape_vec((batches, channels, out_h, out_w), values)
-            .unwrap().into_dyn();
+        // Map mapped windows as views (needed for next step)
+        let mapped_windows_views =
+            mapped_windows
+                .iter()
+                .map(|v| v.view())
+                .collect::<Vec<_>>();
 
-        Ok(Arc::new(result))
+        // Build final result array
+        let result =
+            stack(Axis(0), mapped_windows_views.as_slice()).unwrap()
+                .into_shape((batches, channels, out_h, out_w)).unwrap();
+
+        Ok(Arc::new(result.into_dyn()))
     }
 
 }

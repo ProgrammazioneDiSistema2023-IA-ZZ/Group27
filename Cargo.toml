@@ -10,7 +10,7 @@ clap = { version = "4.3.22", features = ["derive"] }
 env_logger = "0.10.0"
 itertools = "0.11.0"
 log = "0.4.20"
-ndarray = "0.15.6"
+ndarray = { version = "0.15.6", features = ["matrixmultiply-threading"] }
 ndarray_einsum_beta = "0.7.0"
 prettytable = "0.10.0"
 rayon = "1.7.0"
