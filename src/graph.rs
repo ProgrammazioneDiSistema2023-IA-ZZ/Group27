@@ -1,6 +1,6 @@
-use std::{str::FromStr, fs::read_to_string, collections::{HashMap, HashSet}, sync::{Arc, MutexGuard, Mutex, PoisonError, RwLock, RwLockReadGuard, atomic::{AtomicUsize, Ordering}}, thread::{JoinHandle, self}, hash::Hash};
+use std::{collections::{HashMap, HashSet}, sync::{Arc, MutexGuard, Mutex, PoisonError, RwLock, RwLockReadGuard, atomic::{AtomicUsize, Ordering}}, thread::{JoinHandle, self}, hash::Hash};
 use log;
-use crate::{error::OnnxError, parser::OnnxParser, operations::Tensor, onnx_error};
+use crate::{error::OnnxError, operations::Tensor, onnx_error, fileparser::fileparser::OnnxFileParser};
 
 pub use self::{operation::OnnxGraphOperation, input::OnnxGraphInput, output::OnnxGraphOutput, initializer::OnnxGraphInitializer, intermediate::OnnxGraphIntermediate};
 
@@ -128,10 +128,8 @@ impl OnnxGraph {
 
     /// Creates a new graph starting from a file, given its path.
     pub fn from_file(path: &str) -> OnnxGraphResult {
-        // TODO: Lettura file più efficiente con BufReader (per ora immagazzina l'intero file in una stringa.)
-        Self::from_str(
-            read_to_string(path).map_err(|_| onnx_error!("Cannot read from file {path}."))?.as_str()
-        )
+        OnnxFileParser::parse_model(path)
+            .map_err(|msg| OnnxError::new(msg))
     }
 
     /// Adds an existing node to the graph.
@@ -576,14 +574,4 @@ impl OnnxGraph {
         Ok(final_hashmap)
     }
 
-}
-
-impl FromStr for OnnxGraph {
-    type Err = OnnxError;
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let lines = s.lines().map(|s| s.trim());
-        OnnxParser::new(lines)
-            .parse()
-            .map_err(|e| onnx_error!("An error occurred during parsing: {:?}.", e))
-    }
 }
