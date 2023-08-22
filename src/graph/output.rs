@@ -1,3 +1,4 @@
+
 /// Nodo output all'interno di un grafo.
 pub struct OnnxGraphOutput {
     /// Name of the node.

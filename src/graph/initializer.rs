@@ -3,6 +3,7 @@ use std::sync::Arc;
 use crate::operations::Tensor;
 
 /// Initializer node of a graph.
+
 pub struct OnnxGraphInitializer {
     /// Name of the node.
     pub(super) name: String,

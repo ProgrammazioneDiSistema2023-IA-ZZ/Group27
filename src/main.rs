@@ -3,6 +3,7 @@ use clap::{Parser, ArgAction::Count};
 use itertools::Itertools;
 use log::LevelFilter;
 use onnx_rust::{fileparser::fileparser::OnnxFileParser, graph::OnnxGraph, helper::PrettyTensor};
+
 use prettytable::ptable;
 
 #[derive(Parser)]

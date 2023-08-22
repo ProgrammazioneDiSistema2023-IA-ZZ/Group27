@@ -40,7 +40,6 @@ impl OpStatus {
         }
     }
 }
-
 /// Operation node of a graph.
 pub struct OnnxGraphOperation {
     /// Nome del nodo.

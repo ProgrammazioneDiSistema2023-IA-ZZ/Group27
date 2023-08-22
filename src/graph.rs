@@ -3,14 +3,16 @@ use log;
 use crate::{error::OnnxError, operations::Tensor, onnx_error, fileparser::fileparser::OnnxFileParser};
 
 pub use self::{operation::OnnxGraphOperation, input::OnnxGraphInput, output::OnnxGraphOutput, initializer::OnnxGraphInitializer, intermediate::OnnxGraphIntermediate};
-
+use pyo3::*;
 pub mod operation;
 pub mod input;
 pub mod output;
 pub mod initializer;
 pub mod intermediate;
-
+use pyo3::prelude::*;
+use pyo3::types::*;
 /// Generic node of a graph.
+
 pub enum OnnxGraphNode {
     Initializer(OnnxGraphInitializer),
     Input(OnnxGraphInput),
@@ -70,23 +72,23 @@ impl Hash for OnnxGraphNode {
 /// ID of an inference, internal to the current process.
 #[derive(Hash, PartialEq, Eq, Clone, Copy, Debug)]
 struct InferenceID(usize);
-
+#[pyclass(frozen)]
 /// Graph that represents a neural network.
 pub struct OnnxGraph {
     /// Name of the graph.
     pub name: String,
 
     /// Names of initializer nodes inside the graph.
-    initializers: HashSet<String>,
+   pub initializers: HashSet<String>,
 
     /// Names of input nodes inside the graph.
-    inputs: HashSet<String>,
+   pub inputs: HashSet<String>,
 
     /// Names of output nodes inside the graph.
-    outputs: HashSet<String>,
+  pub  outputs: HashSet<String>,
 
     /// Names of operazione nodes inside the graph.
-    operations: HashSet<String>,
+   pub operations: HashSet<String>,
 
     /// [`HashMap`] that maps the name of the node to the corresponding [`OnnxGraphNode`] enum.
     /// 
@@ -94,13 +96,13 @@ pub struct OnnxGraph {
     /// 
     /// Writing operations (such as adding a node) usually take place before an inference, while the inference itself requires
     /// only reading operations. For this reason, a [`RwLock`] is used instead of a [`Mutex`].
-    nodes: RwLock<HashMap<String, OnnxGraphNode>>,
+    pub  nodes: RwLock<HashMap<String, OnnxGraphNode>>,
 
     /// Number of inferences currently in progress.
-    inferences_in_progress: AtomicUsize,
+   pub inferences_in_progress: AtomicUsize,
 
     /// Contains the last inference ID used. It's incremented everytime a new inference is started in the same process.
-    last_inference_id: Mutex<InferenceID>
+     last_inference_id: Mutex<InferenceID>
 }
 
 /// Result of the graph's creation, if errors may occur (for instance, starting from a file).

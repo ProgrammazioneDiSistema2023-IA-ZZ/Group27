@@ -3,7 +3,7 @@ use std::sync::Arc;
 use crate::operations::Tensor;
 
 /// Input node of a graph.
-#[derive(Clone)]
+
 pub struct OnnxGraphInput {
     /// Name of the node.
     pub(super) name: String,

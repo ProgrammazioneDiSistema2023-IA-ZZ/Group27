@@ -14,3 +14,13 @@ ndarray = { version = "0.15.6", features = ["matrixmultiply-threading"] }
 ndarray_einsum_beta = "0.7.0"
 prettytable = "0.10.0"
 rayon = "1.7.0"
+pyo3 = { version = "0.19.1", features = ["extension-module"] }
+numpy = "0.19"
+pyo3-log = "0.8.3"
+
+[lib]
+name = "onnx_rust"
+crate-type = ["cdylib","lib"] 
+
+
+

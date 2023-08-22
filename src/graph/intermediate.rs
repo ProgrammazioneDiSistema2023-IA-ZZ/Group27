@@ -1,6 +1,7 @@
 use std::collections::HashSet;
 
 /// Intermediate node of a graph. Intermediate nodes are not expressly declared, but they're used as inputs/outputs to other nodes.
+
 pub struct OnnxGraphIntermediate {
     /// Name of the node.
     pub name: String,

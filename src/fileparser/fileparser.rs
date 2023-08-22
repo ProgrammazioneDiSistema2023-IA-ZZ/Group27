@@ -10,19 +10,9 @@ use crate::fileparser::protobufoperations::*;
 use crate::fileparser::protobufstruct::*;
 use crate::graph::*;
 use crate::operations::*;
+//use pyo3::prelude::*;
 
-/*
-#[derive(Debug)]
-pub struct OnnxParseFileError {
-    msg: String,
-}
-pub type OnnxParseFileResult<'a> = Result<OnnxGraph, OnnxParseFileError>;
 
-impl OnnxParseFileError {
-    pub fn new(msg: String) -> Self {
-        Self { msg }
-    }
-}*/
 pub struct OnnxFileParser;
 
 fn create_multidim_array(
@@ -97,11 +87,12 @@ impl OnnxFileParser {
         if res.is_some() {
             return Result::Err("Error while parsing model - ".to_owned() + &res.unwrap());
         } 
+     
         log::info!("End of parsing  *.onnx file");
         log::info!("Starting generation of graph...");
       
         let mut graph = ModelProto::try_from(model).unwrap().graph;
-
+        building_graph.name=graph.name;
         //operation node
         for e in &mut graph.node {
             if e.inputs.len() != 0 && e.outputs.len() != 0 {
