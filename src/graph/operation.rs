@@ -107,7 +107,7 @@ impl OnnxGraphOperation {
         // Lock statuses map.
         let mut statuses =
             self.statuses.lock()
-                .map_err(|_| onnx_error!("[{}] PoisonError occurred while locking statuses.", self.name))?;
+                .map_err(|_| onnx_error!("[{infer_id:?}, {}] PoisonError occurred while locking statuses.", self.name))?;
 
         statuses
             .entry(infer_id)
@@ -133,6 +133,7 @@ impl OnnxGraphOperation {
             // Operation still has to finish, or it has successfully finish: overwrite the status and notify the subscribers.
             *status = OpStatus::Finished(Err(e));
             self.cv.notify_all();
+            log::debug!("[{infer_id:?}, {}] Notified other nodes of error.", self.name);
             Ok(())
         }
     }
@@ -170,7 +171,7 @@ impl OnnxGraphOperation {
         // Lock resources
         let mut notified_count =
             self.notified_count.lock()
-                .map_err(|_| onnx_error!("[{}] PoisonError occurred while locking notified count.", self.name))?;
+                .map_err(|_| onnx_error!("[{infer_id:?}, {}] PoisonError occurred while locking notified count.", self.name))?;
 
         // Increment or insert 1 if missing
         notified_count
@@ -204,13 +205,15 @@ impl OnnxGraphOperation {
         let result: OperationResult =
             if let OpStatus::Finished(result) = &*status {
                 // Operation already finished: return the result.
+                log::debug!("[{infer_id:?}, {}] Result already available: returning result...", self.name);
                 result.clone()
             } else {
                 // Operation still has to finish: wait via condition variable and return the result as soon as it finishes.
+                log::debug!("[{infer_id:?}, {}] Result not available: waiting for result...", self.name);
                 let InnerMutexGuard(statuses, _) = status;
                 status = InnerMutexGuard(
                     self.cv.wait_while(statuses, |statuses| !statuses.get(&infer_id).unwrap().is_finished())
-                        .map_err(|_| onnx_error!("[{}] PoisonError occurred while waking up from Condvar.", self.name))?,
+                        .map_err(|_| onnx_error!("[{infer_id:?}, {}] PoisonError occurred while waking up from Condvar.", self.name))?,
                     infer_id
                 );
 
@@ -241,6 +244,7 @@ impl OnnxGraphOperation {
         assert!(status.is_started());
         *status = OpStatus::Finished(result.clone());
         self.cv.notify_all();
+        log::debug!("[{infer_id:?}, {}] Notified other nodes of available result:\n {}.", self.name, result.as_ref().map_or_else(|e| format!("{e:?}"), |r| format!("{r}")));
 
         result
     }
@@ -251,7 +255,7 @@ impl OnnxGraphOperation {
         // Lock statuses map.
         let mut statuses =
             self.statuses.lock()
-                .map_err(|_| onnx_error!("[{}] Poison Error occurred while locking statuses.", self.name))?;
+                .map_err(|_| onnx_error!("[{infer_id:?}, {}] Poison Error occurred while locking statuses.", self.name))?;
 
         statuses
             .entry(infer_id)
@@ -259,6 +263,8 @@ impl OnnxGraphOperation {
                 assert!(s.is_finished());
                 *s = OpStatus::Cleared
             });
+
+        log::debug!("[{infer_id:?}, {}] Cleared status data for this node.", self.name);
 
         Ok(())
     }
