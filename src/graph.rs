@@ -9,8 +9,7 @@ pub mod input;
 pub mod output;
 pub mod initializer;
 pub mod intermediate;
-use pyo3::prelude::*;
-use pyo3::types::*;
+
 /// Generic node of a graph.
 
 pub enum OnnxGraphNode {
