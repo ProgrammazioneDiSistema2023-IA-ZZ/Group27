@@ -16,5 +16,3 @@ Cargo.lock
 # Python virtual environment
 .env
 
-#Allow pyo3 compiled library folder
-!/target/wheels/
