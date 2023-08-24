@@ -43,12 +43,16 @@ fn main() {
         .format_timestamp(None)
         .init();
 
+    const GREEN_CHECK: &str = "\x1b[1m\x1b[32m\u{2713}\x1b[0m";
+    const RED_CROSS: &str = "\x1b[1m\x1b[31m\u{2717}\x1b[0m";
+
     // Parse input model
     print!("Reading model from path `{}`...", args.model);
-    if args.verbose > 0 { print!("\n"); } else { stdout().flush().unwrap(); }
+    stdout().flush().unwrap();
     let graph = match OnnxGraph::from_file(&args.model) {
         Ok(graph) => Arc::new(graph),
         Err(e) => {
+            println!("\rReading model from path `{}`... {RED_CROSS}", args.model);
             log::error!("Could not read graph: {}", e.msg);
             return;
         }
@@ -56,49 +60,52 @@ fn main() {
     if args.verbose > 0 {
         println!("Successfully read graph {}!", args.model);
     } else {
-        println!("\rReading model from path `{}`... \x1b[1m\x1b[32m\u{2713}\x1b[0m", args.model);
+        println!("\rReading model from path `{}`... {GREEN_CHECK}", args.model);
     }
 
     // Read input data
     print!("Reading input data from path `{}`...", args.input);
-    if args.verbose > 0 { print!("\n"); } else { stdout().flush().unwrap(); }
+    stdout().flush().unwrap();
     let inputs = match OnnxFileParser::parse_data(args.input.as_str()) {
         Ok(data) => data,
         Err(e) => {
+            println!("\rReading input data from path `{}`... {RED_CROSS}", args.input);
             log::error!("Could not read input data: {e}");
             return;
         }
     };
     if args.verbose > 0 {
-        println!("Successfully read input data!");
+        println!("\nSuccessfully read input data!");
     } else {
-        println!("\rReading input data from path `{}`... \x1b[1m\x1b[32m\u{2713}\x1b[0m", args.input);
+        println!("\rReading input data from path `{}`... {GREEN_CHECK}", args.input);
     }
 
     // Perform inference
     print!("Performing inference...");
-    if args.verbose > 0 { print!("\n"); } else { stdout().flush().unwrap(); }
+    stdout().flush().unwrap();
     let outputs = match graph.infer(inputs) {
         Ok(outputs) => outputs,
         Err(e) => {
+            println!("\rPerforming inference... {RED_CROSS}");
             log::error!("An error occurred during inference: {}", e.msg);
             return;
         }
     };
     if args.verbose > 0 {
-        println!("Inference finished!");
+        println!("\nInference finished!");
     } else {
-        println!("\rPerforming inference... \x1b[1m\x1b[32m\u{2713}\x1b[0m");
+        println!("\rPerforming inference... {GREEN_CHECK}");
     }
 
     // Read outputs if included
     let expected_outputs = if args.output.is_some() {
         let output = args.output.unwrap();
         print!("Reading output data from path `{}`...", output);
-        if args.verbose > 0 { print!("\n"); } else { stdout().flush().unwrap(); }
+        stdout().flush().unwrap();
         let outputs = match OnnxFileParser::parse_data(output.as_str()) {
             Ok(data) => data,
             Err(e) => {
+                println!("\rReading output data from path `{output}`... {RED_CROSS}");
                 log::error!("Could not read output data: {e}");
                 return;
             }
@@ -106,7 +113,7 @@ fn main() {
         if args.verbose > 0 {
             println!("Successfully read output data!");
         } else {
-            println!("\rReading output data from path `{}`... \x1b[1m\x1b[32m\u{2713}\x1b[0m", output);
+            println!("\rReading output data from path `{output}`... {GREEN_CHECK}");
         }
         Some(outputs)
     } else {
