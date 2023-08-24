@@ -1,7 +1,9 @@
 import onnx_rust
 
 import logging
-logging.warning('Watch out!') 
+
+
+
 logging.getLogger().setLevel(logging.DEBUG)
 
 #grafo = onnx_rust.leggi_file("/home/alberto/Dropbox (Politecnico Di Torino Studenti)/Programmazione di Sistema/onnx-rust/onnxFile/mnist-12/mnist-12.onnx")
