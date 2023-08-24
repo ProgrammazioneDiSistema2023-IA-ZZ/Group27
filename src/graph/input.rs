@@ -1,6 +1,8 @@
 use std::sync::Arc;
 
-use crate::operations::Tensor;
+use crate::{operations::Tensor, error::OnnxError, onnx_error};
+
+use super::OnnxGraphNode;
 
 /// Input node of a graph.
 
@@ -48,6 +50,26 @@ impl OnnxGraphInput {
             shape == expected_shape.as_ref()
         } else {
             true
+        }
+    }
+}
+
+impl TryFrom<OnnxGraphNode> for OnnxGraphInput {
+    type Error = OnnxError;
+    fn try_from(value: OnnxGraphNode) -> Result<Self, Self::Error> {
+        match value {
+            OnnxGraphNode::Input(in_node) => Ok(in_node),
+            _ => Err(onnx_error!("Node {} is not an initializer.", value.name()))
+        }
+    }
+}
+
+impl<'a> TryFrom<&'a OnnxGraphNode> for &'a OnnxGraphInput {
+    type Error = OnnxError;
+    fn try_from(value: &'a OnnxGraphNode) -> Result<Self, Self::Error> {
+        match value {
+            OnnxGraphNode::Input(in_node) => Ok(in_node),
+            _ => Err(onnx_error!("Node {} is not an initializer.", value.name()))
         }
     }
 }

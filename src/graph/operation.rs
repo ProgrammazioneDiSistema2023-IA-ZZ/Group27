@@ -2,7 +2,7 @@ use std::{collections::{HashMap, HashSet}, sync::{Mutex, Condvar, Arc}};
 
 use crate::{operations::{Operation, OperationResult, Tensor}, helper::InnerMutexGuard, error::OnnxError, onnx_error};
 
-use super::InferenceID;
+use super::{InferenceID, OnnxGraphNode};
 
 /// Status of execution of an operation.
 pub(super) enum OpStatus {
@@ -267,5 +267,25 @@ impl OnnxGraphOperation {
         log::debug!("[{infer_id:?}, {}] Cleared status data for this node.", self.name);
 
         Ok(())
+    }
+}
+
+impl TryFrom<OnnxGraphNode> for OnnxGraphOperation {
+    type Error = OnnxError;
+    fn try_from(value: OnnxGraphNode) -> Result<Self, Self::Error> {
+        match value {
+            OnnxGraphNode::Operation(op_node) => Ok(op_node),
+            _ => Err(onnx_error!("Node {} is not an operation.", value.name()))
+        }
+    }
+}
+
+impl<'a> TryFrom<&'a OnnxGraphNode> for &'a OnnxGraphOperation {
+    type Error = OnnxError;
+    fn try_from(value: &'a OnnxGraphNode) -> Result<Self, Self::Error> {
+        match value {
+            OnnxGraphNode::Operation(op_node) => Ok(op_node),
+            _ => Err(onnx_error!("Node {} is not an operation.", value.name()))
+        }
     }
 }

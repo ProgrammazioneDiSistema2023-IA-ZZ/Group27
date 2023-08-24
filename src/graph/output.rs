@@ -1,3 +1,7 @@
+use crate::{error::OnnxError, onnx_error};
+
+use super::OnnxGraphNode;
+
 
 /// Nodo output all'interno di un grafo.
 pub struct OnnxGraphOutput {
@@ -36,6 +40,26 @@ impl OnnxGraphOutput {
             shape == expected_shape.as_ref()
         } else {
             true
+        }
+    }
+}
+
+impl TryFrom<OnnxGraphNode> for OnnxGraphOutput {
+    type Error = OnnxError;
+    fn try_from(value: OnnxGraphNode) -> Result<Self, Self::Error> {
+        match value {
+            OnnxGraphNode::Output(out_node) => Ok(out_node),
+            _ => Err(onnx_error!("Node {} is not an output.", value.name()))
+        }
+    }
+}
+
+impl<'a> TryFrom<&'a OnnxGraphNode> for &'a OnnxGraphOutput {
+    type Error = OnnxError;
+    fn try_from(value: &'a OnnxGraphNode) -> Result<Self, Self::Error> {
+        match value {
+            OnnxGraphNode::Output(out_node) => Ok(out_node),
+            _ => Err(onnx_error!("Node {} is not an output.", value.name()))
         }
     }
 }

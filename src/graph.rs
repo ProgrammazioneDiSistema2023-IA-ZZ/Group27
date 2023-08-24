@@ -31,27 +31,6 @@ impl OnnxGraphNode {
             OnnxGraphNode::Intermediate(node) => &node.name
         }
     }
-
-    /// Gets a reference to an [`OnnxGraphOperation`] with respect to the current node.
-    /// 
-    /// # Error
-    /// If the current node is not an operation.
-    pub fn ref_operation(&self) -> Result<&OnnxGraphOperation, OnnxError> {
-        match self {
-            OnnxGraphNode::Operation(node) => Ok(node),
-            _ => Err(onnx_error!("Could not extract operation from {} because it's not an operation node.", self.name()))
-        }
-    }
-}
-
-impl TryInto<OnnxGraphIntermediate> for OnnxGraphNode {
-    type Error = OnnxError;
-    fn try_into(self) -> Result<OnnxGraphIntermediate, Self::Error> {
-        match self {
-            OnnxGraphNode::Intermediate(node) => Ok(node),
-            _ => Err(onnx_error!("Could not extract intermediate node from {} because it's not an intermediate node.", self.name()))
-        }
-    }
 }
 
 impl PartialEq for OnnxGraphNode {
@@ -269,10 +248,10 @@ impl OnnxGraph {
             self.nodes.read()
                 .map_err(|_| onnx_error!("[{infer_id:?}, {opnode_name}] An error occurred while trying to lock nodes HashMap for read."))?;
         
-        let this_opnode =
+        let this_opnode: &OnnxGraphOperation =
             nodes.get(&opnode_name)
                  .ok_or(onnx_error!("[{infer_id:?}, {opnode_name}] Node is not in the graph."))?
-                 .ref_operation()?;
+                 .try_into()?;
         
         // Collect input values (point 1)
         let input_values: Vec<Arc<Tensor>> =
@@ -289,10 +268,10 @@ impl OnnxGraph {
                     },
                     Some(OnnxGraphNode::Input(in_node)) => {
                         // Input node: see get_input_value.
-                        Ok(
+                        let value =
                             self.get_input_value(in_node, &graph_inputs)
-                                .ok_or(onnx_error!("[{infer_id:?}, {opnode_name}] Node {} is missing or invalid.", in_node.name))?
-                        )
+                                .ok_or(onnx_error!("[{infer_id:?}, {opnode_name}] Node {} is missing or invalid.", in_node.name))?;
+                        Ok(value)
                     },
                     Some(OnnxGraphNode::Initializer(init_node)) => {
                         // Initializer node: the value is constant.
@@ -470,10 +449,9 @@ impl OnnxGraph {
             .iter()
             .map(|name| nodes.get(name).unwrap())
             .filter(|node|{
-                node
-                    .ref_operation().unwrap()
+                <&OnnxGraphOperation>::try_from(*node).unwrap()
                     .inputs.iter()
-                    .all(|input_name| self.inputs.contains(input_name) || self.initializers.contains(input_name))
+                    .all(|name| self.inputs.contains(name) || self.initializers.contains(name))
             })
             .collect()
     }
@@ -532,7 +510,7 @@ impl OnnxGraph {
         let first_layer_nodes: Vec<&OnnxGraphOperation> =
             self.get_first_layer_nodes(&nodes)
                 .into_iter()
-                .map(|node| node.ref_operation())
+                .map(<&OnnxGraphOperation>::try_from)
                 .collect::<Result<Vec<_>, OnnxError>>()?;
 
         // Mark operation as started for each node found.
@@ -560,13 +538,10 @@ impl OnnxGraph {
             out_hashmap
                 .into_iter()
                 .map(|(name, arc)| {
-                    Ok(
-                        (
-                            name.clone(),
-                            Arc::try_unwrap(arc)
-                                .map_err(|_| onnx_error!("[{infer_id:?}, Initial] Failed to unwrap Arc for node {name}."))?
-                        )
-                    )
+                    let value = 
+                        Arc::try_unwrap(arc)
+                            .map_err(|_| onnx_error!("[{infer_id:?}, Initial] Failed to unwrap Arc for node {name}."))?;
+                    Ok((name.clone(), value))
                 })
                 .collect::<Result<Vec<(String, Tensor)>, OnnxError>>()?
                 .into_iter()
