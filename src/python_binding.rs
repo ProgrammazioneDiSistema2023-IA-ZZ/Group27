@@ -29,7 +29,7 @@ pub fn read_data_file(str : &PyString,_py: Python<'_>)->Result< PyObject,PyErr>{
 }
 
 #[pyfunction]
-pub fn interference(model: &PyString,input_data :&PyString,_py: Python<'_>)->Result< PyObject,PyErr>{
+pub fn inference(model: &PyString,input_data :&PyString,_py: Python<'_>)->Result< PyObject,PyErr>{
  
     //Reading graph
     let graph = match OnnxGraph::from_file(model.to_string_lossy().to_string().as_str()) {
@@ -45,7 +45,7 @@ pub fn interference(model: &PyString,input_data :&PyString,_py: Python<'_>)->Res
        return Err(PyTypeError::new_err(String::from("Could not read input data: ").push_str( &input.err().unwrap())));
     }
    
-    //interference
+    //inference
   let result= _py.allow_threads(||{     //allow_threads need for handle correctly log print
     return  graph.infer(input.unwrap())
    });
