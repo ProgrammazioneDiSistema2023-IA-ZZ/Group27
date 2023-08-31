@@ -1,6 +1,6 @@
 import onnx_rust
 import logging
-
+from prettytable import PrettyTable
 
 logging.getLogger().setLevel(logging.DEBUG)
 
@@ -10,5 +10,9 @@ x= onnx_rust.inference(
 )
 expected_output = onnx_rust.read_data_file("./onnxFile/googlenet-12/test_data_set_0/output_0.pb")
 
-print("Result of inference :",x)
-print("Expected output :",expected_output)
+table = PrettyTable()
+
+for key in x.keys():
+    table.add_column("Expected "+key,x[key][0])
+    table.add_column("Result "+key,expected_output[key][0])
+print(table)

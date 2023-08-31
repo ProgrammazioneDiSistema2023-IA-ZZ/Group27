@@ -11,6 +11,7 @@ fi
 source "$BASEDIR/../.env/bin/activate"
 
 pip install numpy
+pip install prettytable
 
 # Build python library if it doesn't exist
 pip install maturin
