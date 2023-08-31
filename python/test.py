@@ -1,10 +1,8 @@
 import onnx_rust
-
 import logging
-logging.getLogger().setLevel(logging.DEBUG)
 
-#grafo = onnx_rust.leggi_file("/home/alberto/Dropbox (Politecnico Di Torino Studenti)/Programmazione di Sistema/onnx-rust/onnxFile/googlenet-12/googlenet-12.onnx")
-#print(grafo)
+
+logging.getLogger().setLevel(logging.DEBUG)
 
 x= onnx_rust.inference(
     "./onnxFile/googlenet-12/googlenet-12.onnx",
