@@ -13,17 +13,27 @@ cargo build --release
 ```
 * `model`: Modello in formato .onnx da leggere
 * `input_file`: Dati in ingresso al modello in formato .pb
-* `output_file`: Eventuali dati di output attesi in formato .pb, stampati insieme all'output effettivo del modello
+* `output_file`: Eventuali dati di output attesi in formato .pb, stampati insieme all'output effettivo del modello, utile per valutare la correttezza dell'inferenza
+### Test (Rust)
+Nel file `tests/models.rs` sono presenti i test relativi ai 2 modelli usati per lo sviluppo dell'applicazione:
+* `mnist`: Test relativo al modello <a href="https://github.com/onnx/models/tree/main/vision/classification/mnist">MNIST-12</a>
+* `googlenet` : Test relativo al modello <a href="https://github.com/onnx/models/tree/main/vision/classification/inception_and_googlenet/googlenet">GoogLeNet-12</a>
 
+Per valutare la correttezza dei modelli si assume che il risultato sia uguale valutandolo fino alla terza cifra significativa
 ### Build & Run (Python)
 
 ```shell
 # Build
 python/build.sh
 
-# Run (virtual environment)
+# Start virtual environment
 source .env/bin/activate
+
+# Run python program
 python python/test.py
+
+# Close virtual environment when you want to exit 
+deactivate
 ```
 
 La libreria compilata si trova in `target/wheels`.
