@@ -60,16 +60,7 @@ pub fn read_floats(v: &Vec<u8>) -> Vec<f32> {
     }
     result
 }
-/// è utile ????????
-pub fn leggibytes(v: &Vec<u8>) -> Vec<u8> {
-    let mut result = Vec::new();
-    let mut i = 0;
-    while i < v.len() {
-        result.push(u8::from_le_bytes(v[i..i + 1].try_into().unwrap()));
-        i += 1;
-    }
-    result
-}
+
 ///  Convert `Vec<u8>` to `Vec<u64>`
 /// WARNING: in this case the u64 number is read like a Varint number and then cast to u64
 /// /// IT'S NOT READ TAKING 8 BYTES FOR EACH u64
@@ -329,11 +320,7 @@ fn wire_type_two(
               // println!(" Vett di {:?} elem", v.len());
                 p.float_data = v;
             } else if tag_name == "raw_data" {
-                //RAW_DATA -> leggo bytes poi in base al campo data_type converto nel tipo corretto
-                let v = leggibytes(&vect[*index..*index + val].to_vec());
-                //let v = leggiraw(&vect[*index..*index + val].to_vec());
-                //println!(" Vett di {:?} elem RAW", v.len());
-                p.raw_data = v;
+                p.raw_data = vect[*index..*index + val].to_vec();
             } else if tag_name == "int64_data" {
                 let v = read_int64(&vect[*index..*index + val].to_vec());
                // println!(" Vett di {:?} elem", v.len());

@@ -15,7 +15,7 @@ pub enum ProtoBufMessage {
     Dimension(Dimension),
     ValueInfoProto(ValueInfoProto),
     TensorShapeProto(TensorShapeProto),
-    Tensor2(Tensor2),
+    Tensor2(Tensor2),    //è un tensore ma poichè Tensor è gia definito devo utilizzare un altro nome
     TypeProto(TypeProto),
     
 }
