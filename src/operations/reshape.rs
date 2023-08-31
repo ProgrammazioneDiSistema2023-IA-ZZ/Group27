@@ -33,7 +33,7 @@ impl Operation {
         }
        
         let (data, shape) = (inputs[0], inputs[1]);
-        if shape.shape().len() != 1 {
+        if shape.ndim() != 1 {
             return Err(onnx_error!("Shape (2nd) input must be one-dimensional"))
         }
         let shape_slice = shape.iter().map(|val| *val as usize).collect::<Vec<usize>>();

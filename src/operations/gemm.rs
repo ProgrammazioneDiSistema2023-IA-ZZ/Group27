@@ -72,11 +72,11 @@ impl Operation {
         // Compute A' and B'
         let a_prime =
             if trans_a == 1 { a.t() } else { a.view() }
-                .into_dimensionality::<Ix2>().map_err(|_| onnx_error!("Only two-dimensional products are supported. Matrix A was found to have {} dimension(s).", a.shape().len()))?;
+                .into_dimensionality::<Ix2>().map_err(|_| onnx_error!("Only two-dimensional products are supported. Matrix A was found to have {} dimension(s).", a.ndim()))?;
 
         let b_prime =
             if trans_b == 1 { b.t() } else { b.view() }
-                .into_dimensionality::<Ix2>().map_err(|_| onnx_error!("Only two-dimensional products are supported. Matrix B was found to have {} dimension(s).", b.shape().len()))?;
+                .into_dimensionality::<Ix2>().map_err(|_| onnx_error!("Only two-dimensional products are supported. Matrix B was found to have {} dimension(s).", b.ndim()))?;
 
         // result = alpha * A' * B' (+ beta * C)
         let mut result = alpha * a_prime.dot(&b_prime);

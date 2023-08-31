@@ -26,7 +26,7 @@ impl Operation {
         let axis: usize = match self.attributes.get("axis") {
             Some(Attribute::Int(val)) if *val >= 0 => (*val).try_into().unwrap(),
             Some(Attribute::Int(val)) if *val < 0 => {
-                (inputs[0].shape().len() as isize - *val)
+                (inputs[0].ndim() as isize - *val)
                     .try_into().map_err(|_| onnx_error!("Result axis is a negative number."))?
             },
             None | Some(Attribute::Undefined) => return Err(onnx_error!("axis attribute not specified.")),

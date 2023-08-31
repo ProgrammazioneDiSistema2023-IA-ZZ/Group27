@@ -36,6 +36,15 @@ impl<'a, K: Hash + Eq + PartialEq, V> DerefMut for InnerMutexGuard<'a, K,V> {
 }
 
 /// Wrapper structure used to pretty-print a multidimensional array (tensor)
+/// 
+/// # Example
+/// ```
+/// use ndarray::array;
+/// use onnx_rust::helper::PrettyTensor;
+/// 
+/// let t = array![[ 1., 2. ], [ 3., 4. ]].into_dyn();
+/// assert_eq!(format!("{}", PrettyTensor::from(&t)), "[\n  [\n    1,\n    2,\n  ],\n  [\n    3,\n    4,\n  ],\n],\n".to_string());
+/// ```
 pub struct PrettyTensor<'a> {
     tensor: &'a Tensor
 }
@@ -56,12 +65,10 @@ impl<'a> PrettyTensor<'a> {
             tensor
                 .outer_iter()
                 .map(|slice| {
-                    if slice.ndim() > 1 {
+                    if slice.ndim() > 0 {
                         Self::print_rec(&slice, f, level+1)?;
                     } else {
-                        for v in slice {
-                            writeln!(f, "{}{v},", " ".repeat((level+1)*2))?;
-                        }
+                        writeln!(f, "{}{slice},", " ".repeat((level+1)*2))?;
                     }
                     Ok(())
                 })

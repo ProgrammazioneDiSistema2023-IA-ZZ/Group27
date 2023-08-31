@@ -465,10 +465,6 @@ impl OnnxGraph {
         return Ok(*last_inference_id);
     }
 
-    /// Esegue l'inferenza sulla base del grafo attuale, seguendo un approccio top-down: a partire da ogni input, esegui le
-    /// relative operazioni in modo parallelo e, al termine di ognuna, avvia le operazioni relative ai nodi uscenti finché tutti
-    /// gli output non sono disponibili.
-    /// 
     /// Executes an inference with the given inputs based on the current graph's state, following a top-down approach: from each
     /// input node, execute all exiting operations (in parallel if possible) and, after each one finishes, execute their exiting
     /// operations and so on, until all outputs are available of if an error occurs at any point.

@@ -1,4 +1,4 @@
-/// Errore generico durante una qualsiasi operazione in un grafo ONNX.
+/// Generic error during any operation in an ONNX graph.
 #[derive(Clone, Debug)]
 pub struct OnnxError {
     pub msg: String

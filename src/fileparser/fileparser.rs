@@ -4,7 +4,7 @@ use std::{
     io::{BufReader, Read},
 };
 
-use ndarray::{Array, ArrayBase, OwnedRepr};
+use ndarray::Array;
 
 use crate::fileparser::protobufoperations::*;
 use crate::fileparser::protobufstruct::*;
@@ -18,50 +18,8 @@ pub struct OnnxFileParser;
 fn create_multidim_array(
     plain_vect: Vec<f32>,
     dims: &Vec<usize>,
-) -> Option<ArrayBase<OwnedRepr<f32>, ndarray::Dim<ndarray::IxDynImpl>>> {
-    match dims.len() {
-        0 => Some(
-            Array::from_iter(plain_vect.iter().map(|v| *v).cycle().take(0))
-                .into_shape(0)
-                .unwrap()
-                .into_dyn(),
-        ),
-        1 => Some(
-            Array::from_iter(plain_vect.iter().map(|v| *v).take(dims[0]))
-                .into_shape(dims[0])
-                .unwrap()
-                .into_dyn(),
-        ),
-        2 => Some(
-            Array::from_iter(plain_vect.iter().map(|v| *v).take(dims[0] * dims[1]))
-                .into_shape((dims[0], dims[1]))
-                .unwrap()
-                .into_dyn(),
-        ),
-        3 => Some(
-            Array::from_iter(
-                plain_vect
-                    .iter()
-                    .map(|v| *v)
-                    .take(dims[0] * dims[1] * dims[2]),
-            )
-            .into_shape((dims[0], dims[1], dims[2]))
-            .unwrap()
-            .into_dyn(),
-        ),
-        4 => Some(
-            Array::from_iter(
-                plain_vect
-                    .iter()
-                    .map(|v| *v)
-                    .take(dims[0] * dims[1] * dims[2] * dims[3]),
-            )
-            .into_shape((dims[0], dims[1], dims[2], dims[3]))
-            .unwrap()
-            .into_dyn(),
-        ),
-        _ => None,
-    }
+) -> Option<Tensor> {
+    Array::from_shape_vec(dims.clone(), plain_vect).ok()
 }
 
 impl OnnxFileParser {
@@ -154,8 +112,7 @@ impl OnnxFileParser {
                 x.raw_data = Vec::new();
             }
 
-            let val: ArrayBase<OwnedRepr<f32>, ndarray::Dim<ndarray::IxDynImpl>> =
-                create_multidim_array(x.float_data.clone(), &x.dims).unwrap();
+            let val = create_multidim_array(x.float_data.clone(), &x.dims).unwrap();
             let node_init = OnnxGraphNode::Initializer(OnnxGraphInitializer::new(&x.name, val));
             let res = building_graph.add_node(node_init);
             if res.is_err() {
@@ -241,7 +198,7 @@ impl OnnxFileParser {
     /// The value returned consist in a HashMap with key = name of node and value = tensor
     pub fn parse_data(
         path: &str,
-    ) -> Result<HashMap<String, ArrayBase<OwnedRepr<f32>, ndarray::Dim<ndarray::IxDynImpl>>>, String>
+    ) -> Result<HashMap<String, Tensor>, String>
     {
         log::info!("Begin of reading data...");
         let file = File::open(path);
@@ -264,17 +221,12 @@ impl OnnxFileParser {
             data.raw_data = Vec::new();
         }
 
-        let val: ArrayBase<OwnedRepr<f32>, ndarray::Dim<ndarray::IxDynImpl>> =
-            create_multidim_array(data.float_data, &data.dims).unwrap();
+        let val = create_multidim_array(data.float_data, &data.dims).unwrap();
 
-      
+        let input_values = HashMap::from([
+            ( data.name, val )
+        ]);
 
-        let mut input_values: HashMap<
-            String,
-            ArrayBase<OwnedRepr<f32>, ndarray::Dim<ndarray::IxDynImpl>>,
-        > = HashMap::new();
-
-        input_values.insert(data.name, val);
         log::info!("End of reading data");
         return Ok(input_values);
     }

@@ -32,10 +32,10 @@ impl Operation {
         let axis: usize = match self.attributes.get("axis") {
             Some(Attribute::Int(val)) if *val >= 0 => (*val).try_into().unwrap(),
             Some(Attribute::Int(val)) if *val < 0 => {
-                (inputs[0].shape().len() as isize - *val)
+                (inputs[0].ndim() as isize - *val)
                     .try_into().map_err(|_| onnx_error!("Result axis is a negative number."))?
             },
-            None | Some(Attribute::Undefined) => inputs[0].shape().len()-1,
+            None | Some(Attribute::Undefined) => inputs[0].ndim()-1,
             _ => return Err(onnx_error!("axis has an invalid attribute type."))
         };
 

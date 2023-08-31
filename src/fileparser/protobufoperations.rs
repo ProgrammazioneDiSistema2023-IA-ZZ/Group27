@@ -126,14 +126,7 @@ fn wire_type_two(
         ProtoBufMessage::ModelProto(p) => {
             let  opt_tag_name = p.field_number.get(field_number);
             if opt_tag_name.is_none() {
-                return Some(
-                    vec![
-                        "Field number ",
-                        &(field_number.to_string()),
-                        "is not implemented",
-                    ]
-                    .join(""),
-                );
+                return Some(format!("Field number {field_number} is not implemented."));
             }
             let tag_name = opt_tag_name.unwrap();
           
@@ -154,14 +147,7 @@ fn wire_type_two(
         ProtoBufMessage::GraphProto(p) => {
             let opt_tag_name = p.field_number.get(field_number);
             if opt_tag_name.is_none() {
-                return Some(
-                    vec![
-                        "Field number ",
-                        &(field_number.to_string()),
-                        "is not implemented",
-                    ]
-                    .join(""),
-                );
+                return Some(format!("Field number {field_number} is not implemented."));
             }
             let tag_name = opt_tag_name.unwrap();
             log::debug!("[Parsing] Graph -> \"{}\":", tag_name);
@@ -223,14 +209,7 @@ fn wire_type_two(
         ProtoBufMessage::NodeProto(p) => {
             let opt_tag_name = p.field_number.get(field_number);
             if opt_tag_name.is_none() {
-                return Some(
-                    vec![
-                        "Field number ",
-                        &(field_number.to_string()),
-                        "is not implemented",
-                    ]
-                    .join(""),
-                );
+                return Some(format!("Field number {field_number} is not implemented."));
             }
             let tag_name = opt_tag_name.unwrap();
             log::debug!("[Parsing] Node -> \"{}\":", tag_name);
@@ -260,14 +239,7 @@ fn wire_type_two(
         ProtoBufMessage::AttributeProto(p) => {
             let  opt_tag_name = p.field_number.get(field_number);
             if opt_tag_name.is_none() {
-                return Some(
-                    vec![
-                        "Field number ",
-                        &(field_number.to_string()),
-                        "is not implemented",
-                    ]
-                    .join(""),
-                );
+                return Some(format!("Field number {field_number} is not implemented."));
             }
             let tag_name = opt_tag_name.unwrap();
             
@@ -303,14 +275,7 @@ fn wire_type_two(
         ProtoBufMessage::TensorProto(p) => {
             let  opt_tag_name = p.field_number.get(field_number);
             if opt_tag_name.is_none() {
-                return Some(
-                    vec![
-                        "Field number ",
-                        &(field_number.to_string()),
-                        "is not implemented",
-                    ]
-                    .join(""),
-                );
+                return Some(format!("Field number {field_number} is not implemented."));
             }
             let tag_name = opt_tag_name.unwrap();
             log::debug!("[Parsing] Tensor -> \"{}\":", tag_name);
@@ -338,14 +303,7 @@ fn wire_type_two(
         ProtoBufMessage::ValueInfoProto(p) => {
             let  opt_tag_name = p.field_number.get(field_number);
             if opt_tag_name.is_none() {
-                return Some(
-                    vec![
-                        "Field number ",
-                        &(field_number.to_string()),
-                        "is not implemented",
-                    ]
-                    .join(""),
-                );
+                return Some(format!("Field number {field_number} is not implemented."));
             }
             let tag_name = opt_tag_name.unwrap();
             log::debug!("[Parsing] Value info -> \"{}\":", tag_name);
@@ -370,14 +328,7 @@ fn wire_type_two(
         ProtoBufMessage::TypeProto(p) => {
             let  opt_tag_name = p.field_number.get(field_number);
             if opt_tag_name.is_none() {
-                return Some(
-                    vec![
-                        "Field number ",
-                        &(field_number.to_string()),
-                        "is not implemented",
-                    ]
-                    .join(""),
-                );
+                return Some(format!("Field number {field_number} is not implemented."));
             }
             let tag_name = opt_tag_name.unwrap();
             log::debug!("[Parsing] Type -> \"{}\":", tag_name);
@@ -399,14 +350,7 @@ fn wire_type_two(
         ProtoBufMessage::Tensor2(p) => {
             let  opt_tag_name = p.field_number.get(field_number);
             if opt_tag_name.is_none() {
-                return Some(
-                    vec![
-                        "Field number ",
-                        &(field_number.to_string()),
-                        "is not implemented",
-                    ]
-                    .join(""),
-                );
+                return Some(format!("Field number {field_number} is not implemented."));
             }
             let tag_name = opt_tag_name.unwrap();
             log::debug!("[Parsing] Tensor -> \"{}\":", tag_name);
@@ -428,8 +372,7 @@ fn wire_type_two(
         ProtoBufMessage::TensorShapeProto(p) => {
             let  opt_tag_name = p.field_number.get(field_number);
             if opt_tag_name.is_none() {
-                return Some(vec!["Field number ",&(field_number.to_string()),"is not implemented",].join("")
-                );
+                return Some(format!("Field number {field_number} is not implemented."));
             }
             let tag_name = opt_tag_name.unwrap();
             log::debug!("[Parsing] Shape -> \"{}\":", tag_name);
@@ -454,14 +397,7 @@ fn wire_type_two(
         ProtoBufMessage::Dimension(p) => {
             let  opt_tag_name = p.field_number.get(field_number);
             if opt_tag_name.is_none() {
-                return Some(
-                    vec![
-                        "Field number ",
-                        &(field_number.to_string()),
-                        "is not implemented",
-                    ]
-                    .join(""),
-                );
+                return Some(format!("Field number {field_number} is not implemented."));
             }
             let tag_name = opt_tag_name.unwrap();
             let val = read_varint(&vect, index);
@@ -488,14 +424,7 @@ pub fn wire_type_zero(
         ProtoBufMessage::ModelProto(p) => {
             let  opt_tag_name = p.field_number.get(field_number);
             if opt_tag_name.is_none() {
-                return Some(
-                    vec![
-                        "Field number ",
-                        &(field_number.to_string()),
-                        "is not implemented",
-                    ]
-                    .join(""),
-                );
+                return Some(format!("Field number {field_number} is not implemented."));
             }
             let tag_name = opt_tag_name.unwrap();
             log::debug!("[Parsing] Model -> {}:{}",tag_name,val);
@@ -503,14 +432,7 @@ pub fn wire_type_zero(
         ProtoBufMessage::GraphProto(p) => {
             let  opt_tag_name = p.field_number.get(field_number);
             if opt_tag_name.is_none() {
-                return Some(
-                    vec![
-                        "Field number ",
-                        &(field_number.to_string()),
-                        "is not implemented",
-                    ]
-                    .join(""),
-                );
+                return Some(format!("Field number {field_number} is not implemented."));
             }
             let tag_name = opt_tag_name.unwrap();
             log::debug!("[Parsing] Graph -> {}:{}",tag_name,val);
@@ -518,14 +440,7 @@ pub fn wire_type_zero(
         ProtoBufMessage::AttributeProto(p) => {
             let  opt_tag_name = p.field_number.get(field_number);
             if opt_tag_name.is_none() {
-                return Some(
-                    vec![
-                        "Field number ",
-                        &(field_number.to_string()),
-                        "is not implemented",
-                    ]
-                    .join(""),
-                );
+                return Some(format!("Field number {field_number} is not implemented."));
             }
             let tag_name = opt_tag_name.unwrap();
             log::debug!("[Parsing] Attribute -> {}:{}",tag_name,val);
@@ -568,13 +483,7 @@ pub fn wire_type_zero(
                     }*/
                     _ => {
                         
-                        return Some(
-                            vec![
-                                "Attribute data type ",
-                                &(field_number.to_string()),
-                                "is not implemented",
-                            ]
-                            .join(""));
+                        return Some(format!("Attribute data type {field_number} is not implemented"));
                     }
                 }
            
@@ -583,14 +492,7 @@ pub fn wire_type_zero(
 
             let  opt_tag_name = p.field_number.get(field_number);
             if opt_tag_name.is_none() {
-                return Some(
-                    vec![
-                        "Field number ",
-                        &(field_number.to_string()),
-                        "is not implemented",
-                    ]
-                    .join(""),
-                );
+                return Some(format!("Field number {field_number} is not implemented."));
             }
             let tag_name = opt_tag_name.unwrap();
             log::debug!("[Parsing] Tensor -> {}:{}",tag_name,val);
@@ -607,14 +509,7 @@ pub fn wire_type_zero(
         ProtoBufMessage::NodeProto(p) => {
             let  opt_tag_name = p.field_number.get(field_number);
             if opt_tag_name.is_none() {
-                return Some(
-                    vec![
-                        "Field number ",
-                        &(field_number.to_string()),
-                        "is not implemented",
-                    ]
-                    .join(""),
-                );
+                return Some(format!("Field number {field_number} is not implemented."));
             }
             let tag_name = opt_tag_name.unwrap();
             log::debug!("[Parsing] Node -> {}:{}",tag_name,val);
@@ -622,14 +517,7 @@ pub fn wire_type_zero(
         ProtoBufMessage::ValueInfoProto(p) => {
             let  opt_tag_name = p.field_number.get(field_number);
             if opt_tag_name.is_none() {
-                return Some(
-                    vec![
-                        "Field number ",
-                        &(field_number.to_string()),
-                        "is not implemented",
-                    ]
-                    .join(""),
-                );
+                return Some(format!("Field number {field_number} is not implemented."));
             }
             let tag_name = opt_tag_name.unwrap();
             log::debug!("[Parsing] Value info -> {}:{}",tag_name,val);
@@ -637,14 +525,7 @@ pub fn wire_type_zero(
         ProtoBufMessage::TypeProto(p) => {
             let  opt_tag_name = p.field_number.get(field_number);
             if opt_tag_name.is_none() {
-                return Some(
-                    vec![
-                        "Field number ",
-                        &(field_number.to_string()),
-                        "is not implemented",
-                    ]
-                    .join(""),
-                );
+                return Some(format!("Field number {field_number} is not implemented."));
             }
             let tag_name = opt_tag_name.unwrap();
             log::debug!("[Parsing] Type -> {}:{}",tag_name,val);
@@ -653,14 +534,7 @@ pub fn wire_type_zero(
         ProtoBufMessage::Tensor2(p) => {
             let  opt_tag_name = p.field_number.get(field_number);
             if opt_tag_name.is_none() {
-                return Some(
-                    vec![
-                        "Field number ",
-                        &(field_number.to_string()),
-                        "is not implemented",
-                    ]
-                    .join(""),
-                );
+                return Some(format!("Field number {field_number} is not implemented."));
             }
             let tag_name = opt_tag_name.unwrap();
             log::debug!("[Parsing] Tensor -> {}:{}",tag_name,val);
@@ -668,14 +542,7 @@ pub fn wire_type_zero(
         ProtoBufMessage::Dimension(p) => {
             let  opt_tag_name = p.field_number.get(field_number);
             if opt_tag_name.is_none() {
-                return Some(
-                    vec![
-                        "Field number ",
-                        &(field_number.to_string()),
-                        "is not implemented",
-                    ]
-                    .join(""),
-                );
+                return Some(format!("Field number {field_number} is not implemented."));
             }
             let tag_name = opt_tag_name.unwrap();
             log::debug!("[Parsing] Tensor -> {}:{}",tag_name,val);

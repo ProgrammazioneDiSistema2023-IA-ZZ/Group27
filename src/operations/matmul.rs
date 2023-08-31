@@ -23,12 +23,12 @@ impl Operation {
         let a =
             inputs[0].view()
             .into_dimensionality::<Ix2>()
-            .map_err(|_| onnx_error!("Only two-dimensional product is supported. Matrix A was found to have {} dimension(s).", inputs[0].shape().len()))?;
+            .map_err(|_| onnx_error!("Only two-dimensional product is supported. Matrix A was found to have {} dimension(s).", inputs[0].ndim()))?;
         let a_shape = a.shape();
 
         let b =
             inputs[1].view()
-                .into_dimensionality::<Ix2>().map_err(|_| onnx_error!("Only two-dimensional product is supported. Matrix B was found to have {} dimension(s).", inputs[1].shape().len()))?;
+                .into_dimensionality::<Ix2>().map_err(|_| onnx_error!("Only two-dimensional product is supported. Matrix B was found to have {} dimension(s).", inputs[1].ndim()))?;
         let b_shape = b.shape();
 
         if a_shape[1] == b_shape[0] {
