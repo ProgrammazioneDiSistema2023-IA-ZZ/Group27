@@ -3,7 +3,10 @@ use log;
 use crate::{error::OnnxError, operations::Tensor, onnx_error, fileparser::fileparser::OnnxFileParser};
 
 pub use self::{operation::OnnxGraphOperation, input::OnnxGraphInput, output::OnnxGraphOutput, initializer::OnnxGraphInitializer, intermediate::OnnxGraphIntermediate};
-use pyo3::*;
+
+#[cfg(feature = "python")]
+use pyo3::pyclass;
+
 pub mod operation;
 pub mod input;
 pub mod output;
@@ -50,7 +53,7 @@ impl Hash for OnnxGraphNode {
 /// ID of an inference, internal to the current process.
 #[derive(Hash, PartialEq, Eq, Clone, Copy, Debug)]
 struct InferenceID(usize);
-#[pyclass(frozen)]
+#[cfg_attr(feature = "python", pyclass(frozen))]
 /// Graph that represents a neural network.
 pub struct OnnxGraph {
     /// Name of the graph.

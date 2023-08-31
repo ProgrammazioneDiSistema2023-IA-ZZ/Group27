@@ -1,15 +1,21 @@
-
 use std::sync::Arc;
-use pyo3::exceptions::PyTypeError;
 
 use numpy::PyArrayDyn;
-use pyo3::{pyfunction, Python, PyObject, PyErr, ToPyObject};
-use pyo3::types::{PyDict, PyString};
+use pyo3::{pymodule, pyfunction, Python, PyResult, PyObject, PyErr, ToPyObject, types::{PyDict, PyString}, exceptions::PyTypeError, prelude::{PyModule, wrap_pyfunction}};
+use pyo3_log::{Logger, Caching};
 
 use crate::graph::OnnxGraph;
 use crate::fileparser::fileparser::OnnxFileParser;
 
-
+#[pymodule]
+fn onnx_rust(_py: Python<'_>, m: &PyModule) -> PyResult<()> {
+   let _ = Logger::new(_py, Caching::LoggersAndLevels)?
+   .install();
+    m.add_function(wrap_pyfunction!(read_data_file, m)?)?;
+    m.add_function(wrap_pyfunction!(inference, m)?)?;
+    m.add_class::<OnnxGraph>()?;
+    Ok(())
+}
 
 #[pyfunction]
 pub fn read_data_file(str : &PyString,_py: Python<'_>)->Result< PyObject,PyErr>{

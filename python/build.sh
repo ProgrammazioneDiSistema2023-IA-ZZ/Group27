@@ -10,11 +10,9 @@ fi
 # Activate python virtual environment
 source "$BASEDIR/../.env/bin/activate"
 
-pip install numpy
-pip install prettytable
+pip install -r $BASEDIR/../requirements.txt
 
 # Build python library if it doesn't exist
-pip install maturin
-maturin build --release
+maturin build --release --features python
 
 pip install $BASEDIR/../target/wheels/onnx_rust*
