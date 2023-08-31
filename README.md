@@ -9,7 +9,7 @@
 cargo build --release
 
 # Run
-./target/release/onnx-rust <model> --input <input_file> [--output <output_file>]
+./target/release/onnx-cli <model> --input <input_file> [--output <output_file>]
 ```
 * `model`: Modello in formato .onnx da leggere
 * `input_file`: Dati in ingresso al modello in formato .pb

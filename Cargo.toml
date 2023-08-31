@@ -20,7 +20,9 @@ pyo3-log = "0.8.3"
 
 [lib]
 name = "onnx_rust"
-crate-type = ["cdylib","lib"] 
+crate-type = ["cdylib","lib"]
+path = "src/lib.rs"
 
-
-
+[[bin]]
+name = "onnx-cli"
+path = "src/main.rs"
